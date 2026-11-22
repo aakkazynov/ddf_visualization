@@ -106,15 +106,31 @@ select{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;
 .tip .t{font-weight:500;color:#fff}
 .tip .more{color:var(--ink-2);text-decoration:underline;text-underline-offset:2px;margin-left:6px;white-space:nowrap}
 .tip .m{color:var(--ink-2)}
+.tip{padding:10px 12px;max-width:320px}
+.tip .tiphd{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+.tip .t{font-size:14px}
+.tip .more{color:#80cbc4;text-decoration:none;margin-left:0;font-size:12px}
+.tip .tiplist{margin-top:6px;color:var(--ink)}
+.tip .tiplist .dot{width:8px;height:8px}
+.pcards{margin-top:10px}
+.pcard{border-top:1px solid var(--line);padding:10px 0;font-size:13px;color:var(--ink-2)}
+.pcard .pname{font-weight:600;color:#fff;font-size:13.5px}
+.pcard .desc{margin-top:3px}
+.pcard a{color:#80cbc4}
+.pcard .where{color:var(--ink)}
+.fine{font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:8px}
+.fine a{color:var(--ink-3)}
 
 /* graph marks */
 .link{fill:none}
 .link.co{stroke:var(--gray-link)}
-.node{cursor:pointer}
-.node text{fill:rgba(255,255,255,.9);font-size:10.5px;paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.node{cursor:pointer;outline:none}
+.node:focus-visible .hit{stroke:var(--hl);stroke-width:1.5}
+/* labels keep the same on-screen size at any zoom level (--k = current zoom scale) */
+.node text{fill:rgba(255,255,255,.9);font-size:calc(10.5px / var(--k,1));paint-order:stroke;stroke:var(--bg);stroke-width:calc(3px / var(--k,1));stroke-linejoin:round;pointer-events:none}
 .node text.single{font-weight:300;fill:rgba(255,255,255,.62)}
 .node text.multi{font-weight:500}
-.node text.ddf{font-weight:600;font-size:13px}
+.node text.ddf{font-weight:600;font-size:calc(13px / var(--k,1))}
 .node.hover text{font-weight:600}
 .node.hover text.single{font-weight:400;fill:rgba(255,255,255,.85)}
 .faded{opacity:.1}
@@ -185,7 +201,11 @@ footer{color:var(--ink-3);font-size:12px;margin-top:16px;text-align:center}
 
   <div class="legend" id="legend" aria-label="Program area colors"></div>
   <div class="legend legend2">
-    <span><svg width="22" height="14"><circle cx="7" cy="7" r="3" fill="#bbb"/><circle cx="17" cy="7" r="5" fill="#bbb"/></svg>size = endowment</span>
+    <span>endowment:</span>
+    <span><svg width="46" height="46"><circle cx="23" cy="23" r="22" fill="#bbb"/></svg>$10B+</span>
+    <span><svg width="30" height="30"><circle cx="15" cy="15" r="14" fill="#bbb"/></svg>$1B–10B</span>
+    <span><svg width="18" height="18"><circle cx="9" cy="9" r="8" fill="#bbb"/></svg>$100M–1B</span>
+    <span><svg width="12" height="12"><circle cx="6" cy="6" r="4.5" fill="#bbb"/></svg>under $100M</span>
     <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#bbb" fill-opacity=".22" stroke="#bbb" stroke-width="1"/></svg>pale = endowment not found</span>
     <span><svg width="18" height="18"><circle cx="9" cy="9" r="4" fill="#bbb"/><circle cx="9" cy="9" r="7.5" fill="none" stroke="#cfd8dc" stroke-width="1.2" stroke-dasharray="2 2"/></svg>dashed ring = funds work outside the US</span>
     <span><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#bbb" stroke-width="2"/></svg>line width = program funding</span>
@@ -258,8 +278,15 @@ nodes.forEach(n => {
   n.hasEndow = n.endowment_usd != null;
 });
 const maxEndow = d3.max(nodes.filter(n => !n.isDDF), n => n.endowment_usd) || 1;
-const rScale = d3.scaleSqrt().domain([0, maxEndow]).range([4, 24]);
-nodes.forEach(n => { n.r = n.hasEndow ? Math.max(4, Math.min(24, rScale(n.endowment_usd))) : 6; if (n.isDDF) n.r = Math.max(n.r, 14); });
+// Bubble size = endowment tier: large ≥ $10B, medium ≥ $1B, small ≥ $100M, extra-small below that / not found
+const SIZE_TIERS = [
+  { min: 1e10, r: 22, label: "$10B+" },
+  { min: 1e9,  r: 14, label: "$1B–10B" },
+  { min: 1e8,  r: 8,  label: "$100M–1B" },
+  { min: 0,    r: 4.5, label: "under $100M" },
+];
+const tierOf = v => v == null ? null : SIZE_TIERS.find(t => v >= t.min);
+nodes.forEach(n => { const t = tierOf(n.endowment_usd); n.r = t ? t.r : 5; n.tier = t ? t.label : "not found"; });
 
 // links
 const linkMap = new Map();
@@ -392,11 +419,20 @@ let W = 900, H = 640;
 const root = svg.append("g");
 const gLinks = root.append("g"), gLinkHits = root.append("g"), gNodes = root.append("g");
 let zoomK = 1;
-const zoom = d3.zoom().scaleExtent([0.35, 5]).on("zoom", e => { root.attr("transform", e.transform); if ((e.transform.k >= 1.8) !== (zoomK >= 1.8)) { zoomK = e.transform.k; updateLabels(); } zoomK = e.transform.k; });
+const zoom = d3.zoom().scaleExtent([0.35, 5]).on("zoom", e => { root.attr("transform", e.transform); root.style("--k", e.transform.k);
+  gNodes.selectAll("text").attr("x", d => d.r + 4 / e.transform.k); if ((e.transform.k >= 1.8) !== (zoomK >= 1.8)) { zoomK = e.transform.k; updateLabels(); } zoomK = e.transform.k; });
 svg.call(zoom).on("dblclick.zoom", null);
 svg.on("click", (e) => { if (e.target === svg.node()) { if (state.sel && state.sel.type !== "program") { state.sel = state.program ? { type: "program", id: state.program } : null; applyHighlight(); } } });
-d3.select("#zin").on("click", () => svg.transition().duration(250).call(zoom.scaleBy, 1.3));
-d3.select("#zout").on("click", () => svg.transition().duration(250).call(zoom.scaleBy, 1/1.3));
+// zoom buttons: step from the target of any zoom still animating, so quick clicks add up
+let zoomTarget = null;
+function zoomStep(f){
+  const cur = zoomTarget ?? d3.zoomTransform(svg.node()).k;
+  zoomTarget = Math.max(0.35, Math.min(5, cur * f));
+  svg.transition().duration(250).call(zoom.scaleTo, zoomTarget).on("end interrupt", function(){ if (d3.zoomTransform(svg.node()).k === zoomTarget) zoomTarget = null; });
+}
+d3.select("#zin").on("click", () => zoomStep(1.3));
+d3.select("#zout").on("click", () => zoomStep(1/1.3));
+svg.on("wheel.target", () => { zoomTarget = null; });
 
 function size(){
   W = box.clientWidth;
@@ -491,9 +527,9 @@ function render(){
     g.append("circle").attr("class", "hlring").attr("r", d => d.r + 3).attr("display", "none");
     g.append("text").attr("x", d => d.r + 4).attr("dy", "0.35em")
       .attr("class", d => d.isDDF ? "ddf" : d.programs.length > 1 ? "multi" : "single").text(d => d.isDDF ? "Doris Duke Foundation" : d.short || d.id);
-    g.on("mouseenter", function(e, d){ d3.select(this).classed("hover", true).raise().select("text").attr("display", null); showNodeTip(e, d); })
+    g.on("mouseenter", function(e, d){ state.hover = d.id; d3.select(this).classed("hover", true).raise(); applyHighlight(); showNodeTip(e, d); })
      .on("mousemove", moveTip)
-     .on("mouseleave", function(){ d3.select(this).classed("hover", false); hideTip(); updateLabels(); })
+     .on("mouseleave", function(){ state.hover = null; d3.select(this).classed("hover", false); hideTip(); applyHighlight(); })
      .on("click", (e, d) => { e.stopPropagation(); hideTip(); openFunder(d.id); })
      .on("keydown", (e, d) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openFunder(d.id); } })
      .call(d3.drag()
@@ -544,7 +580,8 @@ function update(){
 }
 
 function focusSets(){
-  const sel = state.sel;
+  // hovering a funder temporarily takes over from the clicked selection
+  const sel = state.hover ? { type: "funder", id: state.hover } : state.sel;
   if (!sel) return null;
   const fn = new Set(), fl = new Set(), ring = new Set();
   if (sel.type === "funder") {
@@ -588,10 +625,10 @@ const tip = d3.select("#tip");
 function moveTip(e){ const x = Math.min(e.clientX + 14, innerWidth - 300), y = e.clientY + 14; tip.style("left", x + "px").style("top", y + "px"); }
 function hideTip(){ tip.classed("on", false); }
 function showNodeTip(e, d){
-  const ps = d.programs.filter(id => active.has(id)).map(id => progById.get(id));
-  tip.html(`<div><span class="t">${esc(d.id)}</span><span class="more">click for more info ›</span></div>
-    <div class="m">${d.isDDF ? `${ps.length} programs shown` : `Endowment: ${fmt$(d.endowment_usd)} · ${d.programs.length} program${d.programs.length>1?"s":""} with DDF`}</div>
-    ${d.intl && !d.isDDF ? `<div class="m">Funds work outside the US</div>` : ""}`).classed("on", true);
+  const ps = d.programs.map(id => progById.get(id));
+  tip.html(`<div class="tiphd"><span class="t">${esc(d.id)}</span><span class="more">Click for more info</span></div>
+    <div class="m">${d.isDDF ? `${ps.length} co-funded programs` : `Endowment ${fmt$(d.endowment_usd)} · ${ps.length} program${ps.length>1?"s":""} with DDF`}</div>
+    ${d.isDDF ? "" : `<div class="tiplist">` + ps.map(p => `<div><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.short_name || p.name)}${p.scope !== "US" ? ` <span class="m">(${esc(p.countries.join(", "))})</span>` : ""}</div>`).join("") + `</div>`}`).classed("on", true);
   moveTip(e);
 }
 function showLinkTip(e, l){
@@ -649,17 +686,30 @@ function viewProgramList(){
     return `<h2>${ps.length} programs</h2><ul>` + ps.map(p => `<li class="listrow"><button class="linkish" data-program="${esc(p.id)}"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.name)}</button><span class="n">${p.year||""}</span></li>`).join("") + "</ul>";
   }, bind: bindCommon };
 }
+// lighter tint of an area color, readable as text on the dark panel
+const areaText = a => d3.color(areaColor.get(a)).brighter(0.9).formatHex();
+// one program block in a funder card: name · area · year · amount / what the amount means · other funders · source
+function programBlock(p, self){
+  const others = p.funders.filter(f => f !== self).length;
+  const where = p.scope === "US" ? "" : ` · <span class="where">${esc(p.countries.join(", "))}</span>`;
+  return `<div class="pcard">
+    <div><button class="linkish pname" data-program="${esc(p.id)}">${esc(p.short_name || p.name)}</button>
+      · <span style="color:${areaText(p.area)}">${esc(p.area)}</span> · ${p.year || "year ?"} · ${p.amount_usd != null ? fmt$(p.amount_usd) : "amount not found"}${active.has(p.id) ? "" : ` <span class="tag">filtered out</span>`}</div>
+    <div class="desc">${p.amount_note ? esc(p.amount_note) + " · " : ""}${others} other funder${others === 1 ? "" : "s"}${where}${p.sources && p.sources[0] ? ` · <a href="${esc(p.sources[0])}" target="_blank" rel="noopener">Source</a>` : ""}</div>
+  </div>`;
+}
 function viewFunder(name){
   const n = nodeMap.get(name);
   return { kind: "funder", title: name, sel: { type: "funder", id: name }, html(){
     const ps = n.programs.map(id => progById.get(id)).sort((a,b) => a.year - b.year);
     const web = n.website ? ` · <a href="${esc(n.website)}" target="_blank" rel="noopener">Website ↗</a>` : "";
+    const yr = n.endowment_note && (n.endowment_note.match(/FY ?\d{4}|\b20\d\d\b/) || [])[0];
     return `<h2>${esc(name)}</h2>
-      ${n.isDDF ? `<p class="meta">Assets ${fmt$(n.endowment_usd)}${n.endowment_note ? ` (${esc(n.endowment_note)})` : ""}${web}</p><p class="meta"><b>${ps.length}</b> co-funded programs in this dataset</p>` :
-      `<p class="meta">Endowment ${n.hasEndow ? `<b>${fmt$(n.endowment_usd)}</b>${n.endowment_note ? ` (${esc(n.endowment_note)})` : ""}` : "not found"}${web}</p>
-       <p class="meta"><b>${ps.length}</b> program${ps.length>1?"s":""} with DDF</p>`}
+      <p class="meta">${n.isDDF ? "Assets" : "Endowment"} ${n.hasEndow ? `<b>${fmt$(n.endowment_usd)}</b>${yr ? ` (${esc(yr)})` : ""}` : "not found"}${web}</p>
+      <p class="meta"><b>${ps.length}</b> ${n.isDDF ? "co-funded programs in this dataset" : `program${ps.length>1?"s":""} with DDF`}</p>
       ${n.type || n.hq_country ? `<p class="meta">${esc([n.type, n.hq_country && "HQ: " + n.hq_country].filter(Boolean).join(" · "))}</p>` : ""}
-      <h3>Programs</h3><ul>` + ps.map(p => `<li><button class="linkish" data-program="${esc(p.id)}"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.name)}</button> <span class="tag">${p.year||"?"}</span>${p.scope!=="US"?`<span class="tag">${esc(p.scope)}</span>`:""}${active.has(p.id)?"":`<span class="tag">filtered out</span>`}</li>`).join("") + "</ul>";
+      <div class="pcards">` + ps.map(p => programBlock(p, name)).join("") + `</div>
+      ${n.endowment_note || n.endowment_source ? `<p class="fine">Endowment figure: ${esc(n.endowment_note || "")}${n.endowment_source ? ` · <a href="${esc(n.endowment_source)}" target="_blank" rel="noopener">source ↗</a>` : ""}</p>` : ""}`;
   }, bind: bindCommon };
 }
 function viewProgram(id){
@@ -730,7 +780,7 @@ d3.select("#aboutBody").html(`
 <p>This network shows ${nodes.length - 1} funders that pooled or co-funded ${programs.length} grant programs with the Doris Duke Foundation (DDF). The data comes from the DDF website, partner foundations' announcements and press coverage, researched ${esc(DATA.meta.updated)}. Each program card lists its sources.</p>
 <ul>
 <li><b>Dots</b> are funders. <b>Color</b> is the DDF program area (official names from dorisduke.org). A funder that backs programs in more than one area is split across those colors.</li>
-<li><b>Size</b> is the funder's endowment or total assets (FY2023 or the latest filing). ${nEndow} funders have a figure. <b>Pale</b> dots had no figure found and get a fixed small size.</li>
+<li><b>Size</b> shows the funder's endowment or total assets (FY2023 or the latest filing) in four tiers: large ($10B or more), medium ($1B–10B), small ($100M–1B) and extra-small (under $100M). ${nEndow} funders have a figure. <b>Pale</b> dots had no figure found and get a fixed small size.</li>
 <li><b>Lines from DDF</b> are colored by program area. Their width is the combined announced size of the shared programs, not DDF's or the partner's own share, which is mostly undisclosed. <b>Faint gray lines</b> connect funders that back the same program: they show shared membership, not a direct relationship. <b>Dotted</b> lines mean no amount was found.</li>
 <li><b>Where funds go:</b> each program is tagged US only, International (outside the US only) or Both, with the countries that receive money. Countries come from program pages and grant announcements. Where a program funds work abroad but doesn't name countries, it shows "Countries not disclosed". A <b>dashed ring</b> marks funders in at least one program with money going abroad.</li>
 <li><b>Years</b> are when a program was announced or first reported. Amounts mean different things for different programs (pledge, fundraising goal, first round, cumulative total). Each program card says which.</li>
