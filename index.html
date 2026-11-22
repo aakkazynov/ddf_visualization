@@ -118,6 +118,9 @@ select{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;
 .pcard .desc{margin-top:3px}
 .pcard a{color:#80cbc4}
 .pcard .where{color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer;white-space:nowrap;font-size:13px}
+.ctl > label.toggle{text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)}
+.toggle input{accent-color:#80cbc4;margin:0}
 .lsearch{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:4px 0 6px}
 .biglist li{border-top:1px solid var(--line);padding:9px 0}
 .biglist .lname{font-weight:600;color:#fff;text-decoration:none}
@@ -194,6 +197,8 @@ footer{color:var(--ink-3);font-size:12px;margin-top:16px;text-align:center}
         <button data-v="International" aria-pressed="false" title="Programs that fund work only outside the US">International</button>
         <button data-v="Both" aria-pressed="false" title="Programs that fund work in the US and abroad">Both</button>
       </div></div>
+    <div class="ctl"><span class="lab">International layer</span>
+      <label class="toggle" title="Adds 3 co-funded programs that send money abroad (Ethiopia, Tanzania, Ghana). Off by default."><input type="checkbox" id="fIntl"> Show 3 programs abroad</label></div>
     <div class="ctl ms"><span class="lab">Countries</span>
       <button class="btn" id="msBtn" aria-haspopup="true" aria-expanded="false">All countries ▾</button>
       <div class="ms-pop" id="msPop" role="dialog" aria-label="Choose countries">
@@ -315,11 +320,12 @@ programs.forEach(p => {
 const links = [...linkMap.values()];
 
 // ---------- state ----------
-const state = { program: "", area: "", scope: "All", countries: new Set(), y0: YMIN, y1: YMAX, sel: null, playing: false };
+const state = { program: "", area: "", scope: "All", countries: new Set(), y0: YMIN, y1: YMAX, sel: null, playing: false, intl: false };
 let active = new Set();      // active program ids
 let visNodes = [], visLinks = [];
 
 function programMatches(p, ignoreCountry) {
+  if (p.extra && !state.intl) return false;   // optional international layer
   if (state.area && p.area !== state.area) return false;
   if (state.scope !== "All" && p.scope !== state.scope) return false;
   if (p.year && (p.year < state.y0 || p.year > state.y1)) return false;
@@ -329,7 +335,7 @@ function programMatches(p, ignoreCountry) {
 
 // ---------- controls ----------
 const fProgram = d3.select("#fProgram"), fArea = d3.select("#fArea");
-[...programs].sort((a,b) => a.name.localeCompare(b.name)).forEach(p => fProgram.append("option").attr("value", p.id).text(p.name));
+[...programs].sort((a,b) => a.name.localeCompare(b.name)).forEach(p => fProgram.append("option").attr("value", p.id).text(p.name + (p.extra ? " (international, optional)" : "")));
 DATA.areas.filter(a => programs.some(p => p.area === a.name)).forEach(a => fArea.append("option").attr("value", a.name).text(a.name));
 
 d3.select("#legend").html(DATA.areas.filter(a => programs.some(p => p.area === a.name))
@@ -338,6 +344,7 @@ d3.select("#legend").html(DATA.areas.filter(a => programs.some(p => p.area === a
 
 fProgram.on("change", function(){
   state.program = this.value;
+  if (state.program && progById.get(state.program).extra) setIntl(true);
   if (!state.program) { state.sel = null; closePanel(); }
   else { state.sel = { type: "program", id: state.program }; panelReset([viewProgramList(), viewProgram(state.program)]); }
   update();
@@ -345,6 +352,7 @@ fProgram.on("change", function(){
 fArea.on("change", function(){ state.area = this.value; update(); });
 d3.selectAll("#fScope button").on("click", function(){
   state.scope = this.dataset.v;
+  if (state.scope === "International" || state.scope === "Both") setIntl(true);
   d3.selectAll("#fScope button").attr("aria-pressed", function(){ return String(this.dataset.v === state.scope); });
   update();
 });
@@ -379,6 +387,7 @@ d3.select("#play").on("click", () => {
 d3.select("#reset").on("click", () => {
   stopPlay();
   Object.assign(state, { program: "", area: "", scope: "All", y0: YMIN, y1: YMAX, sel: null });
+  setIntl(false);
   state.countries.clear();
   fProgram.property("value", ""); fArea.property("value", "");
   y0.property("value", YMIN); y1.property("value", YMAX);
@@ -420,7 +429,18 @@ d3.select("#msDone").on("click", () => { d3.select("#msPop").classed("open", fal
 d3.select("#msPop").on("click", e => e.stopPropagation());
 document.addEventListener("click", () => { d3.select("#msPop").classed("open", false); d3.select("#msBtn").attr("aria-expanded", false); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") d3.select("#msPop").classed("open", false); });
-function toggleCountry(c){ state.countries.has(c) ? state.countries.delete(c) : state.countries.add(c); renderMS(); update(); }
+// optional international layer: turned on by the checkbox, or automatically when a
+// filter asks for programs abroad (International/Both, a non-US country, an international program)
+function setIntl(on){ state.intl = on; d3.select("#fIntl").property("checked", on); }
+d3.select("#fIntl").on("change", function(){
+  setIntl(this.checked);
+  if (!this.checked) {
+    if (state.scope === "International" || state.scope === "Both") { state.scope = "All"; d3.selectAll("#fScope button").attr("aria-pressed", function(){ return String(this.dataset.v === "All"); }); }
+    if (state.program && progById.get(state.program).extra) { state.program = ""; fProgram.property("value", ""); state.sel = null; closePanel(); }
+  }
+  update();
+});
+function toggleCountry(c){ if (!state.countries.has(c) && programs.some(p => p.extra && p.countries.includes(c))) setIntl(true); state.countries.has(c) ? state.countries.delete(c) : state.countries.add(c); renderMS(); update(); }
 
 // ---------- graph ----------
 const svg = d3.select("#graph");
@@ -826,6 +846,7 @@ d3.select("#aboutBody").html(`
 <li><b>Years</b> are when a program was announced or first reported. Amounts mean different things for different programs (pledge, fundraising goal, first round, cumulative total). Each program card says which.</li>
 <li>The layout groups funders by program around DDF. Dots can be dragged.</li>
 </ul>
+<p><b>International layer (optional, off by default):</b> all 13 core programs fund work in the United States. Turning on "Show 3 programs abroad" adds three co-funded programs from DDF's former African Health Initiative: the Ethiopia Data Use Partnership (with the Gates Foundation), and the Tanzania Connect Project and Ghana GEHIP (with Comic Relief). Choosing International, Both, a country outside the US or one of these programs turns the layer on automatically.</p>
 <p>Caveats: this list may be incomplete, because DDF's full grants database was not searched line by line. Rows marked medium or low confidence are flagged on each program card. ${esc(DATA.meta.caveat || "")}</p>`);
 d3.select("#dataTable").html(`<thead><tr><th>Program</th><th>Area</th><th>Year</th><th>Amount</th><th>Scope</th><th>Countries</th><th>Funders</th><th>Confidence</th></tr></thead><tbody>` +
   [...programs].sort((a,b) => a.year - b.year).map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.area)}</td><td>${p.year||""}</td><td>${fmt$(p.amount_usd)}</td><td>${esc(p.scope)}</td><td>${esc(p.countries.join(", "))}</td><td>${p.funders.length}</td><td>${esc(p.confidence)}</td></tr>`).join("") + "</tbody>");

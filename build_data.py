@@ -73,6 +73,20 @@ def load():
         "endowment_note": o["E"][n][1] if n in o["E"] else "",
         "website": o["WEB"].get(n), "website_checked": n in o["WEB"],
     } for n in names]
+    # Optional layer: the 3 co-funded programs that send money abroad (off by default on the page)
+    intl = json.loads((RES / "international.json").read_text(encoding="utf-8"))["programs"]
+    research_funders = {f["name"]: f for f in json.loads((RES / "funders.json").read_text(encoding="utf-8"))["funders"]}
+    have = {f["name"] for f in funders}
+    for p in intl:
+        p["extra"] = True
+        programs.append(p)
+        for n in p["funders"]:
+            if n not in have:
+                f = dict(research_funders[n])
+                f["name"] = f.get("short") or n          # short display names, like the other 80
+                funders.append(f)
+                have.add(n)
+        p["funders"] = [research_funders[n].get("short") or n if n != DDF else DDF for n in p["funders"]]
     return {"programs": programs, "excluded": [], "leads": [],
             "caveat": "Program list, funders, endowments and websites follow the reference DDF Funders Network (ddf-constellation.vercel.app)."}, funders
 
@@ -151,10 +165,10 @@ def main():
         pass
     sheet("Programs",
           ["Program", "Short name", "DDF program area", "Type", "Year", "Year end", "Amount (USD)", "Amount meaning",
-           "Scope", "Countries", "# funders", "Funders", "Manager", "Description", "Confidence", "Sources"],
+           "Scope", "Countries", "# funders", "Funders", "Manager", "Description", "Confidence", "Sources", "Optional international layer"],
           [[p["name"], p.get("short_name", ""), p["area"], p["type"], p.get("year"), p.get("year_end"), p.get("amount_usd"),
             p.get("amount_note", ""), p["scope"], "; ".join(p["countries"]), len(p["funders"]), "; ".join(p["funders"]),
-            p.get("manager") or "", p.get("description", ""), p.get("confidence", ""), " ".join(p.get("sources", []))]
+            p.get("manager") or "", p.get("description", ""), p.get("confidence") or "", " ".join(p.get("sources", [])), "yes" if p.get("extra") else ""]
            for p in sorted(programs, key=lambda p: (p["area"], p.get("year") or 0))], first=True)
     sheet("Funders",
           ["Funder", "Type", "HQ country", "Endowment / assets (USD)", "Endowment note", "Endowment source", "Website",
