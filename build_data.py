@@ -48,7 +48,36 @@ ALIASES = {"Andrew W. Mellon Foundation": "Mellon Foundation",
            "Doris Duke Charitable Foundation": DDF}
 
 
+def slug(s):
+    return "".join(c if c.isalnum() else "-" for c in s.lower()).strip("-").replace("--", "-")
+
+
 def load():
+    """The 13 programs / 80 funders of the reference visualization (research/original.json).
+    None of these programs funds work outside the US. The earlier research files
+    (programs.json, international.json, funders.json) are kept for reference only."""
+    o = json.loads((RES / "original.json").read_text(encoding="utf-8"))
+    full = lambda f: DDF if f == "DDF" else f
+    programs = [{
+        "id": slug(p["n"]), "name": p["n"], "short_name": p["n"], "type": None,
+        "area": p["pr"], "year": p["y"], "year_end": None,
+        "amount_usd": p["amt"] * 1e6 if p["amt"] is not None else None,
+        "amount_note": p["basis"], "funders": [full(f) for f in p["f"]], "manager": None,
+        "scope": "US", "countries": ["United States"], "description": "",
+        "sources": [p["src"]] if p["src"] else [], "confidence": None,
+    } for p in o["P"]]
+    names = list(dict.fromkeys(f for p in o["P"] for f in p["f"]))
+    funders = [{
+        "name": full(n), "short": "Doris Duke" if n == "DDF" else n,
+        "endowment_usd": o["E"][n][0] * 1e9 if n in o["E"] else None,
+        "endowment_note": o["E"][n][1] if n in o["E"] else "",
+        "website": o["WEB"].get(n), "website_checked": n in o["WEB"],
+    } for n in names]
+    return {"programs": programs, "excluded": [], "leads": [],
+            "caveat": "Program list, funders, endowments and websites follow the reference DDF Funders Network (ddf-constellation.vercel.app)."}, funders
+
+
+def load_research():
     progs = json.loads((RES / "programs.json").read_text(encoding="utf-8"))
     intl = RES / "international.json"
     if intl.exists():

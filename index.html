@@ -118,6 +118,12 @@ select{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;
 .pcard .desc{margin-top:3px}
 .pcard a{color:#80cbc4}
 .pcard .where{color:var(--ink)}
+.lsearch{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:4px 0 6px}
+.biglist li{border-top:1px solid var(--line);padding:9px 0}
+.biglist .lname{font-weight:600;color:#fff;text-decoration:none}
+.biglist .lname:hover{text-decoration:underline}
+.biglist .dot.sm{width:7px;height:7px;margin:0 0 1px 5px}
+.lsub{color:var(--ink-2);font-size:12.5px;margin-top:2px}
 .fine{font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:8px}
 .fine a{color:var(--ink-3)}
 
@@ -256,7 +262,8 @@ const DATA = window.DDF_DATA;
 const DDF = "Doris Duke Foundation";
 const isTouch = matchMedia("(pointer:coarse)").matches || innerWidth < 700;
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmt$ = v => v == null ? "not found" : v >= 1e9 ? `$${(v/1e9).toFixed(v>=1e10?0:1)}B` : v >= 1e6 ? `$${(v/1e6).toFixed(v>=1e7?0:1)}M` : `$${(v/1e3).toFixed(0)}K`;
+const trim1 = x => String(+x.toFixed(1));   // one decimal at most, no trailing ".0"
+const fmt$ = v => v == null ? "not found" : v >= 1e9 ? `$${v >= 1e10 ? Math.round(v/1e9) : trim1(v/1e9)}B` : v >= 1e6 ? `$${trim1(v/1e6)}M` : `$${Math.round(v/1e3)}K`;
 
 // ---------- lookups ----------
 const areaColor = new Map(DATA.areas.map(a => [a.name, a.color]));
@@ -575,7 +582,7 @@ function update(){
   render();
   syncYears();
   d3.select("#cntFunders").text(`${visNodes.filter(n => !n.isDDF).length} funders`);
-  d3.select("#cntPrograms").text(`${active.size} programs`);
+  d3.select("#cntPrograms").text(`${active.size} grant programs`);
   d3.select("#empty").classed("on", active.size === 0);
   renderMS();
   drawMap();
@@ -677,17 +684,47 @@ function bindCommon(p){
   p.selectAll("[data-program]").on("click", function(){ openProgram(this.dataset.program); });
   p.selectAll("[data-country]").on("click", function(){ toggleCountry(this.dataset.country); });
 }
+// searchable lists: the query is kept per list so it survives re-renders (filters, Back)
+const listQuery = { funderList: "", programList: "" };
+function bindList(kind){
+  return p => {
+    bindCommon(p);
+    const input = p.select(".lsearch"), items = p.selectAll(".litem");
+    const apply = () => {
+      const q = listQuery[kind].trim().toLowerCase();
+      let shown = 0;
+      items.each(function(){ const hit = !q || this.dataset.q.includes(q); this.hidden = !hit; if (hit) shown++; });
+      p.select(".nomatch").attr("hidden", shown ? true : null);
+    };
+    input.on("input", function(){ listQuery[kind] = this.value; apply(); });
+    apply();
+    // focus the search box on open, but never steal focus from a filter control being used
+    const ae = document.activeElement;
+    if (!isTouch && (!ae || ae === document.body || ae.closest(".corner"))) input.node().focus();
+  };
+}
 function viewFunderList(){
   return { kind: "funderList", title: "funders list", sel: null, html(){
-    const fs = visNodes.filter(n => !n.isDDF).sort((a,b) => (b.programs.length - a.programs.length) || a.id.localeCompare(b.id));
-    return `<h2>${fs.length} funders</h2><ul>` + fs.map(n => `<li class="listrow"><button class="linkish" data-funder="${esc(n.id)}">${esc(n.id)}</button><span class="n">${n.programs.length} program${n.programs.length>1?"s":""}</span></li>`).join("") + "</ul>";
-  }, bind: bindCommon };
+    const fs = visNodes.filter(n => !n.isDDF).sort((a,b) => (b.programs.length - a.programs.length) || a.id.localeCompare(b.id, undefined, { sensitivity: "base" }));
+    return `<h2>${fs.length} funders</h2>
+      <input class="lsearch" type="search" placeholder="Search organizations" aria-label="Search funders" value="${esc(listQuery.funderList)}">
+      <ul class="biglist">` + fs.map(n => {
+        const ps = n.programs.map(id => progById.get(id));
+        return `<li class="litem" data-q="${esc((n.id + " " + ps.map(p => p.name).join(" ")).toLowerCase())}">
+          <button class="linkish lname" data-funder="${esc(n.id)}">${esc(n.id)}</button>${n.areas.map(a => `<span class="dot sm" style="background:${areaColor.get(a)}" title="${esc(a)}"></span>`).join("")}
+          <div class="lsub">${n.hasEndow ? `Endowment ${fmt$(n.endowment_usd)} · ` : ""}${ps.length} program${ps.length>1?"s":""}</div></li>`;
+      }).join("") + `</ul><p class="desc nomatch" hidden>No funders match.</p>`;
+  }, bind: bindList("funderList") };
 }
 function viewProgramList(){
   return { kind: "programList", title: "programs list", sel: null, html(){
     const ps = programs.filter(p => active.has(p.id)).sort((a,b) => a.name.localeCompare(b.name));
-    return `<h2>${ps.length} programs</h2><ul>` + ps.map(p => `<li class="listrow"><button class="linkish" data-program="${esc(p.id)}"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.name)}</button><span class="n">${p.year||""}</span></li>`).join("") + "</ul>";
-  }, bind: bindCommon };
+    return `<h2>${ps.length} grant programs</h2>
+      <input class="lsearch" type="search" placeholder="Search programs or funders" aria-label="Search programs" value="${esc(listQuery.programList)}">
+      <ul class="biglist">` + ps.map(p => `<li class="litem" data-q="${esc((p.name + " " + p.area + " " + p.funders.join(" ")).toLowerCase())}">
+          <button class="linkish lname" data-program="${esc(p.id)}">${esc(p.name)}</button><span class="dot sm" style="background:${areaColor.get(p.area)}"></span>
+          <div class="lsub">${esc(p.area)} · ${p.year || ""} · ${p.amount_usd != null ? fmt$(p.amount_usd) : "amount not found"} · ${p.funders.length} funders</div></li>`).join("") + `</ul><p class="desc nomatch" hidden>No programs match.</p>`;
+  }, bind: bindList("programList") };
 }
 // lighter tint of an area color, readable as text on the dark panel
 const areaText = a => d3.color(areaColor.get(a)).brighter(0.9).formatHex();
@@ -706,7 +743,7 @@ function viewFunder(name){
   return { kind: "funder", title: name, sel: { type: "funder", id: name }, html(){
     const ps = n.programs.map(id => progById.get(id)).sort((a,b) => a.year - b.year);
     const web = n.website ? ` · <a href="${esc(n.website)}" target="_blank" rel="noopener">Website ↗</a>` : "";
-    const yr = n.endowment_note && (n.endowment_note.match(/FY ?\d{4}|\b20\d\d\b/) || [])[0];
+    const yr = n.endowment_note && (n.endowment_note.match(/FY ?\d{2,4}|\b20\d\d\b/) || [])[0];
     return `<h2>${esc(name)}</h2>
       <p class="meta">${n.isDDF ? "Assets" : "Endowment"} ${n.hasEndow ? `<b>${fmt$(n.endowment_usd)}</b>${yr ? ` (${esc(yr)})` : ""}` : "not found"}${web}</p>
       <p class="meta"><b>${ps.length}</b> ${n.isDDF ? "co-funded programs in this dataset" : `program${ps.length>1?"s":""} with DDF`}</p>
@@ -720,10 +757,10 @@ function viewProgram(id){
   return { kind: "program", title: p.short_name || p.name, sel: { type: "program", id }, html(){
     const fs = [...p.funders].sort((a,b) => (a===DDF?-1:b===DDF?1:a.localeCompare(b)));
     return `<h2>${esc(p.name)}</h2>
-      <p class="meta"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.area)} · ${p.year || "year unknown"}${p.year_end ? `–${p.year_end}` : ""} · ${p.type === "pooled" ? "Pooled fund" : "Co-funded"}</p>
+      <p class="meta"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.area)} · ${p.year || "year unknown"}${p.year_end ? `–${p.year_end}` : ""}${p.type ? ` · ${p.type === "pooled" ? "Pooled fund" : "Co-funded"}` : ""}</p>
       <p class="meta">Amount <b>${p.amount_usd != null ? fmt$(p.amount_usd) : "not found"}</b>${p.amount_note ? ` — ${esc(p.amount_note)}` : ""}</p>
       ${p.manager ? `<p class="meta">Managed by ${esc(p.manager)}</p>` : ""}
-      <p class="meta">Confidence: ${esc(p.confidence)}</p>
+      ${p.confidence ? `<p class="meta">Confidence: ${esc(p.confidence)}</p>` : ""}
       <p class="desc">${esc(p.description)}</p>
       <h3>Where funds go · ${esc(p.scope === "US" ? "US only" : p.scope === "Both" ? "US and international" : "International")}</h3>
       <div>${p.countries.map(c => c === "Not disclosed" ? `<span class="chip static">Countries not disclosed</span>` : `<span class="chip" data-country="${esc(c)}" title="Filter by ${esc(c)}">${esc(c)}${state.countries.has(c) ? " ✓" : ""}</span>`).join("")}</div>

@@ -12,8 +12,9 @@ Built with Claude Code from a single prompt ([ddf-network-prompt.md](ddf-network
 | `how-claude-built-this.html` | The prompt and a summary of how the page was built |
 | `data.js` / `data.json` | The dataset (the page loads `data.js`, so it also works when opened directly from disk) |
 | `DDF_Pooled_Fund_Programs.xlsx` | Workbook with tabs for Programs, Funders, Program–Funder links, Countries, Excluded items and Leads |
-| `research/*.json` | Raw research output (programs, international programs, funder endowments) |
-| `build_data.py` | Rebuilds `data.json`, `data.js` and the workbook from `research/` (needs `openpyxl`) |
+| `research/original.json` | The dataset used: 13 grant programs and 80 funders, matching the reference DDF Funders Network |
+| `research/programs.json`, `international.json`, `funders.json` | Earlier research passes, including 3 international programs, kept for reference |
+| `build_data.py` | Rebuilds `data.json`, `data.js` and the workbook from `research/original.json` (needs `openpyxl`) |
 
 ## View it
 

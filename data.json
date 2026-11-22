@@ -1,7 +1,7 @@
 {
  "meta": {
   "updated": "November 2026",
-  "caveat": ""
+  "caveat": "Program list, funders, endowments and websites follow the reference DDF Funders Network (ddf-constellation.vercel.app)."
  },
  "areas": [
   {
@@ -34,1418 +34,1062 @@
    "id": "humanity-ai",
    "name": "Humanity AI",
    "short_name": "Humanity AI",
-   "type": "pooled",
-   "area": "Cross-program",
+   "type": null,
+   "area": "Arts",
    "year": 2025,
    "year_end": null,
-   "amount_usd": 500000000,
-   "amount_note": "Five-year collective commitment announced Oct 14, 2025. It combines aligned grantmaking by each funder with a pooled fund. The first pooled grants (May 12, 2026) were more than $18M: $8M to inaugural grantees, $3M for AI Civics and a planned $10M open call.",
+   "amount_usd": 500000000.0,
+   "amount_note": "$500M coalition commitment over five years",
    "funders": [
     "Doris Duke Foundation",
-    "Ford Foundation",
-    "Lumina Foundation",
-    "Kapor Foundation",
-    "John D. and Catherine T. MacArthur Foundation",
-    "Mellon Foundation",
-    "Mozilla Foundation",
-    "Omidyar Network",
-    "David and Lucile Packard Foundation",
-    "Siegel Family Endowment"
+    "Ford",
+    "Lumina",
+    "Kapor",
+    "MacArthur",
+    "Mellon",
+    "Mozilla",
+    "Omidyar",
+    "Packard",
+    "Siegel Endowment"
    ],
-   "manager": "Rockefeller Philanthropy Advisors (fiscal sponsor; manages pooled fund)",
+   "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "A ten-foundation coalition funding a people-centered future for AI, covering democracy, education, culture and the arts, work and the economy, and security. Partners began aligned grantmaking in fall 2025, and the pooled fund began making grants in 2026.",
+   "description": "",
    "sources": [
-    "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai",
-    "https://www.mellon.org/news/humanity-ai-commits-500m-build-people-centered-future-ai",
-    "https://www.mellon.org/news/humanity-ai-announces-more-than-18-million-in-new-grants",
-    "https://partnershiponai.org/humanity-ai-500k-grant-partnership-on-ai/"
+    "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai"
    ],
-   "confidence": "high"
+   "confidence": null
   },
   {
    "id": "artists-make-technology",
-   "name": "Artists Make Technology (AMT)",
+   "name": "Artists Make Technology",
    "short_name": "Artists Make Technology",
-   "type": "co-funded",
+   "type": null,
    "area": "Arts",
    "year": 2026,
    "year_end": null,
-   "amount_usd": 6500000,
-   "amount_note": "$6.5M committed by four funders as of Jan 7, 2026, toward an $11M three-year goal: AMT Lab $6M, AMT Pathways $4M and AMT Assemblies $1M.",
+   "amount_usd": 11000000.0,
+   "amount_note": "$11M three-year initiative; $6.5M committed at launch",
    "funders": [
     "Doris Duke Foundation",
-    "Mozilla Foundation",
-    "William and Flora Hewlett Foundation",
-    "Ford Foundation"
+    "Mozilla",
+    "Hewlett",
+    "Ford",
+    "MacArthur",
+    "Omidyar"
    ],
    "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "An arts-and-technology initiative anchored by DDF and Mozilla. Its AMT Lab, the second iteration of DDF's Performing Arts Technologies Lab, funds performing artists working with technology. The first cohort of 20 projects (from 392 applications) was announced Oct 28, 2026 at MozFest in Barcelona. The first cohort of 20 grantees (announced Oct 28, 2026) was described as spanning the U.S.",
+   "description": "",
    "sources": [
-    "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation",
-    "https://www.dorisduke.org/grants/projects/artists-make-technology",
-    "https://www.mozillafoundation.org/en/what-we-do/artists-make-technology/",
-    "https://grantedai.com/blog/artists-make-technology-mozilla-doris-duke-11-million-first-20-grantees-october-28-2026-392-applications-5-percent-150000-ceiling-20-grants-remain-performing-arts-technology-next-round-strategy"
+    "https://www.dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation"
    ],
-   "confidence": "high"
+   "confidence": null
   },
   {
-   "id": "ddf-ford-perf-arts-tech-2026",
-   "name": "Doris Duke Foundation and Ford Foundation grants supporting technology infrastructure in the performing arts",
-   "short_name": "DDF–Ford Performing Arts Tech Grants",
-   "type": "co-funded",
+   "id": "ddf-and-ford-technology-grants",
+   "name": "DDF and Ford technology grants",
+   "short_name": "DDF and Ford technology grants",
+   "type": null,
    "area": "Arts",
    "year": 2026,
    "year_end": null,
-   "amount_usd": 4000000,
-   "amount_note": "\"More than $4 million\" over five years (a minimum figure), announced July 6, 2026. The page does not give each funder's share.",
+   "amount_usd": 4000000.0,
+   "amount_note": "More than $4M over five years",
    "funders": [
     "Doris Duke Foundation",
-    "Ford Foundation"
+    "Ford"
    ],
    "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "Grants made in partnership with Ford for performing-arts technology infrastructure, several focused on disability arts and access. Grantees include Kinetic Light (multisensory access technology), Open Circle Theatre (VitaNova), Junebug Productions, New York Live Arts' Healing Project, Producer Hub, and SOZO Impact & Relaxed Animals (EARTH.SPEAKS with the Osage Nation).",
+   "description": "",
    "sources": [
-    "https://www.dorisduke.org/news/doris-duke-foundation-announces-new-grants-supporting-technology-infrastructure-in-the-performing-arts",
     "https://www.americantheatre.org/2026/07/06/duke-partners-with-ford-to-fund-performing-arts-tech-innovation/"
    ],
-   "confidence": "medium"
+   "confidence": null
+  },
+  {
+   "id": "mosaic-network-and-fund",
+   "name": "Mosaic Network and Fund",
+   "short_name": "Mosaic Network and Fund",
+   "type": null,
+   "area": "Arts",
+   "year": 2020,
+   "year_end": null,
+   "amount_usd": 4500000.0,
+   "amount_note": "First-round grants (2020); funder list is the fund's full roster",
+   "funders": [
+    "Doris Duke Foundation",
+    "Mellon",
+    "Ford",
+    "Bloomberg",
+    "Surdna",
+    "Howard Gilman",
+    "Booth Ferris",
+    "Lambent",
+    "Altman",
+    "Laurie M. Tisch Fund",
+    "Miranda Family Fund",
+    "NY Community Trust",
+    "Lily Auchincloss",
+    "Matisse Foundation",
+    "Nathan Cummings",
+    "Deutsche Bank Americas",
+    "Mertz Gilmore",
+    "Stavros Niarchos",
+    "Rockefeller Brothers",
+    "Cullman Foundation",
+    "Grantmakers in the Arts",
+    "David Rockefeller Fund",
+    "Harman Family",
+    "MacKenzie Scott",
+    "Jerome",
+    "Dreyfus Foundation"
+   ],
+   "manager": null,
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "",
+   "sources": [
+    "https://thenytrust.org/collaborative-fund/mosaic-network-and-fund"
+   ],
+   "confidence": null
   },
   {
    "id": "artist-relief",
    "name": "Artist Relief",
    "short_name": "Artist Relief",
-   "type": "pooled",
+   "type": null,
    "area": "Arts",
    "year": 2020,
-   "year_end": 2021,
-   "amount_usd": 25000000,
-   "amount_note": "Cumulative raised. The fund launched Apr 8, 2020 as a $10M campaign: a $5M Mellon seed gift matched by about $5M from 20+ funders. DDF's own grant was $500,000 (Apr 13, 2020).",
+   "year_end": null,
+   "amount_usd": 10000000.0,
+   "amount_note": "Initial $10M: $5M Mellon seed plus $5M from 23 foundations",
    "funders": [
     "Doris Duke Foundation",
-    "Mellon Foundation",
-    "Robert Rauschenberg Foundation",
-    "The Andy Warhol Foundation for the Visual Arts",
-    "Ford Foundation",
-    "John S. and James L. Knight Foundation",
-    "Open Society Foundations",
-    "The Wallace Foundation",
-    "Joan Mitchell Foundation",
-    "Jerome Foundation",
-    "Helen Frankenthaler Foundation",
-    "Emily Hall Tremaine Foundation",
-    "Adolph and Esther Gottlieb Foundation",
-    "Amazon Literary Partnership",
+    "Ford",
+    "Mellon",
+    "Warhol Foundation",
+    "Mike Kelley Foundation",
+    "de Kooning Foundation",
+    "7G",
+    "Gottlieb Foundation",
+    "Amazon Literary",
+    "Arison Arts",
+    "Emily Hall Tremaine",
+    "Frankenthaler",
+    "Jerome",
+    "Joan Mitchell",
+    "Kraus Family",
+    "Knight",
+    "Neiman Foundation",
+    "Metabolic Studio",
+    "Pritzker Pucker",
+    "Salomon Family",
+    "Rauschenberg Foundation",
+    "Hostetler-Wrigley",
     "Teiger Foundation",
-    "The Willem de Kooning Foundation"
-   ],
-   "manager": "Coalition of Academy of American Poets, Artadia, Creative Capital, Foundation for Contemporary Arts, MAP Fund, National YoungArts Foundation, United States Artists",
-   "scope": "US",
-   "countries": [
-    "United States"
-   ],
-   "description": "An emergency COVID-19 fund that gave $5,000 unrestricted grants to 4,682 artists and writers across 13 funding cycles. The funder list here is partial; the fund names 24 initial matching funders plus 2021 matchers.",
-   "sources": [
-    "https://www.artistrelief.org/about",
-    "https://poets.org/coalition-arts-funders-launches-emergency-artist-relief-fund",
-    "https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/united-states-artists"
-   ],
-   "confidence": "high"
-  },
-  {
-   "id": "nyc-covid-response-impact-fund",
-   "name": "NYC COVID-19 Response & Impact Fund",
-   "short_name": "NYC COVID-19 Fund",
-   "type": "pooled",
-   "area": "Cross-program",
-   "year": 2020,
-   "year_end": 2020,
-   "amount_usd": 75000000,
-   "amount_note": "Initial commitment from 18 founding funders at launch (Mar 20, 2020). By mid-2020 the fund had issued more than $110M in grants and interest-free loans. DDF's share is not disclosed.",
-   "funders": [
-    "Doris Duke Foundation",
-    "Bloomberg Philanthropies",
-    "Carnegie Corporation of New York",
-    "Ford Foundation",
-    "Joan Ganz Cooney & Holly Peterson Fund",
-    "Kenneth C. Griffin Charitable Fund",
-    "JPB Foundation",
-    "Estée Lauder Companies Charitable Foundation",
-    "Mellon Foundation",
-    "New York Community Trust",
-    "Jennifer and Jonathan Allan Soros",
-    "Jon Stryker and Slobodan Randjelović",
-    "Charles H. Revson Foundation",
-    "Robin Hood",
-    "Rockefeller Brothers Fund",
-    "Laurie M. Tisch Illumination Fund",
-    "UJA-Federation of New York",
-    "Wells Fargo Foundation"
-   ],
-   "manager": "New York Community Trust (grants); Nonprofit Finance Fund (loans)",
-   "scope": "US",
-   "countries": [
-    "United States"
-   ],
-   "description": "A pooled emergency fund giving grants and interest-free loans to New York City social-services and arts and culture nonprofits hit by COVID-19. More than 768 nonprofits were supported.",
-   "sources": [
-    "https://www.fordfoundation.org/the-latest/news/nyc-covid-19-response-impact-fund-launched-to-support-new-york-city-nonprofit-organizations/",
-    "https://www.mellon.org/news/nyc-covid-19-response-and-impact-fund-issued-usd110m-in-emergency-funds",
-    "https://nff.org/COVID-19-Response-Funders"
-   ],
-   "confidence": "high"
-  },
-  {
-   "id": "covid-arts-aid-phl",
-   "name": "COVID-19 Arts Aid PHL Fund",
-   "short_name": "Arts Aid PHL",
-   "type": "pooled",
-   "area": "Arts",
-   "year": 2020,
-   "year_end": 2020,
-   "amount_usd": 4000000,
-   "amount_note": "Amount awarded by June 2020 to 467 organizations and 1,025 artists. William Penn Foundation gave a $2.5M lead grant. DDF's share is not disclosed.",
-   "funders": [
-    "Doris Duke Foundation",
-    "William Penn Foundation",
-    "Barra Foundation",
-    "Wyncote Foundation",
-    "Connelly Foundation",
-    "Independence Foundation",
-    "John S. and James L. Knight Foundation",
-    "Lenfest Foundation",
-    "Victory Foundation",
-    "PECO",
-    "PNC",
-    "TD Bank"
+    "Wallace Foundation"
    ],
    "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "A regional emergency relief fund for Greater Philadelphia arts and culture organizations and individual artists during COVID-19. DDF was named a partner at launch.",
+   "description": "",
    "sources": [
-    "https://philaculture.org/artsaidphl",
-    "https://philaculture.org/about-us/press-room/news/the-covid-19-arts-aid-phl-fund-announces-4-million-in-grants-to-467-arts-culture-organizations-and-1025-artists/",
-    "https://www.inquirer.com/arts/philadelphia-arts-new-fund-coronavirus-covid-19-arts-aid-phl-william-penn-foundation-20200408.html",
-    "https://williampennfoundation.org/node/525"
+    "https://www.joanmitchellfoundation.org/uploads/pdf/Artist-Relief_Press-Release-20200408.pdf"
    ],
-   "confidence": "medium"
+   "confidence": null
   },
   {
-   "id": "dance-nyc-coronavirus-relief",
-   "name": "Coronavirus Dance Relief Fund",
-   "short_name": "Dance/NYC Relief Fund",
-   "type": "pooled",
+   "id": "map-fund-regranting-ddf--mellon-since-2008",
+   "name": "MAP Fund regranting (DDF + Mellon, since 2008)",
+   "short_name": "MAP Fund regranting (DDF + Mellon, since 2008)",
+   "type": null,
    "area": "Arts",
-   "year": 2020,
-   "year_end": 2020,
-   "amount_usd": 1000500,
-   "amount_note": "Total awarded March–September 2020. DDF's share is not disclosed.",
-   "funders": [
-    "Doris Duke Foundation",
-    "New York Community Trust",
-    "Howard Gilman Foundation",
-    "Mertz Gilmore Foundation",
-    "Arnhold Foundation",
-    "Ford Foundation",
-    "Stavros Niarchos Foundation",
-    "Harkness Foundation for Dance"
-   ],
-   "manager": "Dance/NYC",
-   "scope": "US",
-   "countries": [
-    "United States"
-   ],
-   "description": "Dance/NYC's COVID-19 relief fund for New York City freelance dance workers and dance-making organizations. Funder lists vary by round, so this list is partial.",
-   "sources": [
-    "https://dance.nyc/COVID-19/Relief-Fund/2020",
-    "https://www.dance.nyc/covid-19/Relief-Fund/Organizations/call-for-proposals-2020-round-two"
-   ],
-   "confidence": "medium"
-  },
-  {
-   "id": "covid-frcs",
-   "name": "COVID-19 Fund to Retain Clinical Scientists",
-   "short_name": "COVID-19 FRCS",
-   "type": "co-funded",
-   "area": "Medical Research",
-   "year": 2021,
+   "year": 2008,
    "year_end": null,
-   "amount_usd": 12100000,
-   "amount_note": "Total awarded in Nov 2021 to 22 U.S. medical schools (about $500K–$550K each over 2 years). The June 2021 call offered up to $10M. Individual funders paid for specific schools' grants; for example, AHA funded Duke's.",
+   "amount_usd": 28600000.0,
+   "amount_note": "Cumulative DDF and Mellon regranting since 2008",
    "funders": [
     "Doris Duke Foundation",
-    "American Heart Association",
-    "Burroughs Wellcome Fund",
-    "John Templeton Foundation",
-    "Rita Allen Foundation",
-    "Walder Foundation"
+    "Mellon"
    ],
-   "manager": "Doris Duke Charitable Foundation (central RFP)",
+   "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "Institutional grants to U.S. medical schools to support early-career physician-scientists whose family caregiving duties grew during COVID-19. It builds on DDCF's earlier single-funder Fund to Retain Clinical Scientists.",
+   "description": "",
    "sources": [
-    "https://www.bwfund.org/news/announcing-new-institutional-grant-opportunity-covid-19-fund-to-retain-clinical-scientists/",
-    "https://dorisduke.org/funding-areas/medical-research/fund-to-retain-clinical-scientists",
-    "https://ctsi.duke.edu/news/duke-receives-funding-through-largest-us-collaborative-effort-equity-biomedicine",
-    "https://news.unchealthcare.org/2021/11/caregivers-at-carolina-program-awarded-clinical-scientist-retention-grant"
+    "https://mapfund.org/about/history"
    ],
-   "confidence": "high"
+   "confidence": null
   },
   {
-   "id": "pathways-health-research",
-   "name": "Collective to Strengthen Pathways for Health Research",
-   "short_name": "Pathways for Health Research Collective",
-   "type": "co-funded",
-   "area": "Medical Research",
-   "year": 2024,
+   "id": "national-dance-project-reported-2025",
+   "name": "National Dance Project (reported 2025)",
+   "short_name": "National Dance Project (reported 2025)",
+   "type": null,
+   "area": "Arts",
+   "year": 2025,
    "year_end": null,
    "amount_usd": null,
-   "amount_note": "No amount disclosed. The collective held 18 symposia in 2025. In 2026 it opened a one-time collaborative funding call, \"Demonstrating Health Solutions Science in Action\" (pre-proposals due Nov 18, 2026), with intake centralized at DDF.",
+   "amount_note": "Amount not found",
    "funders": [
     "Doris Duke Foundation",
-    "American Cancer Society",
-    "American Heart Association",
-    "Burroughs Wellcome Fund",
-    "Dana Foundation",
-    "Donaghue Foundation",
-    "Prebys Foundation",
-    "Robertson Foundation",
-    "Susan G. Komen"
+    "Mellon"
    ],
-   "manager": "Doris Duke Foundation (lead)",
+   "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "A DDF-led funder collective to raise attention and resources for \"health solutions science\": research on disease prevention, care delivery and clinical encounters, as opposed to basic biomedical science. Dana described it as newly launched in Sept 2024.",
-   "sources": [
-    "https://www.dorisduke.org/StrengtheningPathways",
-    "https://dana.org/article/philanthropic-collective-aims-to-improve-disease-prevention-and-care/",
-    "https://dana.org/article/improving-health-requires-more-than-medicine/",
-    "https://donaghue.org/grant-opportunities/preventing-and-improving-clinical-encounters-sparking-national-discussion-to-strengthen-health-research/",
-    "https://atomgrants.com/grant/doris-duke-demonstrating-health-solutions-science"
-   ],
-   "confidence": "high"
-  },
-  {
-   "id": "opt-in-for-families",
-   "name": "Opportunities for Prevention and Transformation Initiative (OPT-In for Families)",
-   "short_name": "OPT-In for Families",
-   "type": "co-funded",
-   "area": "Child Well-being",
-   "year": 2024,
-   "year_end": null,
-   "amount_usd": 33000000,
-   "amount_note": "Three-year initiative total: about $9M per site from a coalition of funders. Individual funder shares are not disclosed.",
-   "funders": [
-    "Doris Duke Foundation",
-    "The Duke Endowment",
-    "Aviv Foundation"
-   ],
-   "manager": "Foster America (overall coordination); partners Harvard Kennedy School Government Performance Lab, Chapin Hall, Think of Us",
-   "scope": "US",
-   "countries": [
-    "United States"
-   ],
-   "description": "A demonstration initiative to shift child welfare toward prevention through community response pathways. Its four sites are Washington, D.C., Kentucky, Oregon and South Carolina.",
-   "sources": [
-    "https://www.dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention",
-    "https://www.insidephilanthropy.com/home/2024/4/15/the-doris-duke-charitable-foundation-stands-up-an-initiative-to-transform-the-child-welfare-system",
-    "https://govlab.hks.harvard.edu/project/building-a-new-model-for-child-well-being-opt-in-initiative/"
-   ],
-   "confidence": "high"
-  },
-  {
-   "id": "wtgrant-institutional-challenge",
-   "name": "Institutional Challenge Grant",
-   "short_name": "Institutional Challenge Grant",
-   "type": "co-funded",
-   "area": "Child Well-being",
-   "year": 2021,
-   "year_end": null,
-   "amount_usd": 2600000,
-   "amount_note": "About $2.6M per annual cohort (2023, 2025 and 2026 rounds), or $650K per grantee over 3 years. The year is DDF's earliest confirmed co-funding round; it may have started earlier.",
-   "funders": [
-    "Doris Duke Foundation",
-    "William T. Grant Foundation",
-    "Spencer Foundation",
-    "Bezos Family Foundation",
-    "Annie E. Casey Foundation"
-   ],
-   "manager": "William T. Grant Foundation",
-   "scope": "US",
-   "countries": [
-    "United States"
-   ],
-   "description": "Grants to university–public agency/nonprofit research-practice partnerships working to reduce inequality in youth outcomes. Bezos joined in 2023 and Annie E. Casey in 2026; AIR co-funded the 2021 round. Some funded projects concern youth leaving foster care and child welfare.",
-   "sources": [
-    "https://wtgrantfoundation.org/announcing-the-2025-institutional-challenge-grantees",
-    "https://wtgrantfoundation.org/bezos-family-foundation-doris-duke-foundation-spencer-foundation-and-william-t-grant-foundation-award-grants-to-four-partnerships-addressing-social-issues",
-    "https://wtgrantfoundation.org/announcing-the-2026-institutional-challenge-grantees-foundations-award-2-6-million-for-research-practice-partnerships",
-    "https://philanthropynewyork.org/node/38612"
-   ],
-   "confidence": "medium"
+   "description": "",
+   "sources": [],
+   "confidence": null
   },
   {
    "id": "tribal-nations-conservation-pledge",
    "name": "Tribal Nations Conservation Pledge",
-   "short_name": "Tribal Conservation Pledge",
-   "type": "co-funded",
+   "short_name": "Tribal Nations Conservation Pledge",
+   "type": null,
    "area": "Environment",
    "year": 2023,
    "year_end": null,
-   "amount_usd": 102500000,
-   "amount_note": "Total commitments from 15 funders over five years, announced March 2023. DDF's share was about $32M (roughly one third). Each funder directs its own grants, and funders can also give directly to the fund.",
+   "amount_usd": 102500000.0,
+   "amount_note": "$102.5M pledge over five years; DDF's share about $32M",
    "funders": [
     "Doris Duke Foundation",
-    "Gordon and Betty Moore Foundation",
+    "Alaska Conservation",
     "Christensen Fund",
-    "Alaska Conservation Foundation",
-    "Decolonizing Wealth Project"
+    "Decolonizing Wealth",
+    "Moore",
+    "Grousemont",
+    "J.M. Kaplan Fund",
+    "Packard",
+    "Resources Legacy Fund",
+    "Re:wild",
+    "Walton Family",
+    "Water Foundation",
+    "Wilburforce",
+    "Hewlett",
+    "Wyss"
    ],
-   "manager": "Native Americans in Philanthropy and Biodiversity Funders Group (organizers; Tribal Nations Funding Collaborative)",
+   "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "A funder pledge, tied to the America the Beautiful Challenge, directing money to conservation led by Tribes, inter-Tribal organizations and Indigenous-led nonprofits. Only 5 of the 15 funders are named in the sources.",
+   "description": "",
    "sources": [
-    "https://www.dorisduke.org/news/doris-duke-foundation-and-partners-announce-over-100-million-for-tribal-led-conservation",
-    "https://news.mongabay.com/2023/04/funders-commit-102-5-million-to-support-tribal-led-conservation-efforts-in-the-u-s/",
     "https://www.philanthropy.com/article/15-grant-makers-pool-102-5-million-for-indigenous-led-conservation-efforts"
    ],
-   "confidence": "high"
+   "confidence": null
   },
   {
-   "id": "nefa-national-dance-project",
-   "name": "NEFA National Dance Project",
-   "short_name": "National Dance Project",
-   "type": "co-funded",
-   "area": "Arts",
-   "year": 1999,
-   "year_end": 2026,
-   "amount_usd": null,
-   "amount_note": "No amounts disclosed. DDF has been a lead funder since 1999, alongside Mellon. Mellon ended its NDP support in 2025. The final Production Grant cohort was named in Sept 2026; Presentation grants and the Travel Fund continue.",
+   "id": "catalyst-fund",
+   "name": "Catalyst Fund",
+   "short_name": "Catalyst Fund",
+   "type": null,
+   "area": "Environment",
+   "year": 2019,
+   "year_end": null,
+   "amount_usd": 2500000.0,
+   "amount_note": "Fund total as reported with the 2019 grants",
    "funders": [
     "Doris Duke Foundation",
-    "Mellon Foundation",
-    "Aliad Fund at the Boston Foundation"
+    "Hewlett"
    ],
-   "manager": "New England Foundation for the Arts (NEFA)",
+   "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "A long-running national regranting program supporting the creation and U.S. touring of dance works. It falls within the 2018–2026 window as an active co-funded program.",
+   "description": "",
    "sources": [
-    "https://www.nefa.org/node/787",
-    "https://www.npr.org/2025/09/09/nx-s1-5526923/twenty-new-dance-projects-will-receive-up-to-100k-each-but-the-grant-program-is-ending"
+    "https://landscapeconservation.org/wp-content/uploads/2017/12/Catalyst-Fund_2019-Grants-Descriptions_Final.pdf"
    ],
-   "confidence": "high"
+   "confidence": null
   },
   {
-   "id": "nefa-national-theater-project",
-   "name": "NEFA National Theater Project",
-   "short_name": "National Theater Project",
-   "type": "co-funded",
-   "area": "Arts",
-   "year": 2017,
+   "id": "opt-in-for-families",
+   "name": "OPT-In for Families",
+   "short_name": "OPT-In for Families",
+   "type": null,
+   "area": "Child Well-being",
+   "year": 2024,
    "year_end": null,
-   "amount_usd": 750000,
-   "amount_note": "DDCF's 2-year grant (Dec 2017) expanding Creation and Touring grants. Mellon is the lead funder; its amount is not disclosed. NEFA said in Sept 2024 that NTP was entering its final grant cycle in its current form, so the end year is unconfirmed.",
+   "amount_usd": 33000000.0,
+   "amount_note": "$33M over three years",
    "funders": [
     "Doris Duke Foundation",
-    "Mellon Foundation"
+    "Duke Endowment",
+    "Aviv"
    ],
-   "manager": "New England Foundation for the Arts (NEFA)",
+   "manager": null,
    "scope": "US",
    "countries": [
     "United States"
    ],
-   "description": "A NEFA regranting program supporting the creation and national touring of devised theater, with lead funding from Mellon and additional support from DDF.",
+   "description": "",
    "sources": [
-    "https://www.nefa.org/node/9882",
-    "https://www.insidephilanthropy.com/home/2018/8/29/new-england-foundation-for-the-arts-national-theater-project"
+    "https://dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention"
    ],
-   "confidence": "medium"
+   "confidence": null
   },
   {
-   "id": "ethiopia-data-use-partnership",
-   "name": "Ethiopia Data Use Partnership (DUP)",
-   "short_name": "Ethiopia DUP",
-   "type": "co-funded",
-   "area": "Medical Research",
-   "year": 2018,
-   "year_end": 2023,
-   "amount_usd": 5000000,
-   "amount_note": "DDCF grant to JSI Research & Training Institute: $5,000,000 over 5 years, awarded Jan 2018 (African Health Initiative Phase 2). DUP itself was launched by the Gates Foundation in Oct 2016 (primary funder); DDCF was a supplemental funder. Phase 1 ended Feb 2023; DUP II (2024-2026) is Gates-organized and no DDF funding for it was found. Total program budget not disclosed.",
+   "id": "think-of-us-audacious-project",
+   "name": "Think of Us, Audacious Project",
+   "short_name": "Think of Us, Audacious Project",
+   "type": null,
+   "area": "Child Well-being",
+   "year": 2023,
+   "year_end": null,
+   "amount_usd": 47500000.0,
+   "amount_note": "Audacious Project award, 2023",
    "funders": [
     "Doris Duke Foundation",
-    "Bill & Melinda Gates Foundation"
+    "Casey",
+    "Hilton",
+    "Aviv",
+    "Audacious Project"
    ],
-   "manager": "JSI Research & Training Institute, Inc. (with Ethiopia Ministry of Health)",
-   "scope": "International",
+   "manager": null,
+   "scope": "US",
    "countries": [
-    "Ethiopia"
+    "United States"
    ],
-   "description": "Partnership with Ethiopia's Ministry of Health to strengthen the health information system and the use of routine data for decision-making. DDCF's supplemental grant supported scale-up of data use in four populous regions (Tigray, Amhara, Oromia, SNNP) to improve primary health care and nutrition services. DDF's own AHI page also names the Global Fund to Fight AIDS, Tuberculosis and Malaria as a co-funder, but JSI's materials name only Gates and DDCF, so the Global Fund is not listed as a funder here.",
+   "description": "",
    "sources": [
-    "https://www.ddcf.org/grants/Grant-Recipients/JSI-ethiopia/",
-    "https://www.dorisduke.org/funding-areas/african-health-initiative/phase-2/phase-2-ethiopia",
-    "https://ethiopiadup.jsi.com",
-    "https://ethiopiadup.jsi.com/wp-content/uploads/2023/02/dup-2016-2023-accomplishments-report.pdf",
-    "https://ethiopiadup.jsi.com/wp-content/uploads/2024/04/DDCF-supported-activity-summary-report.pdf",
-    "https://ethiopiadup.jsi.com/wp-content/uploads/2023/11/DUP-II-Brochure.pdf"
+    "https://www.insidephilanthropy.com/home/2024/5/22/seven-funders-working-to-improve-child-welfare-and-foster-care"
    ],
-   "confidence": "high"
+   "confidence": null
   },
   {
-   "id": "connect-project-tanzania",
-   "name": "Connect Project: Introducing Community Health Agents to Accelerate Achievement of MDGs 4 and 5 in Tanzania (Tanzania PHIT Partnership)",
-   "short_name": "Tanzania Connect",
-   "type": "co-funded",
+   "id": "collective-to-strengthen-pathways-for-health-research",
+   "name": "Collective to Strengthen Pathways for Health Research",
+   "short_name": "Collective to Strengthen Pathways for Health Research",
+   "type": null,
    "area": "Medical Research",
-   "year": 2009,
+   "year": 2024,
    "year_end": null,
    "amount_usd": null,
-   "amount_note": "Part of DDCF grant 2009058 to Columbia University Mailman School of Public Health: $14.7 million combined for the Ghana (GEHIP) and Tanzania (Connect) PHIT partnerships (2009, African Health Initiative Phase 1); split between countries not disclosed. Comic Relief amount not disclosed. A BMC Health Services Research 2013 supplement reportedly says Comic Relief agreed in 2012 to co-fund an AHI project with about $3M for an additional year, but this could not be verified or tied to a specific partnership.",
+   "amount_note": "Amount not found",
    "funders": [
     "Doris Duke Foundation",
-    "Comic Relief"
+    "American Cancer Society",
+    "American Heart Assoc.",
+    "Burroughs Wellcome",
+    "Dana Foundation",
+    "Donaghue",
+    "Robertson",
+    "Susan G. Komen"
    ],
-   "manager": "Columbia University Mailman School of Public Health with Ifakara Health Institute (and Tanzania Ministry of Health and Social Welfare)",
-   "scope": "International",
+   "manager": null,
+   "scope": "US",
    "countries": [
-    "Tanzania"
+    "United States"
    ],
-   "description": "Cluster-randomized trial of paid community health agents (WAJA) in 101 villages of Rufiji, Kilombero and Ulanga districts, testing whether a paid CHW cadre added to health-system strengthening reduces child mortality. Trial registry lists DDCF (grant 2009058) and Comic Relief (UK) as funders.",
+   "description": "",
    "sources": [
-    "https://www.isrctn.com/ISRCTN96819844",
-    "https://www.philanthropy.com/news/doris-duke-fund-awards-nearly-44-million-for-african-health-care/",
-    "https://www.publichealth.columbia.edu/research/programs/advancing-research-community-health-systems/about/funding-support",
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC6636132"
+    "https://www.dorisduke.org/news--insights/articles/revisiting-research-pathways"
    ],
-   "confidence": "medium"
+   "confidence": null
   },
   {
-   "id": "ghana-gehip",
-   "name": "Ghana Essential Health Interventions Program (GEHIP) - Ghana PHIT Partnership",
-   "short_name": "Ghana GEHIP",
-   "type": "co-funded",
+   "id": "covid-19-fund-to-retain-clinical-scientists",
+   "name": "COVID-19 Fund to Retain Clinical Scientists",
+   "short_name": "COVID-19 Fund to Retain Clinical Scientists",
+   "type": null,
    "area": "Medical Research",
-   "year": 2009,
+   "year": 2021,
    "year_end": null,
-   "amount_usd": null,
-   "amount_note": "Part of DDCF grant 2009058(B) to Columbia University: $14.7 million combined for Ghana (GEHIP) and Tanzania (Connect) PHIT partnerships; split not disclosed. DDF describes GEHIP as a six-year pilot. Comic Relief support was for referral interventions; amount not disclosed. DDCF later separately funded the CHPS+ scale-up (Columbia, 2016), for which no co-funder was found.",
+   "amount_usd": 12100000.0,
+   "amount_note": "First round of grants to 22 medical schools",
    "funders": [
     "Doris Duke Foundation",
-    "Comic Relief"
+    "American Heart Assoc.",
+    "Burroughs Wellcome",
+    "Templeton",
+    "Rita Allen",
+    "Walder"
    ],
-   "manager": "Columbia University Mailman School of Public Health with Ghana Health Service, Navrongo Health Research Centre and University of Ghana School of Public Health",
-   "scope": "International",
+   "manager": null,
+   "scope": "US",
    "countries": [
-    "Ghana"
+    "United States"
    ],
-   "description": "Plausibility trial strengthening Ghana's Community-based Health Planning and Services (CHPS) program in three districts of the Upper East Region. Peer-reviewed program description states GEHIP is supported by DDCF's African Health Initiative and that Comic Relief UK also supports its referral interventions (UNICEF separately supplied CHPS equipment and supplies in the region).",
+   "description": "",
    "sources": [
-    "https://pmc.ncbi.nlm.nih.gov/articles/PMC3668206/",
-    "https://www.philanthropy.com/news/doris-duke-fund-awards-nearly-44-million-for-african-health-care/",
-    "https://dorisduke.org/funding-areas/african-health-initiative/phase-2/phase-2-ghana",
-    "https://www.publichealth.columbia.edu/research/programs/advancing-research-community-health-systems/about/funding-support"
+    "https://www.dorisduke.org/siteassets/news--insights/2021-press-releases/11.16.21-covid19-frcs-press-release.pdf"
    ],
-   "confidence": "medium"
+   "confidence": null
   }
  ],
  "funders": [
   {
    "name": "Doris Duke Foundation",
    "short": "Doris Duke",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 2180074293,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Doris Duke Charitable Foundation Inc, EIN 82-3691183",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/823691183",
+   "endowment_usd": 2190000000.0,
+   "endowment_note": "FY23 AUM",
    "website": "https://www.dorisduke.org",
    "website_checked": true
   },
   {
-   "name": "Adolph and Esther Gottlieb Foundation",
-   "short": "Gottlieb Foundation",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 35440997,
-   "endowment_note": "FY ending Jun 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/132853957",
-   "website": "https://www.gottliebfoundation.org",
+   "name": "Ford",
+   "short": "Ford",
+   "endowment_usd": 15800000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.fordfoundation.org",
    "website_checked": true
   },
   {
-   "name": "Alaska Conservation Foundation",
-   "short": "Alaska Conservation",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 14723918,
-   "endowment_note": "FY ending Jun 2023 Form 990 total assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/920061466",
-   "website": "https://alaskaconservation.org",
+   "name": "Lumina",
+   "short": "Lumina",
+   "endowment_usd": 1450000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.luminafoundation.org",
    "website_checked": true
   },
   {
-   "name": "Aliad Fund at the Boston Foundation",
-   "short": "Aliad Fund",
-   "type": "individual/donor-advised",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://www.tbf.org",
+   "name": "Kapor",
+   "short": "Kapor",
+   "endowment_usd": 120000000.0,
+   "endowment_note": "total assets, year not stated",
+   "website": "https://www.kaporcenter.org/kapor-foundation/",
    "website_checked": true
   },
   {
-   "name": "Amazon Literary Partnership",
-   "short": "Amazon Literary",
-   "type": "corporation",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://www.aboutamazon.com/news/tag/amazon-literary-partnership",
+   "name": "MacArthur",
+   "short": "MacArthur",
+   "endowment_usd": 8680000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.macfound.org",
    "website_checked": true
   },
   {
-   "name": "American Cancer Society",
-   "short": "American Cancer Soc.",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 1809676040,
-   "endowment_note": "FY2023 Form 990 total assets (EOY) - American Cancer Society Inc, EIN 13-1788491",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131788491",
-   "website": "https://www.cancer.org",
-   "website_checked": true
-  },
-  {
-   "name": "American Heart Association",
-   "short": "American Heart Assoc.",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 1790168039,
-   "endowment_note": "FY ending Jun 2023 Form 990 total assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/135613797",
-   "website": "https://www.heart.org",
-   "website_checked": true
-  },
-  {
-   "name": "Mellon Foundation",
+   "name": "Mellon",
    "short": "Mellon",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 8107807053,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - The Andrew W. Mellon Foundation",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131879954",
+   "endowment_usd": 8109999999.999999,
+   "endowment_note": "FY23 AUM",
    "website": "https://www.mellon.org",
    "website_checked": true
   },
   {
-   "name": "Annie E. Casey Foundation",
-   "short": "Annie E. Casey",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 3439089918,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/521951681",
-   "website": "https://www.aecf.org",
+   "name": "Mozilla",
+   "short": "Mozilla",
+   "endowment_usd": 120000000.0,
+   "endowment_note": "2024 total assets",
+   "website": "https://foundation.mozilla.org",
    "website_checked": true
   },
   {
-   "name": "Arnhold Foundation",
-   "short": "Arnhold",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 536724326,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Arnhold Foundation Inc, New York (matched by name)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133456684",
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Aviv Foundation",
-   "short": "Aviv Foundation",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 14329683,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Aviv Foundation Inc, Washington DC (matched by name)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/474498674",
-   "website": "https://avivfoundation.org",
+   "name": "Omidyar",
+   "short": "Omidyar",
+   "endowment_usd": 390000000.0,
+   "endowment_note": "2023 total assets",
+   "website": "https://omidyar.com",
    "website_checked": true
   },
   {
-   "name": "Barra Foundation",
-   "short": "Barra",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 82165197,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/236277885",
-   "website": "https://www.barrafoundation.org",
+   "name": "Packard",
+   "short": "Packard",
+   "endowment_usd": 8330000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.packard.org",
    "website_checked": true
   },
   {
-   "name": "Bezos Family Foundation",
-   "short": "Bezos Family Fdn.",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 168132074,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/912073258",
-   "website": "https://www.bezosfamilyfoundation.org",
+   "name": "Siegel Endowment",
+   "short": "Siegel Endowment",
+   "endowment_usd": 570000000.0,
+   "endowment_note": "2024 total assets",
+   "website": "https://siegelendowment.org",
    "website_checked": true
   },
   {
-   "name": "Bill & Melinda Gates Foundation",
-   "short": "Gates Foundation",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 75530745576,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Gates Foundation Trust (holds the endowment), EIN 91-1663695",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/911663695",
-   "website": "https://www.gatesfoundation.org",
+   "name": "Hewlett",
+   "short": "Hewlett",
+   "endowment_usd": 13340000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://hewlett.org",
    "website_checked": true
   },
   {
-   "name": "Bloomberg Philanthropies",
+   "name": "Bloomberg",
    "short": "Bloomberg",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 11808358665,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Bloomberg Family Foundation Inc (main vehicle of Bloomberg Philanthropies)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/205602483",
+   "endowment_usd": null,
+   "endowment_note": "",
    "website": "https://www.bloomberg.org",
    "website_checked": true
   },
   {
-   "name": "Burroughs Wellcome Fund",
-   "short": "Burroughs Wellcome",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 792326837,
-   "endowment_note": "FY ending Aug 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/237225395",
-   "website": "https://www.bwfund.org",
+   "name": "Surdna",
+   "short": "Surdna",
+   "endowment_usd": 1200000000.0,
+   "endowment_note": "2023 total assets",
+   "website": "https://surdna.org",
    "website_checked": true
   },
   {
-   "name": "Carnegie Corporation of New York",
-   "short": "Carnegie Corp.",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 4098600165,
-   "endowment_note": "FY ending Sep 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131628151",
-   "website": "https://www.carnegie.org",
+   "name": "Howard Gilman",
+   "short": "Howard Gilman",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.howardgilman.org",
    "website_checked": true
   },
   {
-   "name": "Charles H. Revson Foundation",
-   "short": "Revson",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 192587606,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/136126105",
-   "website": "https://revsonfoundation.org",
+   "name": "Booth Ferris",
+   "short": "Booth Ferris",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.boothferris.org",
+   "website_checked": true
+  },
+  {
+   "name": "Lambent",
+   "short": "Lambent",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.lambentfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Altman",
+   "short": "Altman",
+   "endowment_usd": 290000000.0,
+   "endowment_note": "2024 total assets",
+   "website": "https://www.altmanfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Laurie M. Tisch Fund",
+   "short": "Laurie M. Tisch Fund",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://thelmtif.org",
+   "website_checked": true
+  },
+  {
+   "name": "Miranda Family Fund",
+   "short": "Miranda Family Fund",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "NY Community Trust",
+   "short": "NY Community Trust",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.nycommunitytrust.org",
+   "website_checked": true
+  },
+  {
+   "name": "Lily Auchincloss",
+   "short": "Lily Auchincloss",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Matisse Foundation",
+   "short": "Matisse Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://matissefoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Nathan Cummings",
+   "short": "Nathan Cummings",
+   "endowment_usd": 480000000.0,
+   "endowment_note": "2024 total assets",
+   "website": "https://nathancummings.org",
+   "website_checked": true
+  },
+  {
+   "name": "Deutsche Bank Americas",
+   "short": "Deutsche Bank Americas",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://country.db.com/usa/responsibility/grant-guidelines",
+   "website_checked": true
+  },
+  {
+   "name": "Mertz Gilmore",
+   "short": "Mertz Gilmore",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.mertzgilmore.org",
+   "website_checked": true
+  },
+  {
+   "name": "Stavros Niarchos",
+   "short": "Stavros Niarchos",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.snf.org",
+   "website_checked": true
+  },
+  {
+   "name": "Rockefeller Brothers",
+   "short": "Rockefeller Brothers",
+   "endowment_usd": 1410000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.rbf.org",
+   "website_checked": true
+  },
+  {
+   "name": "Cullman Foundation",
+   "short": "Cullman Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Grantmakers in the Arts",
+   "short": "Grantmakers in the Arts",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.giarts.org",
+   "website_checked": true
+  },
+  {
+   "name": "David Rockefeller Fund",
+   "short": "David Rockefeller Fund",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.davidrockefellerfund.org",
+   "website_checked": true
+  },
+  {
+   "name": "Harman Family",
+   "short": "Harman Family",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "MacKenzie Scott",
+   "short": "MacKenzie Scott",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://yieldgiving.com",
+   "website_checked": true
+  },
+  {
+   "name": "Jerome",
+   "short": "Jerome",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.jeromefdn.org",
+   "website_checked": true
+  },
+  {
+   "name": "Dreyfus Foundation",
+   "short": "Dreyfus Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.dreyfus.org",
+   "website_checked": true
+  },
+  {
+   "name": "Warhol Foundation",
+   "short": "Warhol Foundation",
+   "endowment_usd": 360000000.0,
+   "endowment_note": "2023 total assets",
+   "website": "https://warholfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Mike Kelley Foundation",
+   "short": "Mike Kelley Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.mikekelleyfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "de Kooning Foundation",
+   "short": "de Kooning Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.dekooning.org",
+   "website_checked": true
+  },
+  {
+   "name": "7G",
+   "short": "7G",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Gottlieb Foundation",
+   "short": "Gottlieb Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.gottliebfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Amazon Literary",
+   "short": "Amazon Literary",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.aboutamazon.com/our-communities/community-engagement/amazon-literary-partnership",
+   "website_checked": true
+  },
+  {
+   "name": "Arison Arts",
+   "short": "Arison Arts",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Emily Hall Tremaine",
+   "short": "Emily Hall Tremaine",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.tremainefoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Frankenthaler",
+   "short": "Frankenthaler",
+   "endowment_usd": 170000000.0,
+   "endowment_note": "2024 total assets",
+   "website": "https://www.frankenthalerfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Joan Mitchell",
+   "short": "Joan Mitchell",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.joanmitchellfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Kraus Family",
+   "short": "Kraus Family",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Knight",
+   "short": "Knight",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://knightfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Neiman Foundation",
+   "short": "Neiman Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://leroyneimanfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Metabolic Studio",
+   "short": "Metabolic Studio",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.metabolicstudio.org",
+   "website_checked": true
+  },
+  {
+   "name": "Pritzker Pucker",
+   "short": "Pritzker Pucker",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://pritzkerpuckerfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Salomon Family",
+   "short": "Salomon Family",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Rauschenberg Foundation",
+   "short": "Rauschenberg Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.rauschenbergfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Hostetler-Wrigley",
+   "short": "Hostetler-Wrigley",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "Teiger Foundation",
+   "short": "Teiger Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.teigerfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Wallace Foundation",
+   "short": "Wallace Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.wallacefoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Alaska Conservation",
+   "short": "Alaska Conservation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://alaskaconservation.org",
    "website_checked": true
   },
   {
    "name": "Christensen Fund",
    "short": "Christensen Fund",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 343081617,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/946055879",
+   "endowment_usd": null,
+   "endowment_note": "",
    "website": "https://www.christensenfund.org",
    "website_checked": true
   },
   {
-   "name": "Connelly Foundation",
-   "short": "Connelly",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 342952074,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/236296825",
-   "website": "https://www.connellyfdn.org",
+   "name": "Decolonizing Wealth",
+   "short": "Decolonizing Wealth",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://decolonizingwealth.com",
+   "website_checked": true
+  },
+  {
+   "name": "Moore",
+   "short": "Moore",
+   "endowment_usd": 8770000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.moore.org",
+   "website_checked": true
+  },
+  {
+   "name": "Grousemont",
+   "short": "Grousemont",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": null,
+   "website_checked": false
+  },
+  {
+   "name": "J.M. Kaplan Fund",
+   "short": "J.M. Kaplan Fund",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.jmkfund.org",
+   "website_checked": true
+  },
+  {
+   "name": "Resources Legacy Fund",
+   "short": "Resources Legacy Fund",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://resourceslegacyfund.org",
+   "website_checked": true
+  },
+  {
+   "name": "Re:wild",
+   "short": "Re:wild",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.rewild.org",
+   "website_checked": true
+  },
+  {
+   "name": "Walton Family",
+   "short": "Walton Family",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.waltonfamilyfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Water Foundation",
+   "short": "Water Foundation",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://waterfdn.org",
+   "website_checked": true
+  },
+  {
+   "name": "Wilburforce",
+   "short": "Wilburforce",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.wilburforce.org",
+   "website_checked": true
+  },
+  {
+   "name": "Wyss",
+   "short": "Wyss",
+   "endowment_usd": 2450000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://wyssfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Duke Endowment",
+   "short": "Duke Endowment",
+   "endowment_usd": 5020000000.0,
+   "endowment_note": "2024 total assets, annual report",
+   "website": "https://www.dukeendowment.org",
+   "website_checked": true
+  },
+  {
+   "name": "Aviv",
+   "short": "Aviv",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://avivfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Casey",
+   "short": "Casey",
+   "endowment_usd": 3440000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.aecf.org",
+   "website_checked": true
+  },
+  {
+   "name": "Hilton",
+   "short": "Hilton",
+   "endowment_usd": 7100000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.hiltonfoundation.org",
+   "website_checked": true
+  },
+  {
+   "name": "Audacious Project",
+   "short": "Audacious Project",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.audaciousproject.org",
+   "website_checked": true
+  },
+  {
+   "name": "American Cancer Society",
+   "short": "American Cancer Society",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.cancer.org",
+   "website_checked": true
+  },
+  {
+   "name": "American Heart Assoc.",
+   "short": "American Heart Assoc.",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.heart.org",
+   "website_checked": true
+  },
+  {
+   "name": "Burroughs Wellcome",
+   "short": "Burroughs Wellcome",
+   "endowment_usd": null,
+   "endowment_note": "",
+   "website": "https://www.bwfund.org",
    "website_checked": true
   },
   {
    "name": "Dana Foundation",
    "short": "Dana Foundation",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 258637512,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - The Charles A. Dana Foundation, EIN 06-6036761",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/66036761",
+   "endowment_usd": null,
+   "endowment_note": "",
    "website": "https://dana.org",
    "website_checked": true
   },
   {
-   "name": "David and Lucile Packard Foundation",
-   "short": "Packard",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 8324855767,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/942278431",
-   "website": "https://www.packard.org",
-   "website_checked": true
-  },
-  {
-   "name": "Decolonizing Wealth Project",
-   "short": "Decolonizing Wealth",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://decolonizingwealth.com",
-   "website_checked": true
-  },
-  {
-   "name": "Donaghue Foundation",
+   "name": "Donaghue",
    "short": "Donaghue",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 85311655,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Patrick and Catherine Weldon Donaghue Medical Research Foundation",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/66348275",
+   "endowment_usd": null,
+   "endowment_note": "",
    "website": "https://donaghue.org",
    "website_checked": true
   },
   {
-   "name": "Emily Hall Tremaine Foundation",
-   "short": "Tremaine",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 91349827,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/222533743",
-   "website": "https://www.tremainefoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Estée Lauder Companies Charitable Foundation",
-   "short": "Estée Lauder Fdn.",
-   "type": "corporate foundation",
-   "hq_country": "US",
-   "endowment_usd": 33440308,
-   "endowment_note": "FY ending Jun 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/812590470",
-   "website": "https://www.elcompanies.com",
-   "website_checked": true
-  },
-  {
-   "name": "Ford Foundation",
-   "short": "Ford",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 16786755826,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131684331",
-   "website": "https://www.fordfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Gordon and Betty Moore Foundation",
-   "short": "Moore",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 8766258805,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/943397785",
-   "website": "https://www.moore.org",
-   "website_checked": true
-  },
-  {
-   "name": "Harkness Foundation for Dance",
-   "short": "Harkness (Dance)",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 6834552,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131926551",
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Helen Frankenthaler Foundation",
-   "short": "Frankenthaler",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 545208180,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - includes art collection at FMV",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133244308",
-   "website": "https://www.frankenthalerfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Howard Gilman Foundation",
-   "short": "Howard Gilman",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 592743063,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133097486",
-   "website": "https://www.howardgilmanfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Independence Foundation",
-   "short": "Independence Fdn.",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 73597422,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/231352110",
-   "website": "https://independencefoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "JPB Foundation",
-   "short": "JPB Foundation",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 4138119983,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - now Freedom Together Foundation, EIN 90-0747216",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/900747216",
-   "website": "https://www.freedomtogether.org",
-   "website_checked": true
-  },
-  {
-   "name": "Jennifer and Jonathan Allan Soros",
-   "short": "Jennifer & J.A. Soros",
-   "type": "individual/donor-advised",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Jerome Foundation",
-   "short": "Jerome",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 113178200,
-   "endowment_note": "FY ending Apr 2024 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/416035163",
-   "website": "https://www.jeromefdn.org",
-   "website_checked": true
-  },
-  {
-   "name": "Joan Ganz Cooney & Holly Peterson Fund",
-   "short": "Cooney & Peterson Fund",
-   "type": "individual/donor-advised",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Joan Mitchell Foundation",
-   "short": "Joan Mitchell",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 577316288,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - includes art collection at FMV",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/113161054",
-   "website": "https://www.joanmitchellfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "John D. and Catherine T. MacArthur Foundation",
-   "short": "MacArthur",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 8672283398,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/237093598",
-   "website": "https://www.macfound.org",
-   "website_checked": true
-  },
-  {
-   "name": "John S. and James L. Knight Foundation",
-   "short": "Knight",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 2533365916,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/650464177",
-   "website": "https://knightfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "John Templeton Foundation",
-   "short": "Templeton",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 3398215797,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/621322826",
-   "website": "https://www.templeton.org",
-   "website_checked": true
-  },
-  {
-   "name": "Jon Stryker and Slobodan Randjelović",
-   "short": "Stryker & Randjelović",
-   "type": "individual/donor-advised",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Kapor Foundation",
-   "short": "Kapor",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 117513185,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - legal name Mitchell Kapor Foundation",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/943330604",
-   "website": "https://kaporfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Kenneth C. Griffin Charitable Fund",
-   "short": "Griffin Charitable",
-   "type": "individual/donor-advised",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Laurie M. Tisch Illumination Fund",
-   "short": "Tisch Illumination",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 449462388,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - The Laurie M. Tisch Foundation Inc (operates as the Illumination Fund)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133693585",
-   "website": "https://thelmtif.org",
-   "website_checked": true
-  },
-  {
-   "name": "Lenfest Foundation",
-   "short": "Lenfest",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 3753705,
-   "endowment_note": "FY ending Jun 2022 (latest available) 990-PF fair market value of assets (EOY) - spend-down foundation",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/233031350",
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Lumina Foundation",
-   "short": "Lumina",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 1447572232,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Lumina Foundation for Education Inc",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/351813228",
-   "website": "https://www.luminafoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Mertz Gilmore Foundation",
-   "short": "Mertz Gilmore",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 115599664,
-   "endowment_note": "FY2022 (latest available) 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/132872722",
-   "website": "https://www.mertzgilmore.org",
-   "website_checked": true
-  },
-  {
-   "name": "Mozilla Foundation",
-   "short": "Mozilla",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 124157331,
-   "endowment_note": "FY2023 Form 990 total assets (EOY) - foundation only, excludes Mozilla Corporation",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/200097189",
-   "website": "https://www.mozillafoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "New York Community Trust",
-   "short": "NY Community Trust",
-   "type": "community foundation",
-   "hq_country": "US",
-   "endowment_usd": 3249988975,
-   "endowment_note": "FY2023 Form 990 total assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133062214",
-   "website": "https://www.nycommunitytrust.org",
-   "website_checked": true
-  },
-  {
-   "name": "Omidyar Network",
-   "short": "Omidyar Network",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 392593149,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Omidyar Network Fund Inc only; excludes Omidyar Network LLC",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/201173866",
-   "website": "https://omidyar.com",
-   "website_checked": true
-  },
-  {
-   "name": "Open Society Foundations",
-   "short": "Open Society",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 10502606362,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Foundation to Promote Open Society only (Open Society Institute separately reports $5.27B; not summed)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/263753801",
-   "website": "https://www.opensocietyfoundations.org",
-   "website_checked": true
-  },
-  {
-   "name": "PECO",
-   "short": "PECO",
-   "type": "corporation",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://www.peco.com",
-   "website_checked": true
-  },
-  {
-   "name": "PNC",
-   "short": "PNC",
-   "type": "corporation",
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://www.pnc.com",
-   "website_checked": false
-  },
-  {
-   "name": "Prebys Foundation",
-   "short": "Prebys",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 1118398532,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - Conrad Prebys Foundation",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/203216993",
-   "website": "https://prebysfdn.org",
-   "website_checked": true
-  },
-  {
-   "name": "Rita Allen Foundation",
-   "short": "Rita Allen",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 189867123,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/136116429",
-   "website": "https://ritaallen.org",
-   "website_checked": true
-  },
-  {
-   "name": "Robert Rauschenberg Foundation",
-   "short": "Rauschenberg",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 509159843,
-   "endowment_note": "FY ending May 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/650200989",
-   "website": "https://www.rauschenbergfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Robertson Foundation",
+   "name": "Robertson",
    "short": "Robertson",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 422411791,
-   "endowment_note": "FY ending Nov 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/137068398",
+   "endowment_usd": 280000000.0,
+   "endowment_note": "total assets, year not stated",
    "website": "https://www.robertsonfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Robin Hood",
-   "short": "Robin Hood",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 308801119,
-   "endowment_note": "FY2023 Form 990 total assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133441066",
-   "website": "https://www.robinhood.org",
-   "website_checked": true
-  },
-  {
-   "name": "Rockefeller Brothers Fund",
-   "short": "Rockefeller Bros.",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 1402772081,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131760106",
-   "website": "https://www.rbf.org",
-   "website_checked": true
-  },
-  {
-   "name": "Siegel Family Endowment",
-   "short": "Siegel Endowment",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 500197981,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/451742989",
-   "website": "https://www.siegelendowment.org",
-   "website_checked": true
-  },
-  {
-   "name": "Spencer Foundation",
-   "short": "Spencer",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 667415167,
-   "endowment_note": "FY ending Mar 2024 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/366078558",
-   "website": "https://www.spencer.org",
-   "website_checked": true
-  },
-  {
-   "name": "Stavros Niarchos Foundation",
-   "short": "Stavros Niarchos",
-   "type": "private foundation",
-   "hq_country": "Greece",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://www.snf.org",
    "website_checked": true
   },
   {
    "name": "Susan G. Komen",
    "short": "Susan G. Komen",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 192631082,
-   "endowment_note": "FY ending Mar 2023 Form 990 total assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/751835298",
+   "endowment_usd": null,
+   "endowment_note": "",
    "website": "https://www.komen.org",
    "website_checked": true
   },
   {
-   "name": "TD Bank",
-   "short": "TD Bank",
-   "type": "corporation",
-   "hq_country": "US",
+   "name": "Templeton",
+   "short": "Templeton",
+   "endowment_usd": 3400000000.0,
+   "endowment_note": "FY23 AUM",
+   "website": "https://www.templeton.org",
+   "website_checked": true
+  },
+  {
+   "name": "Rita Allen",
+   "short": "Rita Allen",
    "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": "https://www.td.com/us/en/about-us/community",
+   "endowment_note": "",
+   "website": "https://www.ritaallenfoundation.org",
    "website_checked": true
   },
   {
-   "name": "Teiger Foundation",
-   "short": "Teiger",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 139532495,
-   "endowment_note": "FY ending Jun 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/263533921",
-   "website": "https://teigerfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "The Andy Warhol Foundation for the Visual Arts",
-   "short": "Warhol Foundation",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 385197822,
-   "endowment_note": "FY ending Apr 2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/133410749",
-   "website": "https://warholfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "The Duke Endowment",
-   "short": "Duke Endowment",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 4944114997,
-   "endowment_note": "Total assets 12/31/2023 per audited financials (comparative column, 2024 annual report)",
-   "endowment_source": "https://2024-annualreport.dukeendowment.org/uploads/PDFs/TDE-2024-AR-FINANCIALS-2025AUG06.pdf",
-   "website": "https://www.dukeendowment.org",
-   "website_checked": true
-  },
-  {
-   "name": "The Wallace Foundation",
-   "short": "Wallace",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 1706055092,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/136183757",
-   "website": "https://www.wallacefoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "The Willem de Kooning Foundation",
-   "short": "de Kooning Fdn.",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 418006643,
-   "endowment_note": "FY ending Jun 2023 990-PF fair market value of assets (EOY) - includes art collection at FMV",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/134151973",
-   "website": "https://www.dekooning.org",
-   "website_checked": true
-  },
-  {
-   "name": "UJA-Federation of New York",
-   "short": "UJA-Federation NY",
-   "type": "public charity",
-   "hq_country": "US",
-   "endowment_usd": 1608029000,
-   "endowment_note": "FY ending Jun 2023 Form 990 total assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/510172429",
-   "website": "https://www.ujafedny.org",
-   "website_checked": true
-  },
-  {
-   "name": "Victory Foundation",
-   "short": "Victory Foundation",
-   "type": null,
-   "hq_country": "US",
-   "endowment_usd": null,
-   "endowment_note": null,
-   "endowment_source": null,
-   "website": null,
-   "website_checked": false
-  },
-  {
-   "name": "Walder Foundation",
+   "name": "Walder",
    "short": "Walder",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 215889426,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - filed as Walder Family Foundation, Skokie IL",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/464092041",
+   "endowment_usd": null,
+   "endowment_note": "",
    "website": "https://www.walderfoundation.org",
    "website_checked": true
-  },
-  {
-   "name": "Wells Fargo Foundation",
-   "short": "Wells Fargo Fdn.",
-   "type": "corporate foundation",
-   "hq_country": "US",
-   "endowment_usd": 50523797,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY) - foundation's own balance; most giving passes through annually",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/411367441",
-   "website": "https://www.wellsfargo.com/about/responsibility-and-impact/",
-   "website_checked": true
-  },
-  {
-   "name": "William Penn Foundation",
-   "short": "William Penn",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 3286225714,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/231503488",
-   "website": "https://williampennfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "William T. Grant Foundation",
-   "short": "W.T. Grant",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 403141185,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/131624021",
-   "website": "https://wtgrantfoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "William and Flora Hewlett Foundation",
-   "short": "Hewlett",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 13332174215,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/941655673",
-   "website": "https://hewlett.org",
-   "website_checked": true
-  },
-  {
-   "name": "Wyncote Foundation",
-   "short": "Wyncote",
-   "type": "private foundation",
-   "hq_country": "US",
-   "endowment_usd": 581268608,
-   "endowment_note": "FY2023 990-PF fair market value of assets (EOY)",
-   "endowment_source": "https://projects.propublica.org/nonprofits/organizations/263535044",
-   "website": "https://www.wyncotefoundation.org",
-   "website_checked": true
-  },
-  {
-   "name": "Comic Relief",
-   "short": "Comic Relief",
-   "type": "registered charity (UK)",
-   "hq_country": "United Kingdom",
-   "endowment_usd": null,
-   "endowment_note": "UK charity; no endowment figure comparable to US 990 data",
-   "endowment_source": null,
-   "website": "https://www.comicrelief.com",
-   "website_checked": false
   }
  ],
  "countries": [
-  {
-   "name": "Ethiopia",
-   "region": "Africa"
-  },
-  {
-   "name": "Ghana",
-   "region": "Africa"
-  },
-  {
-   "name": "Tanzania",
-   "region": "Africa"
-  },
   {
    "name": "United States",
    "region": "North America"
