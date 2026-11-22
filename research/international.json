@@ -1,0 +1,89 @@
+{
+  "programs": [
+    {
+      "id": "ethiopia-data-use-partnership",
+      "name": "Ethiopia Data Use Partnership (DUP)",
+      "short_name": "Ethiopia DUP",
+      "type": "co-funded",
+      "area": "Medical Research",
+      "year": 2018,
+      "year_end": 2023,
+      "amount_usd": 5000000,
+      "amount_note": "DDCF grant to JSI Research & Training Institute: $5,000,000 over 5 years, awarded Jan 2018 (African Health Initiative Phase 2). DUP itself was launched by the Gates Foundation in Oct 2016 (primary funder); DDCF was a supplemental funder. Phase 1 ended Feb 2023; DUP II (2024-2026) is Gates-organized and no DDF funding for it was found. Total program budget not disclosed.",
+      "funders": ["Doris Duke Foundation", "Bill & Melinda Gates Foundation"],
+      "manager": "JSI Research & Training Institute, Inc. (with Ethiopia Ministry of Health)",
+      "scope": "International",
+      "countries": ["Ethiopia"],
+      "description": "Partnership with Ethiopia's Ministry of Health to strengthen the health information system and the use of routine data for decision-making. DDCF's supplemental grant supported scale-up of data use in four populous regions (Tigray, Amhara, Oromia, SNNP) to improve primary health care and nutrition services. DDF's own AHI page also names the Global Fund to Fight AIDS, Tuberculosis and Malaria as a co-funder, but JSI's materials name only Gates and DDCF, so the Global Fund is not listed as a funder here.",
+      "sources": [
+        "https://www.ddcf.org/grants/Grant-Recipients/JSI-ethiopia/",
+        "https://www.dorisduke.org/funding-areas/african-health-initiative/phase-2/phase-2-ethiopia",
+        "https://ethiopiadup.jsi.com",
+        "https://ethiopiadup.jsi.com/wp-content/uploads/2023/02/dup-2016-2023-accomplishments-report.pdf",
+        "https://ethiopiadup.jsi.com/wp-content/uploads/2024/04/DDCF-supported-activity-summary-report.pdf",
+        "https://ethiopiadup.jsi.com/wp-content/uploads/2023/11/DUP-II-Brochure.pdf"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "connect-project-tanzania",
+      "name": "Connect Project: Introducing Community Health Agents to Accelerate Achievement of MDGs 4 and 5 in Tanzania (Tanzania PHIT Partnership)",
+      "short_name": "Tanzania Connect",
+      "type": "co-funded",
+      "area": "Medical Research",
+      "year": 2009,
+      "year_end": null,
+      "amount_usd": null,
+      "amount_note": "Part of DDCF grant 2009058 to Columbia University Mailman School of Public Health: $14.7 million combined for the Ghana (GEHIP) and Tanzania (Connect) PHIT partnerships (2009, African Health Initiative Phase 1); split between countries not disclosed. Comic Relief amount not disclosed. A BMC Health Services Research 2013 supplement reportedly says Comic Relief agreed in 2012 to co-fund an AHI project with about $3M for an additional year, but this could not be verified or tied to a specific partnership.",
+      "funders": ["Doris Duke Foundation", "Comic Relief"],
+      "manager": "Columbia University Mailman School of Public Health with Ifakara Health Institute (and Tanzania Ministry of Health and Social Welfare)",
+      "scope": "International",
+      "countries": ["Tanzania"],
+      "description": "Cluster-randomized trial of paid community health agents (WAJA) in 101 villages of Rufiji, Kilombero and Ulanga districts, testing whether a paid CHW cadre added to health-system strengthening reduces child mortality. Trial registry lists DDCF (grant 2009058) and Comic Relief (UK) as funders.",
+      "sources": [
+        "https://www.isrctn.com/ISRCTN96819844",
+        "https://www.philanthropy.com/news/doris-duke-fund-awards-nearly-44-million-for-african-health-care/",
+        "https://www.publichealth.columbia.edu/research/programs/advancing-research-community-health-systems/about/funding-support",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC6636132"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "ghana-gehip",
+      "name": "Ghana Essential Health Interventions Program (GEHIP) - Ghana PHIT Partnership",
+      "short_name": "Ghana GEHIP",
+      "type": "co-funded",
+      "area": "Medical Research",
+      "year": 2009,
+      "year_end": null,
+      "amount_usd": null,
+      "amount_note": "Part of DDCF grant 2009058(B) to Columbia University: $14.7 million combined for Ghana (GEHIP) and Tanzania (Connect) PHIT partnerships; split not disclosed. DDF describes GEHIP as a six-year pilot. Comic Relief support was for referral interventions; amount not disclosed. DDCF later separately funded the CHPS+ scale-up (Columbia, 2016), for which no co-funder was found.",
+      "funders": ["Doris Duke Foundation", "Comic Relief"],
+      "manager": "Columbia University Mailman School of Public Health with Ghana Health Service, Navrongo Health Research Centre and University of Ghana School of Public Health",
+      "scope": "International",
+      "countries": ["Ghana"],
+      "description": "Plausibility trial strengthening Ghana's Community-based Health Planning and Services (CHPS) program in three districts of the Upper East Region. Peer-reviewed program description states GEHIP is supported by DDCF's African Health Initiative and that Comic Relief UK also supports its referral interventions (UNICEF separately supplied CHPS equipment and supplies in the region).",
+      "sources": [
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC3668206/",
+        "https://www.philanthropy.com/news/doris-duke-fund-awards-nearly-44-million-for-african-health-care/",
+        "https://dorisduke.org/funding-areas/african-health-initiative/phase-2/phase-2-ghana",
+        "https://www.publichealth.columbia.edu/research/programs/advancing-research-community-health-systems/about/funding-support"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "notes": [
+    "Searched 2026-11-22. Few DDF/DDCF co-funded or pooled programs send money outside the US; almost all international DDCF money ran through the African Health Initiative (2007-2024), and nearly all of it was DDCF-only funding.",
+    "Ethiopia DUP: DDF's own Phase 2 Ethiopia page says the partnership is 'co-funded by The Bill and Melinda Gates Foundation and the Global Fund to Fight HIV/AIDS, TB, and Malaria', but JSI's site and reports name only Gates (primary, since Oct 2016) and DDCF (supplemental). Add 'Global Fund to Fight AIDS, Tuberculosis and Malaria' as a funder only if you accept DDF's page alone (low confidence).",
+    "Tanzania Connect and Ghana GEHIP were funded under one DDCF grant to Columbia University ($14.7M combined, 2009). They are listed as two records so each country maps on its own; do not add the amount twice. Comic Relief's share is undisclosed.",
+    "Excluded because no co-funder was found (DDCF only): AHI Phase 1 PHIT partnerships in Rwanda (Brigham and Women's/Partners In Health, $8M), Mozambique (Health Alliance International, $10M, plus Phase 2 IDEA program) and Zambia (UAB/UNC-CIDRZ BHOMA, $11.1M). Ministries of health and universities were implementing partners, not funders.",
+    "Excluded: Doris Duke International Clinical Research Fellowship for Medical Students (fellows in low- and middle-income countries, 2012-2018, $5.2M to six medical schools). Every source names DDCF as the only sponsor; no Fogarty/NIH, HHMI or Gates co-funding was found.",
+    "Excluded: WHO Alliance for Health Policy and Systems Research LEAP Forum (AHI Phase 2, supporting Ethiopia, Ghana and Mozambique). The Alliance is a multi-donor WHO partnership and lists DDCF among 'other donors and supporters', but DDF describes the LEAP Forum as funded by DDCF. No year or amount found. It could be treated as a pooled contribution at low confidence.",
+    "Excluded: Artists Make Technology (Mozilla Foundation + DDF + Hewlett + Ford + MacArthur + Omidyar). The first cohort of 20 was announced in Barcelona on 2026-10-28, but the press release says the cohort 'spans the U.S.'; no non-US grantee was identified.",
+    "Excluded: Humanity AI ($500M coalition, DDF a founding partner). The first grants (May 2026) went to US organizations; no non-US grantee was found.",
+    "Excluded: the 2018 $459M foundations' forests-and-lands pledge at the Global Climate Action Summit. It was a set of separate commitments, not a pooled fund, and DDCF's $20M Natural Climate Solutions initiative was primarily for US projects.",
+    "Excluded: Enduring Earth / Project Finance for Permanence (partner lists name TNC, Pew, WWF, ZOMA Lab, Bezos Earth Fund, Moore, Bedari and McKinsey, not DDF). No DDF link was found for Great Bear Rainforest or Boreal deals either. DDF's 2023-2024 environment collaboratives (Conservation Finance Initiative, Consultative Group on Biological Diversity, Tribal Nations Conservation Pledge) are US-focused.",
+    "Excluded: COVID-19. DDCF's pooled relief went to US funds (for example, the NYC COVID-19 Response & Impact Fund at the New York Community Trust, and the 2020 five-foundation payout pledge). No international COVID pooled fund with DDCF was found.",
+    "Excluded: Building Bridges. It is domestic (US Muslim and non-Muslim communities). The only Aga Khan link found was a DDFIA grant to Asia Society NY for a project involving the Aga Khan Music Initiative, with no Aga Khan Trust for Culture co-funding. No Mellon + DDF international touring or exchange fund was found. No international Child Well-being co-funded program was found."
+  ]
+}

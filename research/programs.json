@@ -1,0 +1,577 @@
+{
+ "programs": [
+  {
+   "id": "humanity-ai",
+   "name": "Humanity AI",
+   "short_name": "Humanity AI",
+   "type": "pooled",
+   "area": "Cross-program",
+   "year": 2025,
+   "year_end": null,
+   "amount_usd": 500000000,
+   "amount_note": "Five-year collective commitment announced Oct 14, 2025. It combines aligned grantmaking by each funder with a pooled fund. The first pooled grants (May 12, 2026) were more than $18M: $8M to inaugural grantees, $3M for AI Civics and a planned $10M open call.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Ford Foundation",
+    "Lumina Foundation",
+    "Kapor Foundation",
+    "John D. and Catherine T. MacArthur Foundation",
+    "Mellon Foundation",
+    "Mozilla Foundation",
+    "Omidyar Network",
+    "David and Lucile Packard Foundation",
+    "Siegel Family Endowment"
+   ],
+   "manager": "Rockefeller Philanthropy Advisors (fiscal sponsor; manages pooled fund)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A ten-foundation coalition funding a people-centered future for AI, covering democracy, education, culture and the arts, work and the economy, and security. Partners began aligned grantmaking in fall 2025, and the pooled fund began making grants in 2026.",
+   "sources": [
+    "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai",
+    "https://www.mellon.org/news/humanity-ai-commits-500m-build-people-centered-future-ai",
+    "https://www.mellon.org/news/humanity-ai-announces-more-than-18-million-in-new-grants",
+    "https://partnershiponai.org/humanity-ai-500k-grant-partnership-on-ai/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "artists-make-technology",
+   "name": "Artists Make Technology (AMT)",
+   "short_name": "Artists Make Technology",
+   "type": "co-funded",
+   "area": "Arts",
+   "year": 2026,
+   "year_end": null,
+   "amount_usd": 6500000,
+   "amount_note": "$6.5M committed by four funders as of Jan 7, 2026, toward an $11M three-year goal: AMT Lab $6M, AMT Pathways $4M and AMT Assemblies $1M.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Mozilla Foundation",
+    "William and Flora Hewlett Foundation",
+    "Ford Foundation"
+   ],
+   "manager": null,
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "An arts-and-technology initiative anchored by DDF and Mozilla. Its AMT Lab, the second iteration of DDF's Performing Arts Technologies Lab, funds performing artists working with technology. The first cohort of 20 projects (from 392 applications) was announced Oct 28, 2026 at MozFest in Barcelona. The first cohort of 20 grantees (announced Oct 28, 2026) was described as spanning the U.S.",
+   "sources": [
+    "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation",
+    "https://www.dorisduke.org/grants/projects/artists-make-technology",
+    "https://www.mozillafoundation.org/en/what-we-do/artists-make-technology/",
+    "https://grantedai.com/blog/artists-make-technology-mozilla-doris-duke-11-million-first-20-grantees-october-28-2026-392-applications-5-percent-150000-ceiling-20-grants-remain-performing-arts-technology-next-round-strategy"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "ddf-ford-perf-arts-tech-2026",
+   "name": "Doris Duke Foundation and Ford Foundation grants supporting technology infrastructure in the performing arts",
+   "short_name": "DDF–Ford Performing Arts Tech Grants",
+   "type": "co-funded",
+   "area": "Arts",
+   "year": 2026,
+   "year_end": null,
+   "amount_usd": 4000000,
+   "amount_note": "\"More than $4 million\" over five years (a minimum figure), announced July 6, 2026. The page does not give each funder's share.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Ford Foundation"
+   ],
+   "manager": null,
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "Grants made in partnership with Ford for performing-arts technology infrastructure, several focused on disability arts and access. Grantees include Kinetic Light (multisensory access technology), Open Circle Theatre (VitaNova), Junebug Productions, New York Live Arts' Healing Project, Producer Hub, and SOZO Impact & Relaxed Animals (EARTH.SPEAKS with the Osage Nation).",
+   "sources": [
+    "https://www.dorisduke.org/news/doris-duke-foundation-announces-new-grants-supporting-technology-infrastructure-in-the-performing-arts",
+    "https://www.americantheatre.org/2026/07/06/duke-partners-with-ford-to-fund-performing-arts-tech-innovation/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "artist-relief",
+   "name": "Artist Relief",
+   "short_name": "Artist Relief",
+   "type": "pooled",
+   "area": "Arts",
+   "year": 2020,
+   "year_end": 2021,
+   "amount_usd": 25000000,
+   "amount_note": "Cumulative raised. The fund launched Apr 8, 2020 as a $10M campaign: a $5M Mellon seed gift matched by about $5M from 20+ funders. DDF's own grant was $500,000 (Apr 13, 2020).",
+   "funders": [
+    "Doris Duke Foundation",
+    "Andrew W. Mellon Foundation",
+    "Robert Rauschenberg Foundation",
+    "The Andy Warhol Foundation for the Visual Arts",
+    "Ford Foundation",
+    "John S. and James L. Knight Foundation",
+    "Open Society Foundations",
+    "The Wallace Foundation",
+    "Joan Mitchell Foundation",
+    "Jerome Foundation",
+    "Helen Frankenthaler Foundation",
+    "Emily Hall Tremaine Foundation",
+    "Adolph and Esther Gottlieb Foundation",
+    "Amazon Literary Partnership",
+    "Teiger Foundation",
+    "The Willem de Kooning Foundation"
+   ],
+   "manager": "Coalition of Academy of American Poets, Artadia, Creative Capital, Foundation for Contemporary Arts, MAP Fund, National YoungArts Foundation, United States Artists",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "An emergency COVID-19 fund that gave $5,000 unrestricted grants to 4,682 artists and writers across 13 funding cycles. The funder list here is partial; the fund names 24 initial matching funders plus 2021 matchers.",
+   "sources": [
+    "https://www.artistrelief.org/about",
+    "https://poets.org/coalition-arts-funders-launches-emergency-artist-relief-fund",
+    "https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/united-states-artists"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "nyc-covid-response-impact-fund",
+   "name": "NYC COVID-19 Response & Impact Fund",
+   "short_name": "NYC COVID-19 Fund",
+   "type": "pooled",
+   "area": "Cross-program",
+   "year": 2020,
+   "year_end": 2020,
+   "amount_usd": 75000000,
+   "amount_note": "Initial commitment from 18 founding funders at launch (Mar 20, 2020). By mid-2020 the fund had issued more than $110M in grants and interest-free loans. DDF's share is not disclosed.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Bloomberg Philanthropies",
+    "Carnegie Corporation of New York",
+    "Ford Foundation",
+    "Joan Ganz Cooney & Holly Peterson Fund",
+    "Kenneth C. Griffin Charitable Fund",
+    "JPB Foundation",
+    "Estée Lauder Companies Charitable Foundation",
+    "Andrew W. Mellon Foundation",
+    "New York Community Trust",
+    "Jennifer and Jonathan Allan Soros",
+    "Jon Stryker and Slobodan Randjelović",
+    "Charles H. Revson Foundation",
+    "Robin Hood",
+    "Rockefeller Brothers Fund",
+    "Laurie M. Tisch Illumination Fund",
+    "UJA-Federation of New York",
+    "Wells Fargo Foundation"
+   ],
+   "manager": "New York Community Trust (grants); Nonprofit Finance Fund (loans)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A pooled emergency fund giving grants and interest-free loans to New York City social-services and arts and culture nonprofits hit by COVID-19. More than 768 nonprofits were supported.",
+   "sources": [
+    "https://www.fordfoundation.org/the-latest/news/nyc-covid-19-response-impact-fund-launched-to-support-new-york-city-nonprofit-organizations/",
+    "https://www.mellon.org/news/nyc-covid-19-response-and-impact-fund-issued-usd110m-in-emergency-funds",
+    "https://nff.org/COVID-19-Response-Funders"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "covid-arts-aid-phl",
+   "name": "COVID-19 Arts Aid PHL Fund",
+   "short_name": "Arts Aid PHL",
+   "type": "pooled",
+   "area": "Arts",
+   "year": 2020,
+   "year_end": 2020,
+   "amount_usd": 4000000,
+   "amount_note": "Amount awarded by June 2020 to 467 organizations and 1,025 artists. William Penn Foundation gave a $2.5M lead grant. DDF's share is not disclosed.",
+   "funders": [
+    "Doris Duke Foundation",
+    "William Penn Foundation",
+    "Barra Foundation",
+    "Wyncote Foundation",
+    "Connelly Foundation",
+    "Independence Foundation",
+    "John S. and James L. Knight Foundation",
+    "Lenfest Foundation",
+    "Victory Foundation",
+    "PECO",
+    "PNC",
+    "TD Bank"
+   ],
+   "manager": null,
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A regional emergency relief fund for Greater Philadelphia arts and culture organizations and individual artists during COVID-19. DDF was named a partner at launch.",
+   "sources": [
+    "https://philaculture.org/artsaidphl",
+    "https://philaculture.org/about-us/press-room/news/the-covid-19-arts-aid-phl-fund-announces-4-million-in-grants-to-467-arts-culture-organizations-and-1025-artists/",
+    "https://www.inquirer.com/arts/philadelphia-arts-new-fund-coronavirus-covid-19-arts-aid-phl-william-penn-foundation-20200408.html",
+    "https://williampennfoundation.org/node/525"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "dance-nyc-coronavirus-relief",
+   "name": "Coronavirus Dance Relief Fund",
+   "short_name": "Dance/NYC Relief Fund",
+   "type": "pooled",
+   "area": "Arts",
+   "year": 2020,
+   "year_end": 2020,
+   "amount_usd": 1000500,
+   "amount_note": "Total awarded March–September 2020. DDF's share is not disclosed.",
+   "funders": [
+    "Doris Duke Foundation",
+    "New York Community Trust",
+    "Howard Gilman Foundation",
+    "Mertz Gilmore Foundation",
+    "Arnhold Foundation",
+    "Ford Foundation",
+    "Stavros Niarchos Foundation",
+    "Harkness Foundation for Dance"
+   ],
+   "manager": "Dance/NYC",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "Dance/NYC's COVID-19 relief fund for New York City freelance dance workers and dance-making organizations. Funder lists vary by round, so this list is partial.",
+   "sources": [
+    "https://dance.nyc/COVID-19/Relief-Fund/2020",
+    "https://www.dance.nyc/covid-19/Relief-Fund/Organizations/call-for-proposals-2020-round-two"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "covid-frcs",
+   "name": "COVID-19 Fund to Retain Clinical Scientists",
+   "short_name": "COVID-19 FRCS",
+   "type": "co-funded",
+   "area": "Medical Research",
+   "year": 2021,
+   "year_end": null,
+   "amount_usd": 12100000,
+   "amount_note": "Total awarded in Nov 2021 to 22 U.S. medical schools (about $500K–$550K each over 2 years). The June 2021 call offered up to $10M. Individual funders paid for specific schools' grants; for example, AHA funded Duke's.",
+   "funders": [
+    "Doris Duke Foundation",
+    "American Heart Association",
+    "Burroughs Wellcome Fund",
+    "John Templeton Foundation",
+    "Rita Allen Foundation",
+    "Walder Foundation"
+   ],
+   "manager": "Doris Duke Charitable Foundation (central RFP)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "Institutional grants to U.S. medical schools to support early-career physician-scientists whose family caregiving duties grew during COVID-19. It builds on DDCF's earlier single-funder Fund to Retain Clinical Scientists.",
+   "sources": [
+    "https://www.bwfund.org/news/announcing-new-institutional-grant-opportunity-covid-19-fund-to-retain-clinical-scientists/",
+    "https://dorisduke.org/funding-areas/medical-research/fund-to-retain-clinical-scientists",
+    "https://ctsi.duke.edu/news/duke-receives-funding-through-largest-us-collaborative-effort-equity-biomedicine",
+    "https://news.unchealthcare.org/2021/11/caregivers-at-carolina-program-awarded-clinical-scientist-retention-grant"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "pathways-health-research",
+   "name": "Collective to Strengthen Pathways for Health Research",
+   "short_name": "Pathways for Health Research Collective",
+   "type": "co-funded",
+   "area": "Medical Research",
+   "year": 2024,
+   "year_end": null,
+   "amount_usd": null,
+   "amount_note": "No amount disclosed. The collective held 18 symposia in 2025. In 2026 it opened a one-time collaborative funding call, \"Demonstrating Health Solutions Science in Action\" (pre-proposals due Nov 18, 2026), with intake centralized at DDF.",
+   "funders": [
+    "Doris Duke Foundation",
+    "American Cancer Society",
+    "American Heart Association",
+    "Burroughs Wellcome Fund",
+    "Dana Foundation",
+    "Donaghue Foundation",
+    "Prebys Foundation",
+    "Robertson Foundation",
+    "Susan G. Komen"
+   ],
+   "manager": "Doris Duke Foundation (lead)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A DDF-led funder collective to raise attention and resources for \"health solutions science\": research on disease prevention, care delivery and clinical encounters, as opposed to basic biomedical science. Dana described it as newly launched in Sept 2024.",
+   "sources": [
+    "https://www.dorisduke.org/StrengtheningPathways",
+    "https://dana.org/article/philanthropic-collective-aims-to-improve-disease-prevention-and-care/",
+    "https://dana.org/article/improving-health-requires-more-than-medicine/",
+    "https://donaghue.org/grant-opportunities/preventing-and-improving-clinical-encounters-sparking-national-discussion-to-strengthen-health-research/",
+    "https://atomgrants.com/grant/doris-duke-demonstrating-health-solutions-science"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "opt-in-for-families",
+   "name": "Opportunities for Prevention and Transformation Initiative (OPT-In for Families)",
+   "short_name": "OPT-In for Families",
+   "type": "co-funded",
+   "area": "Child Well-being",
+   "year": 2024,
+   "year_end": null,
+   "amount_usd": 33000000,
+   "amount_note": "Three-year initiative total: about $9M per site from a coalition of funders. Individual funder shares are not disclosed.",
+   "funders": [
+    "Doris Duke Foundation",
+    "The Duke Endowment",
+    "Aviv Foundation"
+   ],
+   "manager": "Foster America (overall coordination); partners Harvard Kennedy School Government Performance Lab, Chapin Hall, Think of Us",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A demonstration initiative to shift child welfare toward prevention through community response pathways. Its four sites are Washington, D.C., Kentucky, Oregon and South Carolina.",
+   "sources": [
+    "https://www.dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention",
+    "https://www.insidephilanthropy.com/home/2024/4/15/the-doris-duke-charitable-foundation-stands-up-an-initiative-to-transform-the-child-welfare-system",
+    "https://govlab.hks.harvard.edu/project/building-a-new-model-for-child-well-being-opt-in-initiative/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "wtgrant-institutional-challenge",
+   "name": "Institutional Challenge Grant",
+   "short_name": "Institutional Challenge Grant",
+   "type": "co-funded",
+   "area": "Child Well-being",
+   "year": 2021,
+   "year_end": null,
+   "amount_usd": 2600000,
+   "amount_note": "About $2.6M per annual cohort (2023, 2025 and 2026 rounds), or $650K per grantee over 3 years. The year is DDF's earliest confirmed co-funding round; it may have started earlier.",
+   "funders": [
+    "Doris Duke Foundation",
+    "William T. Grant Foundation",
+    "Spencer Foundation",
+    "Bezos Family Foundation",
+    "Annie E. Casey Foundation"
+   ],
+   "manager": "William T. Grant Foundation",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "Grants to university–public agency/nonprofit research-practice partnerships working to reduce inequality in youth outcomes. Bezos joined in 2023 and Annie E. Casey in 2026; AIR co-funded the 2021 round. Some funded projects concern youth leaving foster care and child welfare.",
+   "sources": [
+    "https://wtgrantfoundation.org/announcing-the-2025-institutional-challenge-grantees",
+    "https://wtgrantfoundation.org/bezos-family-foundation-doris-duke-foundation-spencer-foundation-and-william-t-grant-foundation-award-grants-to-four-partnerships-addressing-social-issues",
+    "https://wtgrantfoundation.org/announcing-the-2026-institutional-challenge-grantees-foundations-award-2-6-million-for-research-practice-partnerships",
+    "https://philanthropynewyork.org/node/38612"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "tribal-nations-conservation-pledge",
+   "name": "Tribal Nations Conservation Pledge",
+   "short_name": "Tribal Conservation Pledge",
+   "type": "co-funded",
+   "area": "Environment",
+   "year": 2023,
+   "year_end": null,
+   "amount_usd": 102500000,
+   "amount_note": "Total commitments from 15 funders over five years, announced March 2023. DDF's share was about $32M (roughly one third). Each funder directs its own grants, and funders can also give directly to the fund.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Gordon and Betty Moore Foundation",
+    "Christensen Fund",
+    "Alaska Conservation Foundation",
+    "Decolonizing Wealth Project"
+   ],
+   "manager": "Native Americans in Philanthropy and Biodiversity Funders Group (organizers; Tribal Nations Funding Collaborative)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A funder pledge, tied to the America the Beautiful Challenge, directing money to conservation led by Tribes, inter-Tribal organizations and Indigenous-led nonprofits. Only 5 of the 15 funders are named in the sources.",
+   "sources": [
+    "https://www.dorisduke.org/news/doris-duke-foundation-and-partners-announce-over-100-million-for-tribal-led-conservation",
+    "https://news.mongabay.com/2023/04/funders-commit-102-5-million-to-support-tribal-led-conservation-efforts-in-the-u-s/",
+    "https://www.philanthropy.com/article/15-grant-makers-pool-102-5-million-for-indigenous-led-conservation-efforts"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "nefa-national-dance-project",
+   "name": "NEFA National Dance Project",
+   "short_name": "National Dance Project",
+   "type": "co-funded",
+   "area": "Arts",
+   "year": 1999,
+   "year_end": 2026,
+   "amount_usd": null,
+   "amount_note": "No amounts disclosed. DDF has been a lead funder since 1999, alongside Mellon. Mellon ended its NDP support in 2025. The final Production Grant cohort was named in Sept 2026; Presentation grants and the Travel Fund continue.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Mellon Foundation",
+    "Aliad Fund at the Boston Foundation"
+   ],
+   "manager": "New England Foundation for the Arts (NEFA)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A long-running national regranting program supporting the creation and U.S. touring of dance works. It falls within the 2018–2026 window as an active co-funded program.",
+   "sources": [
+    "https://www.nefa.org/node/787",
+    "https://www.npr.org/2025/09/09/nx-s1-5526923/twenty-new-dance-projects-will-receive-up-to-100k-each-but-the-grant-program-is-ending"
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "nefa-national-theater-project",
+   "name": "NEFA National Theater Project",
+   "short_name": "National Theater Project",
+   "type": "co-funded",
+   "area": "Arts",
+   "year": 2017,
+   "year_end": null,
+   "amount_usd": 750000,
+   "amount_note": "DDCF's 2-year grant (Dec 2017) expanding Creation and Touring grants. Mellon is the lead funder; its amount is not disclosed. NEFA said in Sept 2024 that NTP was entering its final grant cycle in its current form, so the end year is unconfirmed.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Mellon Foundation"
+   ],
+   "manager": "New England Foundation for the Arts (NEFA)",
+   "scope": "US",
+   "countries": [
+    "United States"
+   ],
+   "description": "A NEFA regranting program supporting the creation and national touring of devised theater, with lead funding from Mellon and additional support from DDF.",
+   "sources": [
+    "https://www.nefa.org/node/9882",
+    "https://www.insidephilanthropy.com/home/2018/8/29/new-england-foundation-for-the-arts-national-theater-project"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "ethiopia-data-use-partnership",
+   "name": "Ethiopia Data Use Partnership (DUP)",
+   "short_name": "Ethiopia DUP",
+   "type": "co-funded",
+   "area": "Cross-program",
+   "year": 2018,
+   "year_end": 2023,
+   "amount_usd": 5000000,
+   "amount_note": "DDCF grant of $5M over 5 years (awarded Jan 1, 2018) to strengthen Ethiopia's health information system in four regions. Gates' larger primary funding (awarded Oct 2016) is not included. The end year is the nominal end of DDCF's 5-year grant.",
+   "funders": [
+    "Doris Duke Foundation",
+    "Bill & Melinda Gates Foundation"
+   ],
+   "manager": "JSI Research & Training Institute",
+   "scope": "International",
+   "countries": [
+    "Ethiopia"
+   ],
+   "description": "A partnership with Ethiopia's Ministry of Health and regional health bureaus to improve health data quality and use, part of the Phase 2 work of DDCF's African Health Initiative. The DUP site says it is \"Funded by the Bill & Melinda Gates Foundation and the Doris Duke Charitable Foundation\".",
+   "sources": [
+    "https://ethiopiadup.jsi.com/?p=86",
+    "https://www.ddcf.org/grants/Grant-Recipients/JSI-ethiopia/",
+    "https://ethiopiadup.jsi.com/wp-content/uploads/2024/04/DDCF-supported-activity-summary-report.pdf",
+    "https://www.insidephilanthropy.com/home/2019/1/17/a-foundation-set-out-to-bolster-african-health-systems-what-has-it-achieved",
+    "https://www.dorisduke.org/news/what-15-years-of-research-in-africa-reveals-about-resilient-and-responsive-health-systems"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "excluded": [
+  {
+   "name": "Doris Duke Performing Artist Recovery Fund (2021, $3M)",
+   "reason": "DDCF-only money. NYCT administered it through a fund DDCF created at NYCT and did not co-fund."
+  },
+  {
+   "name": "WCS Climate Adaptation Fund",
+   "reason": "Funded by DDCF alone and managed by WCS. No co-funders found; its collaboration with the Climate Resilience Fund was a report, not funding."
+  },
+  {
+   "name": "Performing Arts Readiness (LYRASIS)",
+   "reason": "Every grant found was from Mellon. No evidence of DDF funding."
+  },
+  {
+   "name": "Building Bridges co-funding (Sundance Building Bridges Fellowship, CAAM Documentary Fund)",
+   "reason": "Sundance, the Islamic Scholarship Fund and CAAM are DDF grantees or administrators, not co-funders. No pooled or co-funded Building Bridges fund was found."
+  },
+  {
+   "name": "Clinical Scientist Development Award (CSDA)",
+   "reason": "No partner co-funders found on DDF's CSDA announcements (2020–2023)."
+  },
+  {
+   "name": "African Health Initiative (overall, 2007–2024)",
+   "reason": "Launched in 2007 as a DDCF-funded $100M initiative, before the study window. Only its Ethiopia DUP component has a documented co-funder (Gates), so that component is listed separately."
+  },
+  {
+   "name": "Adaptation and Resilience Fund (Rockefeller Foundation, ClimateWorks; 2025)",
+   "reason": "DDF is not among the listed funders."
+  },
+  {
+   "name": "Disability Futures Fellows (Ford and Mellon) / Ford Disability x Tech Fund (Borealis)",
+   "reason": "No DDF involvement found."
+  },
+  {
+   "name": "Forum on Climate Investing with RockCreek (2023)",
+   "reason": "A convening at Duke Farms, not a funding program."
+  },
+  {
+   "name": "Gates/Wellcome global health, malaria or tropical disease co-funding (2018–2026)",
+   "reason": "Searches found no such DDF program apart from the Ethiopia DUP."
+  }
+ ],
+ "leads": [
+  {
+   "lead": "Biodiversity funder collaborative (Consultative Group on Biological Diversity)",
+   "note": "DDF made a $250K, 1-year grant (Nov 2024) to develop a new collaborative philanthropic effort to reverse U.S. biodiversity loss. No name, pooled structure or co-funders were confirmed. Source: https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/consultative-group-on-biological-diversity6"
+  },
+  {
+   "lead": "Conservation Loan Collaborative (2024)",
+   "note": "DDF gave $750K to launch a platform hosting revolving loan funds for conservation organizations and funders. It may be a multi-funder vehicle; co-funders were not verified."
+  },
+  {
+   "lead": "Ethiopia DUP and the Global Fund",
+   "note": "One search summary said a DDF page lists the Global Fund to Fight AIDS, TB and Malaria as a DUP co-funder. The page could not be confirmed, and JSI's site names only Gates and DDCF."
+  },
+  {
+   "lead": "Artists Make Technology geographic eligibility",
+   "note": "The sources do not state whether AMT Lab or Pathways grantees must be U.S.-based. The 2026 cohort was announced in Barcelona. Check the 2026 cohort page (Mozilla returned 403)."
+  },
+  {
+   "lead": "Humanity AI open call and grantee geography",
+   "note": "A $10M open call was planned for summer 2026. Grantee countries are not stated; the Pulitzer Center grant supports journalists worldwide."
+  },
+  {
+   "lead": "Child welfare award co-funded by Casey, Doris Duke and Aviv",
+   "note": "An Inside Philanthropy piece (May 22, 2024, 'Seven funders working to improve child welfare and foster care') says Casey, Doris Duke and Aviv contributed to an unnamed award. Not identified."
+  },
+  {
+   "lead": "Institutional Challenge Grant start year",
+   "note": "A W.T. Grant PDF of 2018–2020 awards reportedly lists a project jointly supported by DDCF, so DDF's co-funding may predate 2021."
+  },
+  {
+   "lead": "DDCF pandemic statement on 'numerous collaborative pooled funds'",
+   "note": "In 2020 DDCF said it joined numerous pooled COVID relief funds nationwide. Others beyond NYC, Arts Aid PHL, Dance/NYC and Artist Relief probably exist, such as regional arts or jazz relief funds."
+  },
+  {
+   "lead": "Original Fund to Retain Clinical Scientists (2015–)",
+   "note": "Duke's FRCS materials say it is supported by AHA and DDCF ('AHA-DDCF', 2023), which suggests AHA co-funding of the non-COVID FRCS after 2021. Not verified."
+  },
+  {
+   "lead": "DDCF Natural Climate Solutions $20M initiative (2018)",
+   "note": "The press-release PDF returned 404, so co-funders were not verified."
+  },
+  {
+   "lead": "Shangri La / Islamic arts international programs",
+   "note": "Not researched for co-funding; a possible source of international activity."
+  }
+ ]
+}

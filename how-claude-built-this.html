@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Claude Built This</title>
+<style>
+:root{--bg:#14161a;--panel:#1b1e23;--line:#2c3037;--ink:rgba(255,255,255,.9);--ink-2:rgba(255,255,255,.66);--ink-3:rgba(255,255,255,.42)}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Helvetica Neue",Helvetica,Arial,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 60px} a{color:var(--ink)}
+h1{font-weight:500;font-size:1.9rem;margin:8px 0 4px} h2{font-weight:500;font-size:1.2rem;margin:34px 0 8px;border-top:1px solid var(--line);padding-top:20px}
+p,li{color:var(--ink-2)} .lead{color:var(--ink-2)}
+pre{white-space:pre-wrap;word-wrap:break-word;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;font:13px/1.55 ui-monospace,Consolas,monospace;color:var(--ink);max-height:none}
+details{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px} summary{cursor:pointer;color:var(--ink-2)}
+.phase{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:10px 0}
+.phase h3{margin:0 0 4px;font-weight:500;font-size:1rem}
+</style></head><body><div class="wrap">
+<p><a href="index.html">‹ Back to the visualization</a></p>
+<h1>How Claude built this network visualization</h1>
+<p class="lead">The original DDF Funders Network was built over 61 prompts. They were condensed into the single prompt below, with two additions: an international filter (where the money goes, by country) and a red/blue/green/orange color scheme. Claude Code (Claude Opus 5.5) then ran the prompt in November 2026.</p>
+
+<h2>The prompt</h2>
+<details open><summary>Show / hide the full prompt</summary><pre>You are helping me build a data visualization project for a Data Visualization class. Do the work in three phases and report back briefly after each phase before moving on.
+
+## Phase 1: Research and dataset
+
+1. Search the Doris Duke Foundation (DDF) website and the wider web for every grant program where DDF pooled or co-funded money with other funders (example: Humanity AI). Include both formal pooled funds and looser co-funding partnerships, and label each as &quot;pooled&quot; or &quot;co-funded&quot;.
+2. Group each program under DDF&#x27;s **official** program-area names as they appear on dorisduke.org (e.g., Arts, Child Well-being, Environment, Medical Research, Building Bridges, plus &quot;Cross-program&quot; if needed). Use each program&#x27;s official full name, and each funder&#x27;s official name (check each one).
+3. For each program, record: official name, DDF program area, year announced or first reported, total amount and what that amount means (pledge, goal, first round, or cumulative total), list of funders, manager or intermediary, source URLs, and a confidence level (high/medium/low).
+4. **Geography (new):** for each program, record where the money goes:
+   - `scope`: &quot;US&quot;, &quot;International&quot;, or &quot;Both&quot;
+   - `countries`: the list of recipient countries (ISO country names), and the region for each (Africa, Asia, Europe, Latin America &amp; Caribbean, Middle East, North America, Oceania). Include the US when US grantees receive funds.
+   - Include DDF&#x27;s international and global programs (for example global health or research work abroad), not only US ones. If a program funds work abroad but the countries are not public, set `countries` to &quot;Not disclosed&quot; and say so. Do not guess countries.
+5. For each funder, record: official name, type (private foundation, corporate, public charity, government, etc.), headquarters country, endowment or total assets (FY23 AUM or the latest tax filing from 2023–2024, with the source), website URL, and the programs they joined.
+6. Save everything in an Excel workbook `DDF_Pooled_Fund_Programs.xlsx` with tabs: Programs, Funders, Program–Funder links, Countries (one row per program–country pair), Excluded items, and Leads to follow up. Also export the same data as `data.json` for the visualization.
+7. Tell me which rows are medium/low confidence and which facts you could not verify.
+
+## Phase 2: The visualization (single self-contained `index.html`, D3.js v7)
+
+**Layout and encoding**
+- Network graph. Each dot is a funder. DDF is the central node.
+- Force-directed (spring) layout, with funders **clustered by program** so that co-funders of the same program sit together. Dots can be dragged. Scroll to zoom, plus +/− zoom buttons.
+- Edges: DDF→funder links have width set by the program&#x27;s funding amount. Funders that co-fund the same program are also linked to each other; these non-DDF links are much fainter and thinner, in gray. Line width = combined size of the programs the two funders share. Use dotted lines when no amount was found. In the &quot;About this data&quot; text, explain that the lines show shared membership, not a direct relationship.
+- Dot size = funder endowment (square-root scale; largest ≈ 24px radius, smallest ≈ 4px). Funders with no endowment figure get a fixed size of about 6px, drawn pale with a thin outline. The legend notes &quot;pale = endowment not found&quot;.
+- Dot color = DDF program area. A funder in more than one program area is drawn as a pie split across those colors.
+- **Tap targets:** add invisible hit areas of at least 16px radius on phones and 10px on desktop.
+
+**Color scheme (replace the original palette)**
+Dark background (#14161a), white-ish text (90% white). Program-area colors from a saturated red/blue/green/orange family, each checked for contrast on the dark background:
+- Arts: red #E53935
+- Medical Research: blue #1E88E5
+- Environment: green #43A047
+- Child Well-being: orange #FB8C00
+- Building Bridges: purple #8E24AA
+- Cross-program: teal #00ACC1
+- Extra areas if needed: crimson #C62828, sky blue #64B5F6, lime #9CCC65, amber #FFB300
+- DDF node: white with a thin gold ring (#FFD54F).
+- Highlight ring on selected funders: bright yellow #FFEB3B (not teal, so it stays distinct from the program colors).
+- Non-DDF links: gray (#6b6f76) at low opacity; when highlighted, a slightly lighter gray, never white.
+- International-only indicators (see below) use the same palette; don&#x27;t introduce new hues.
+
+**Filters and controls (top bar)**
+- **Program filter:** a dropdown of the 13 (or however many) programs, using official names. Choosing one highlights its funders (yellow ring, pale dots fill in more strongly) and opens that program&#x27;s card on the right. &quot;All&quot; clears the highlight and closes the card.
+- **Program-area filter:** using the official DDF area names.
+- **Year filter:** a range slider with two handles (first and last year shown) and a ▶ Play button that moves the end handle forward year by year. During playback, show the current year in the top-left corner of the graph: 50px, light gray, Helvetica.
+- **International filter (new):**
+  - A &quot;Scope&quot; toggle: All / US only / International / Both.
+  - A searchable multi-select &quot;Countries&quot; list, grouped by region, built only from countries in the data, with a count of programs next to each.
+  - Filtering hides funders and links that don&#x27;t belong to a matching program. All filters combine (AND). If nothing matches, show &quot;No programs match these filters.&quot;
+  - Funders tied to at least one international program get a small globe marker (or a dashed outer ring) so international reach is visible without filtering.
+  - Optional: a small world map (D3 geoNaturalEarth1 + world-atlas TopoJSON) under the graph, shading recipient countries by number of programs, using a light-to-dark blue scale. Clicking a country applies the country filter, and selecting a program outlines its countries.
+- **Reset** button: clears all filters, highlights, and open cards.
+- In the graph&#x27;s top-right corner, add two lightweight text buttons: &quot;N funders&quot; and &quot;N programs&quot;. Each opens a list panel on the right. Sort funders by number of programs, then A–Z. Clicking an item opens its detail card, with a &quot;Back to list&quot; button.
+
+**Detail cards (right-side panel)**
+- **Funder card:** name; endowment and source year, then &quot;· Website ↗&quot; (opens in a new tab); on the next line &quot;**X** programs with DDF&quot;; HQ country; a list of program names, each clickable to open the program view (with &quot;Back to [funder]&quot;).
+- **Program card:** official name, program area (color swatch), year, amount and what it means, scope, **recipient countries** (as chips; clicking a chip filters by that country), manager, list of funders (clickable, with &quot;Back to program&quot;), and source links.
+- **Edge tooltip:** on hover over DDF→funder links, show the program(s) and amount. Turn off hover on non-DDF links; clicking them still opens a small card.
+
+**Typography and style**
+- Minimalist. Title &quot;DDF Funders Network&quot;, centered, about 2.2× the body size. Subtitle: &quot;Each dot represents a funder. Click a funder or a line for details. Scroll to zoom.&quot;
+- Program legend on its own line under the controls, with the scope/globe legend next to it.
+- Funder labels: 90% white. Funders with 2+ programs in regular weight; funders with 1 program in a lighter, thinner weight. On hover, make the label only slightly bolder (no fuzzy glow). On hover/click, highlight the node and its neighbors, and fade everything else.
+- Add a hint that dots are clickable: &quot;click for more info ›&quot; as a small underlined link to the right of the funder name in the tooltip.
+- A collapsible &quot;About this data&quot; section under the legend, closed on load, explaining the sources, the research date, the encodings (size, color, lines, dotted lines, pale dots, globe marker), how countries were found, and the caveats.
+- Responsive: works on a laptop and a phone.
+
+## Phase 3: Check and deliver
+1. Test that every program in the dropdown highlights its funders. Test every Scope option and several countries. Test Reset. Check that no program is lost when combining filters.
+2. List every funder website link you did not actually open, and every country you could not confirm.
+3. Give me the files (`index.html`, `data.json`, the workbook) and tell me how to deploy them to Vercel or GitHub Pages.
+4. Add a page `how-claude-built-this.html`, linked under &quot;About this data&quot;, that shows this prompt and a short summary of what you did in each phase.
+
+Don&#x27;t invent data. Wherever a figure is missing, show it as missing in the data and the visualization, and tell me.</pre></details>
+
+<h2>What Claude did</h2>
+<div class="phase"><h3>Phase 1: Research and dataset</h3>
+<p>Three research passes, run with web search and by reading DDF, partner and press pages: (1) DDF's pooled and co-funded programs, (2) a focused search for programs that send money outside the US, and (3) endowments and websites for every funder, using IRS filings (ProPublica Nonprofit Explorer) for FY2023.</p>
+<ul><li>17 programs, 77 funders besides DDF, and 64 funders with an endowment figure.</li>
+<li>Only 3 programs send money abroad, all of them co-funded through DDF's former African Health Initiative: Ethiopia Data Use Partnership (DUP) (Ethiopia), Connect Project: Introducing Community Health Agents to Accelerate Achievement of MDGs 4 and 5 in Tanzania (Tanzania PHIT Partnership) (Tanzania), Ghana Essential Health Interventions Program (GEHIP) - Ghana PHIT Partnership (Ghana). DDF's other international grants (Rwanda, Mozambique, Zambia, the International Clinical Research Fellowship) had no co-funder, so they are excluded. The reasons are in the workbook.</li>
+<li>Output: <code>DDF_Pooled_Fund_Programs.xlsx</code>, with tabs for Programs, Funders, Program–Funder links, Countries, Excluded items and Leads, plus <code>data.json</code> / <code>data.js</code>.</li></ul></div>
+<div class="phase"><h3>Phase 2: The visualization</h3>
+<p>A single <code>index.html</code> using D3.js v7.</p>
+<ul><li><b>Layout:</b> a force-directed layout that clusters funders by program around DDF.</li>
+<li><b>Size and color:</b> dot size is endowment; color is DDF program area, with pie splits for funders in more than one area.</li>
+<li><b>Filters:</b> program, area, years with Play, where funds go (US only / International / Both), and a searchable country list.</li>
+<li><b>Panels and map:</b> funder and program cards with back navigation, a world map of recipient countries, a data table, and an "About this data" section.</li>
+<li><b>Colors:</b> the program-area palette was checked with a colorblind-safety tool. Red, blue, green and orange were adjusted (indigo blue, teal-green, light orange) until every pair of colors stayed distinguishable under simulated color blindness on the dark background.</li></ul></div>
+<div class="phase"><h3>Phase 3: Checks</h3>
+<ul><li>All 17 programs in the dropdown were tested. Each one highlighted all of its funders.</li>
+<li>Every "where funds go" option, the country filter, a map click, Play, Reset and the phone layout were tested in a browser.</li></ul>
+<p><b>Medium or low confidence programs:</b></p><ul><li>Doris Duke Foundation and Ford Foundation grants supporting technology infrastructure in the performing arts</li><li>COVID-19 Arts Aid PHL Fund</li><li>Coronavirus Dance Relief Fund</li><li>Institutional Challenge Grant</li><li>NEFA National Theater Project</li><li>Connect Project: Introducing Community Health Agents to Accelerate Achievement of MDGs 4 and 5 in Tanzania (Tanzania PHIT Partnership)</li><li>Ghana Essential Health Interventions Program (GEHIP) - Ghana PHIT Partnership</li></ul>
+<p><b>Funder websites not opened during research:</b></p><ul><li>Arnhold Foundation</li><li>Harkness Foundation for Dance</li><li>Jennifer and Jonathan Allan Soros</li><li>Joan Ganz Cooney &amp; Holly Peterson Fund</li><li>Jon Stryker and Slobodan Randjelović</li><li>Kenneth C. Griffin Charitable Fund</li><li>Lenfest Foundation</li><li>PNC</li><li>Victory Foundation</li><li>Comic Relief</li></ul></div>
+
+<h2>Caveats</h2>
+<ul><li>Programs are pooled funds or co-funding partnerships that name DDF and at least one other funder. DDF's full grants database was not reviewed line by line.</li>
+<li>Endowments for art foundations (Warhol, Frankenthaler, Joan Mitchell and others) include artworks at market value. Corporate funders have no comparable figure.</li>
+<li>Amounts mean different things for different programs (pledge, goal, first round, cumulative). Line widths use the program's total, not DDF's or the partner's share.</li></ul>
+<p><a href="index.html">‹ Back to the visualization</a></p>
+</div></body></html>

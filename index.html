@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DDF Funders Network</title>
+<meta name="description" content="Network of funders that pooled or co-funded grant programs with the Doris Duke Foundation, with US and international filters.">
+<style>
+:root{
+  --bg:#14161a; --panel:#1b1e23; --panel-2:#22262c; --line:#2c3037;
+  --ink:rgba(255,255,255,.9); --ink-2:rgba(255,255,255,.66); --ink-3:rgba(255,255,255,.42);
+  --gray-link:#6b6f76; --gray-link-hi:#9aa0a6; --hl:#FFEB3B; --ddf-ring:#FFD54F; --intl:#cfd8dc;
+  --font:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.45}
+a{color:var(--ink);text-underline-offset:2px}
+button,select,input{font-family:inherit;font-size:13px;color:var(--ink)}
+.wrap{max-width:1440px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:2.2rem;font-weight:500;text-align:center;margin:8px 0 2px;letter-spacing:.01em}
+.subtitle{text-align:center;color:var(--ink-2);margin:0 0 18px}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.ctl{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ctl > label,.ctl > .lab{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+select{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;max-width:260px}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{background:var(--panel-2);border:0;border-right:1px solid var(--line);padding:6px 10px;cursor:pointer;white-space:nowrap}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:#3a3f47;color:#fff}
+.btn{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn:hover,.seg button:hover{background:#30343b}
+.btn:focus-visible,.seg button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--hl);outline-offset:1px}
+
+/* country multiselect */
+.ms{position:relative}
+.ms-pop{position:absolute;z-index:30;top:calc(100% + 4px);left:0;width:290px;max-height:380px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;box-shadow:0 8px 30px rgba(0,0,0,.5);display:none}
+.ms-pop.open{display:block}
+.ms-pop input[type=search]{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;margin-bottom:6px}
+.ms-group{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin:8px 2px 2px}
+.ms-item{display:flex;align-items:center;gap:6px;padding:3px 4px;border-radius:4px;cursor:pointer}
+.ms-item:hover{background:var(--panel-2)}
+.ms-item .n{margin-left:auto;color:var(--ink-3);font-size:12px}
+.ms-foot{display:flex;justify-content:space-between;margin-top:6px}
+
+/* dual range */
+.range{position:relative;width:190px;height:22px}
+.range .track{position:absolute;top:10px;left:0;right:0;height:2px;background:var(--line);border-radius:2px}
+.range .fill{position:absolute;top:10px;height:2px;background:var(--ink-2)}
+.range input{position:absolute;left:0;top:0;width:100%;height:22px;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none}
+.range input::-webkit-slider-thumb{pointer-events:all;-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#e8eaed;border:2px solid var(--bg);cursor:pointer}
+.range input::-moz-range-thumb{pointer-events:all;width:12px;height:12px;border-radius:50%;background:#e8eaed;border:2px solid var(--bg);cursor:pointer}
+.range input::-moz-range-track{background:none}
+.yearlab{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:12px}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 2px 4px;color:var(--ink-2);font-size:12.5px;align-items:center}
+.legend .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.legend2{margin-top:2px}
+.legend svg{vertical-align:middle;margin-right:4px}
+
+/* main */
+.main{display:grid;grid-template-columns:1fr;gap:14px;margin-top:10px}
+.main.with-panel{grid-template-columns:minmax(0,1fr) 340px}
+.graph-box{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+#graph{display:block;width:100%;touch-action:none}
+.corner{position:absolute;top:10px;right:10px;display:flex;gap:6px}
+.ghost{background:rgba(20,22,26,.7);border:1px solid var(--line);border-radius:14px;padding:4px 10px;cursor:pointer;color:var(--ink-2);font-size:12px}
+.ghost:hover{color:#fff;border-color:#555}
+.zoom{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:4px}
+.zoom button{width:30px;height:30px;border-radius:6px;background:rgba(20,22,26,.8);border:1px solid var(--line);cursor:pointer;font-size:16px;line-height:1}
+.bigyear{position:absolute;top:8px;left:14px;font:300 50px/1 Helvetica,Arial,sans-serif;color:rgba(255,255,255,.28);pointer-events:none;opacity:0;transition:opacity .4s}
+.bigyear.on{opacity:1}
+.empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:var(--ink-3);pointer-events:none}
+.empty.on{display:flex}
+
+/* panel */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:none;max-height:var(--graph-h,700px);overflow:auto}
+.with-panel .panel{display:block}
+.panel .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.panel .back{background:none;border:0;color:var(--ink-2);cursor:pointer;padding:2px 0;font-size:12.5px;text-align:left}
+.panel .back:hover{color:#fff;text-decoration:underline}
+.panel .x{background:none;border:0;color:var(--ink-3);cursor:pointer;font-size:18px;line-height:1;padding:2px 4px}
+.panel h2{font-size:1.15rem;font-weight:500;margin:4px 0 6px}
+.panel .meta{color:var(--ink-2);font-size:13px;margin:2px 0}
+.panel .meta b{color:#fff}
+.panel h3{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin:14px 0 6px;font-weight:500}
+.panel ul{list-style:none;margin:0;padding:0}
+.panel li{padding:3px 0}
+.linkish{background:none;border:0;padding:0;color:var(--ink);cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:3px;font-size:13.5px}
+.linkish:hover{text-decoration-color:#fff}
+.chip{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:2px 9px;margin:0 4px 5px 0;font-size:12px;cursor:pointer}
+.chip:hover{border-color:#777}
+.chip.static{cursor:default}
+.tag{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 5px;color:var(--ink-2);margin-left:4px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.desc{color:var(--ink-2);font-size:13px}
+.src a{font-size:12px;color:var(--ink-2);word-break:break-all}
+.listrow{display:flex;justify-content:space-between;gap:8px}
+.listrow .n{color:var(--ink-3);font-size:12px;white-space:nowrap}
+
+/* tooltip */
+.tip{position:fixed;z-index:50;pointer-events:none;background:rgba(27,30,35,.97);border:1px solid #3a3f47;border-radius:6px;padding:8px 10px;font-size:12.5px;max-width:280px;opacity:0;transition:opacity .12s}
+.tip.on{opacity:1}
+.tip .t{font-weight:500;color:#fff}
+.tip .more{color:var(--ink-2);text-decoration:underline;text-underline-offset:2px;margin-left:6px;white-space:nowrap}
+.tip .m{color:var(--ink-2)}
+
+/* graph marks */
+.link{fill:none}
+.link.co{stroke:var(--gray-link)}
+.node{cursor:pointer}
+.node text{fill:rgba(255,255,255,.9);font-size:10.5px;paint-order:stroke;stroke:var(--bg);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.node text.single{font-weight:300;fill:rgba(255,255,255,.62)}
+.node text.multi{font-weight:500}
+.node text.ddf{font-weight:600;font-size:13px}
+.node.hover text{font-weight:600}
+.node.hover text.single{font-weight:400;fill:rgba(255,255,255,.85)}
+.faded{opacity:.1}
+.hlring{fill:none;stroke:var(--hl);stroke-width:2}
+
+/* map */
+.mapbox{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.mapbox .hd{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+.mapbox h2{font-size:1rem;font-weight:500;margin:0}
+.mapbox .note{font-size:12px;color:var(--ink-3)}
+#map{width:100%;display:block}
+#map .country{stroke:#14161a;stroke-width:.4}
+#map .country.has{cursor:pointer}
+#map .country.sel{stroke:var(--hl);stroke-width:1.4}
+.ramp{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3)}
+.ramp i{display:inline-block;width:90px;height:8px;border-radius:2px}
+
+/* about / table */
+details{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+summary{cursor:pointer;color:var(--ink-2)}
+details p,details li{color:var(--ink-2);font-size:13px;max-width:900px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:8px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink-3);font-weight:500;text-transform:uppercase;font-size:11px;letter-spacing:.05em}
+td{color:var(--ink-2)}
+.tablewrap{overflow-x:auto}
+footer{color:var(--ink-3);font-size:12px;margin-top:16px;text-align:center}
+
+@media (max-width:900px){
+  .main.with-panel{grid-template-columns:1fr}
+  .panel{max-height:none}
+  h1{font-size:1.7rem}
+  select{max-width:100%}
+  .range{width:150px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>DDF Funders Network</h1>
+  <p class="subtitle">Each dot represents a funder. Click a funder or a line for details. Scroll to zoom.</p>
+
+  <div class="controls" role="group" aria-label="Filters">
+    <div class="ctl"><label for="fProgram">Grant Programs</label>
+      <select id="fProgram"><option value="">All programs</option></select></div>
+    <div class="ctl"><label for="fArea">DDF Program Area</label>
+      <select id="fArea"><option value="">All areas</option></select></div>
+    <div class="ctl"><span class="lab" id="scopeLab">Where funds go</span>
+      <div class="seg" id="fScope" role="group" aria-labelledby="scopeLab">
+        <button data-v="All" aria-pressed="true">All</button>
+        <button data-v="US" aria-pressed="false">US only</button>
+        <button data-v="International" aria-pressed="false" title="Programs that fund work only outside the US">International</button>
+        <button data-v="Both" aria-pressed="false" title="Programs that fund work in the US and abroad">Both</button>
+      </div></div>
+    <div class="ctl ms"><span class="lab">Countries</span>
+      <button class="btn" id="msBtn" aria-haspopup="true" aria-expanded="false">All countries ▾</button>
+      <div class="ms-pop" id="msPop" role="dialog" aria-label="Choose countries">
+        <input type="search" id="msSearch" placeholder="Search countries…" aria-label="Search countries">
+        <div id="msList"></div>
+        <div class="ms-foot"><button class="btn" id="msClear">Clear</button><button class="btn" id="msDone">Done</button></div>
+      </div></div>
+    <div class="ctl"><span class="lab">Years <span class="yearlab" id="yearLab"></span></span>
+      <div class="range"><div class="track"></div><div class="fill" id="rFill"></div>
+        <input type="range" id="y0" aria-label="First year"><input type="range" id="y1" aria-label="Last year"></div></div>
+    <div class="ctl"><span class="lab">&nbsp;</span><div style="display:flex;gap:6px">
+      <button class="btn" id="play">▶ Play</button><button class="btn" id="reset">Reset</button></div></div>
+  </div>
+
+  <div class="legend" id="legend" aria-label="Program area colors"></div>
+  <div class="legend legend2">
+    <span><svg width="22" height="14"><circle cx="7" cy="7" r="3" fill="#bbb"/><circle cx="17" cy="7" r="5" fill="#bbb"/></svg>size = endowment</span>
+    <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#bbb" fill-opacity=".22" stroke="#bbb" stroke-width="1"/></svg>pale = endowment not found</span>
+    <span><svg width="18" height="18"><circle cx="9" cy="9" r="4" fill="#bbb"/><circle cx="9" cy="9" r="7.5" fill="none" stroke="#cfd8dc" stroke-width="1.2" stroke-dasharray="2 2"/></svg>dashed ring = funds work outside the US</span>
+    <span><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#bbb" stroke-width="2"/></svg>line width = program funding</span>
+    <span><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#bbb" stroke-width="1.5" stroke-dasharray="2 3"/></svg>dotted = amount not found</span>
+  </div>
+
+  <div class="main" id="main">
+    <div class="graph-box" id="graphBox">
+      <svg id="graph" role="img" aria-label="Network of funders co-funding programs with the Doris Duke Foundation"></svg>
+      <div class="bigyear" id="bigYear"></div>
+      <div class="corner"><button class="ghost" id="cntFunders"></button><button class="ghost" id="cntPrograms"></button></div>
+      <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button></div>
+      <div class="empty" id="empty">No programs match these filters.</div>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+
+  <section class="mapbox" id="mapbox">
+    <div class="hd"><h2>Where the money goes</h2>
+      <span class="ramp" id="ramp"></span></div>
+    <div class="note">Countries that receive money from the programs shown (filters apply). Click a country to filter by it. Selecting a program outlines its countries.</div>
+    <svg id="map" role="img" aria-label="World map of recipient countries"></svg>
+  </section>
+
+  <details id="about">
+    <summary>About this data</summary>
+    <div id="aboutBody"></div>
+    <p><a href="how-claude-built-this.html">How Claude built this network visualization?</a></p>
+  </details>
+
+  <details>
+    <summary>View the data as a table</summary>
+    <div class="tablewrap"><table id="dataTable"></table></div>
+  </details>
+  <footer id="foot"></footer>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="data.js"></script>
+<script>
+(function(){
+const DATA = window.DDF_DATA;
+const DDF = "Doris Duke Foundation";
+const isTouch = matchMedia("(pointer:coarse)").matches || innerWidth < 700;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt$ = v => v == null ? "not found" : v >= 1e9 ? `$${(v/1e9).toFixed(v>=1e10?0:1)}B` : v >= 1e6 ? `$${(v/1e6).toFixed(v>=1e7?0:1)}M` : `$${(v/1e3).toFixed(0)}K`;
+
+// ---------- lookups ----------
+const areaColor = new Map(DATA.areas.map(a => [a.name, a.color]));
+const programs = DATA.programs;
+const progById = new Map(programs.map(p => [p.id, p]));
+const funderInfo = new Map(DATA.funders.map(f => [f.name, f]));
+const countryInfo = new Map(DATA.countries.map(c => [c.name, c]));
+const years = programs.map(p => p.year).filter(Boolean);
+const YMIN = d3.min(years), YMAX = d3.max(years);
+
+// nodes
+const nodeMap = new Map();
+programs.forEach(p => p.funders.forEach(name => {
+  if (!nodeMap.has(name)) nodeMap.set(name, Object.assign({ id: name, programs: [] }, funderInfo.get(name) || { name }));
+  nodeMap.get(name).programs.push(p.id);
+}));
+const nodes = [...nodeMap.values()];
+nodes.forEach(n => {
+  n.isDDF = n.id === DDF;
+  n.areas = [...new Set(n.programs.map(id => progById.get(id).area))].sort((a,b) => DATA.areas.findIndex(x=>x.name===a) - DATA.areas.findIndex(x=>x.name===b));
+  n.intl = n.programs.some(id => progById.get(id).scope !== "US");
+  n.hasEndow = n.endowment_usd != null;
+});
+const maxEndow = d3.max(nodes.filter(n => !n.isDDF), n => n.endowment_usd) || 1;
+const rScale = d3.scaleSqrt().domain([0, maxEndow]).range([4, 24]);
+nodes.forEach(n => { n.r = n.hasEndow ? Math.max(4, Math.min(24, rScale(n.endowment_usd))) : 6; if (n.isDDF) n.r = Math.max(n.r, 14); });
+
+// links
+const linkMap = new Map();
+function addLink(a, b, pid) {
+  let s = a, t = b;
+  if (b === DDF || (a !== DDF && b < a)) { s = b; t = a; }
+  const k = s + "||" + t;
+  if (!linkMap.has(k)) linkMap.set(k, { id: k, s, t, programs: [], ddf: s === DDF });
+  linkMap.get(k).programs.push(pid);
+}
+programs.forEach(p => {
+  const others = p.funders.filter(f => f !== DDF);
+  if (p.funders.includes(DDF)) others.forEach(f => addLink(DDF, f, p.id));
+  for (let i = 0; i < others.length; i++) for (let j = i + 1; j < others.length; j++) addLink(others[i], others[j], p.id);
+});
+const links = [...linkMap.values()];
+
+// ---------- state ----------
+const state = { program: "", area: "", scope: "All", countries: new Set(), y0: YMIN, y1: YMAX, sel: null, playing: false };
+let active = new Set();      // active program ids
+let visNodes = [], visLinks = [];
+
+function programMatches(p, ignoreCountry) {
+  if (state.area && p.area !== state.area) return false;
+  if (state.scope !== "All" && p.scope !== state.scope) return false;
+  if (p.year && (p.year < state.y0 || p.year > state.y1)) return false;
+  if (!ignoreCountry && state.countries.size && !p.countries.some(c => state.countries.has(c))) return false;
+  return true;
+}
+
+// ---------- controls ----------
+const fProgram = d3.select("#fProgram"), fArea = d3.select("#fArea");
+[...programs].sort((a,b) => a.name.localeCompare(b.name)).forEach(p => fProgram.append("option").attr("value", p.id).text(p.name));
+DATA.areas.filter(a => programs.some(p => p.area === a.name)).forEach(a => fArea.append("option").attr("value", a.name).text(a.name));
+
+d3.select("#legend").html(DATA.areas.filter(a => programs.some(p => p.area === a.name))
+  .map(a => `<span><span class="sw" style="background:${a.color}"></span>${esc(a.name)}</span>`).join("")
+  + `<span><span class="sw" style="background:#fff;box-shadow:0 0 0 2px var(--ddf-ring)"></span>Doris Duke Foundation</span>`);
+
+fProgram.on("change", function(){
+  state.program = this.value;
+  if (!state.program) { state.sel = null; closePanel(); }
+  else { state.sel = { type: "program", id: state.program }; panelReset([viewProgramList(), viewProgram(state.program)]); }
+  update();
+});
+fArea.on("change", function(){ state.area = this.value; update(); });
+d3.selectAll("#fScope button").on("click", function(){
+  state.scope = this.dataset.v;
+  d3.selectAll("#fScope button").attr("aria-pressed", function(){ return String(this.dataset.v === state.scope); });
+  update();
+});
+
+// years
+const y0 = d3.select("#y0"), y1 = d3.select("#y1");
+[y0, y1].forEach(s => s.attr("min", YMIN).attr("max", YMAX).attr("step", 1));
+y0.property("value", YMIN); y1.property("value", YMAX);
+function syncYears(){
+  d3.select("#yearLab").text(state.y0 === state.y1 ? state.y0 : `${state.y0}–${state.y1}`);
+  const span = YMAX - YMIN || 1;
+  d3.select("#rFill").style("left", ((state.y0 - YMIN)/span*100) + "%").style("width", ((state.y1 - state.y0)/span*100) + "%");
+}
+y0.on("input", function(){ state.y0 = Math.min(+this.value, state.y1); this.value = state.y0; stopPlay(); update(); });
+y1.on("input", function(){ state.y1 = Math.max(+this.value, state.y0); this.value = state.y1; stopPlay(); update(); });
+
+let playTimer = null;
+function stopPlay(){ if (playTimer) clearInterval(playTimer); playTimer = null; state.playing = false; d3.select("#play").text("▶ Play"); d3.select("#bigYear").classed("on", false); }
+d3.select("#play").on("click", () => {
+  if (state.playing) return stopPlay();
+  state.playing = true; d3.select("#play").text("❚❚ Pause");
+  if (state.y1 >= YMAX) state.y1 = state.y0;
+  const tick = () => {
+    y1.property("value", state.y1);
+    d3.select("#bigYear").text(state.y1).classed("on", true);
+    update();
+    if (state.y1 >= YMAX) { clearInterval(playTimer); playTimer = null; state.playing = false; d3.select("#play").text("▶ Play"); setTimeout(() => d3.select("#bigYear").classed("on", false), 1800); return; }
+    state.y1++;
+  };
+  tick(); playTimer = setInterval(tick, 1100);
+});
+d3.select("#reset").on("click", () => {
+  stopPlay();
+  Object.assign(state, { program: "", area: "", scope: "All", y0: YMIN, y1: YMAX, sel: null });
+  state.countries.clear();
+  fProgram.property("value", ""); fArea.property("value", "");
+  y0.property("value", YMIN); y1.property("value", YMAX);
+  d3.selectAll("#fScope button").attr("aria-pressed", function(){ return String(this.dataset.v === "All"); });
+  closePanel(); renderMS(); update(); fit();
+});
+
+// countries multiselect
+const REGION_ORDER = ["North America","Latin America & Caribbean","Europe","Africa","Middle East","Asia","Oceania","Other"];
+function renderMS(){
+  const q = (d3.select("#msSearch").property("value") || "").toLowerCase();
+  const counts = new Map();
+  programs.forEach(p => { if (programMatches(p, true)) p.countries.forEach(c => counts.set(c, (counts.get(c)||0) + 1)); });
+  const all = [...new Set(programs.flatMap(p => p.countries))];
+  const groups = d3.group(all.filter(c => c.toLowerCase().includes(q)), c => (countryInfo.get(c)||{}).region || "Other");
+  let html = "";
+  REGION_ORDER.filter(r => groups.has(r)).forEach(r => {
+    html += `<div class="ms-group">${esc(r)}</div>`;
+    groups.get(r).sort().forEach(c => {
+      html += `<label class="ms-item"><input type="checkbox" value="${esc(c)}" ${state.countries.has(c)?"checked":""}>${esc(c)}<span class="n">${counts.get(c)||0}</span></label>`;
+    });
+  });
+  d3.select("#msList").html(html || `<div class="desc">No matches</div>`);
+  d3.selectAll("#msList input").on("change", function(){ this.checked ? state.countries.add(this.value) : state.countries.delete(this.value); update(); });
+  const n = state.countries.size;
+  d3.select("#msBtn").text(n === 0 ? "All countries ▾" : n === 1 ? `${[...state.countries][0]} ▾` : `${n} countries ▾`);
+}
+d3.select("#msBtn").on("click", (e) => { e.stopPropagation(); const pop = d3.select("#msPop"); const open = !pop.classed("open"); pop.classed("open", open); d3.select("#msBtn").attr("aria-expanded", open); if (open) {
+    renderMS();
+    // keep the popup inside the viewport
+    const el = pop.node(); el.style.left = "0px";
+    const r = el.getBoundingClientRect(), over = r.right - (document.documentElement.clientWidth - 8);
+    if (over > 0) el.style.left = (-over) + "px";
+    document.getElementById("msSearch").focus();
+  } });
+d3.select("#msSearch").on("input", renderMS);
+d3.select("#msClear").on("click", () => { state.countries.clear(); renderMS(); update(); });
+d3.select("#msDone").on("click", () => { d3.select("#msPop").classed("open", false); d3.select("#msBtn").attr("aria-expanded", false); });
+d3.select("#msPop").on("click", e => e.stopPropagation());
+document.addEventListener("click", () => { d3.select("#msPop").classed("open", false); d3.select("#msBtn").attr("aria-expanded", false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") d3.select("#msPop").classed("open", false); });
+function toggleCountry(c){ state.countries.has(c) ? state.countries.delete(c) : state.countries.add(c); renderMS(); update(); }
+
+// ---------- graph ----------
+const svg = d3.select("#graph");
+const box = document.getElementById("graphBox");
+let W = 900, H = 640;
+const root = svg.append("g");
+const gLinks = root.append("g"), gLinkHits = root.append("g"), gNodes = root.append("g");
+let zoomK = 1;
+const zoom = d3.zoom().scaleExtent([0.35, 5]).on("zoom", e => { root.attr("transform", e.transform); if ((e.transform.k >= 1.8) !== (zoomK >= 1.8)) { zoomK = e.transform.k; updateLabels(); } zoomK = e.transform.k; });
+svg.call(zoom).on("dblclick.zoom", null);
+svg.on("click", (e) => { if (e.target === svg.node()) { if (state.sel && state.sel.type !== "program") { state.sel = state.program ? { type: "program", id: state.program } : null; applyHighlight(); } } });
+d3.select("#zin").on("click", () => svg.transition().duration(250).call(zoom.scaleBy, 1.3));
+d3.select("#zout").on("click", () => svg.transition().duration(250).call(zoom.scaleBy, 1/1.3));
+
+function size(){
+  W = box.clientWidth;
+  H = Math.max(isTouch ? 480 : 560, Math.min(800, innerHeight - 230));
+  svg.attr("height", H).attr("viewBox", [0, 0, W, H]);
+  document.documentElement.style.setProperty("--graph-h", H + "px");
+}
+
+// cluster centers: one per program, around DDF
+let centers = new Map();
+function computeCenters(){
+  // lay out the clusters of the programs that are currently shown (all programs if none)
+  const shown = programs.filter(p => active.has(p.id));
+  const list = shown.length ? shown : programs;
+  const ordered = [...list].sort((a,b) => (DATA.areas.findIndex(x=>x.name===a.area) - DATA.areas.findIndex(x=>x.name===b.area)) || (a.year - b.year));
+  // angular share proportional to sqrt(#funders) so big pooled funds get more room
+  const wts = ordered.map(p => Math.sqrt(p.funders.length) + 0.6), tot = d3.sum(wts);
+  const R = Math.min(W, H) * (ordered.length <= 2 ? 0.28 : ordered.length <= 5 ? 0.32 : 0.38), sx = W > H ? Math.min(1.5, W / H * 0.85) : 1;
+  let acc = 0;
+  const prev = centers;
+  centers = new Map(programs.map(p => [p.id, prev.get(p.id) || { x: W/2, y: H/2 }]));
+  ordered.forEach((p, i) => { const a = ((acc + wts[i]/2) / tot) * 2 * Math.PI - Math.PI/2; acc += wts[i]; centers.set(p.id, { x: W/2 + R*Math.cos(a)*sx, y: H/2 + R*Math.sin(a) }); });
+}
+function targetOf(n){
+  if (n.isDDF) return { x: W/2, y: H/2 };
+  const ps = n.programs.filter(id => active.has(id));
+  const use = ps.length ? ps : n.programs;
+  return { x: d3.mean(use, id => centers.get(id).x), y: d3.mean(use, id => centers.get(id).y) };
+}
+
+const sim = d3.forceSimulation()
+  .force("link", d3.forceLink().id(d => d.id).distance(l => l.ddf ? 120 : 30).strength(l => l.ddf ? 0.002 : 0.02))
+  .force("charge", d3.forceManyBody().strength(-30).distanceMax(200))
+  .force("x", d3.forceX(d => targetOf(d).x).strength(d => d.isDDF ? 1 : 0.16))
+  .force("y", d3.forceY(d => targetOf(d).y).strength(d => d.isDDF ? 1 : 0.16))
+  .force("collide", d3.forceCollide(d => d.r + 3).iterations(2))
+  .on("tick", ticked);
+
+const wScaleDDF = d3.scaleSqrt().range([0.8, 7]);
+const wScaleCo = d3.scaleSqrt().range([0.4, 2.6]);
+function linkAmount(l){ const ps = l.programs.filter(id => active.has(id)).map(id => progById.get(id)); return { sum: d3.sum(ps, p => p.amount_usd || 0), known: ps.some(p => p.amount_usd != null), ps }; }
+function linkColor(l){
+  if (!l.ddf) return null;
+  const areas = [...new Set(linkAmount(l).ps.map(p => p.area))];
+  return areas.length === 1 ? areaColor.get(areas[0]) : "#b0b4ba";
+}
+
+let linkSel = gLinks.selectAll("line"), hitSel = gLinkHits.selectAll("line"), nodeSel = gNodes.selectAll("g.node");
+const arc = d3.arc().innerRadius(0);
+const pie = d3.pie().value(1).sort(null);
+
+function render(){
+  // links
+  const amounts = visLinks.map(l => ({ l, a: linkAmount(l) }));
+  wScaleDDF.domain([0, d3.max(amounts.filter(x => x.l.ddf), x => x.a.sum) || 1]);
+  wScaleCo.domain([0, d3.max(amounts.filter(x => !x.l.ddf), x => x.a.sum) || 1]);
+  amounts.forEach(({ l, a }) => { l._w = l.ddf ? wScaleDDF(a.sum) : wScaleCo(a.sum); l._known = a.known; l._color = linkColor(l); });
+
+  linkSel = gLinks.selectAll("line").data(visLinks, d => d.id).join("line")
+    .attr("class", d => "link " + (d.ddf ? "ddfl" : "co"))
+    .attr("stroke-width", d => d._w)
+    .attr("stroke-dasharray", d => d._known ? null : "2 3")
+    .attr("stroke", d => d.ddf ? d._color : null);
+
+  hitSel = gLinkHits.selectAll("line").data(visLinks, d => d.id).join("line")
+    .attr("stroke", "transparent").attr("stroke-width", d => d.ddf ? Math.max(8, d._w + 6) : 5)
+    .style("cursor", "pointer")
+    .on("mouseenter", (e, d) => { if (d.ddf) showLinkTip(e, d); })
+    .on("mousemove", (e, d) => { if (d.ddf) moveTip(e); })
+    .on("mouseleave", hideTip)
+    .on("click", (e, d) => { e.stopPropagation(); hideTip(); state.sel = { type: "link", id: d.id }; panelReset([viewLink(d)]); applyHighlight(); });
+
+  // nodes
+  nodeSel = gNodes.selectAll("g.node").data(visNodes, d => d.id).join(enter => {
+    const g = enter.append("g").attr("class", "node").attr("tabindex", 0).attr("role", "button").attr("aria-label", d => d.id);
+    g.append("circle").attr("class", "hit").attr("r", d => Math.max(d.r, isTouch ? 16 : 10)).attr("fill", "transparent");
+    g.append("circle").attr("class", "intl").attr("r", d => d.r + 3.5).attr("fill", "none").attr("stroke", "var(--intl)").attr("stroke-width", 1.1).attr("stroke-dasharray", "2 2").attr("display", d => d.intl && !d.isDDF ? null : "none");
+    g.each(function(d){
+      const s = d3.select(this);
+      if (d.isDDF) {
+        s.append("circle").attr("r", d.r).attr("fill", "#fff").attr("stroke", "var(--ddf-ring)").attr("stroke-width", 2.5);
+      } else if (d.areas.length > 1) {
+        const pg = s.append("g").attr("class", "body");
+        pg.selectAll("path").data(pie(d.areas)).join("path").attr("d", a => arc.outerRadius(d.r)(a)).attr("fill", a => areaColor.get(a.data))
+          .attr("fill-opacity", d.hasEndow ? 1 : 0.22).attr("stroke", d.hasEndow ? "var(--bg)" : a => areaColor.get(a.data)).attr("stroke-width", 1);
+      } else {
+        const c = areaColor.get(d.areas[0]);
+        s.append("circle").attr("class", "body").attr("r", d.r).attr("fill", c).attr("fill-opacity", d.hasEndow ? 1 : 0.22)
+          .attr("stroke", d.hasEndow ? "rgba(255,255,255,.22)" : c).attr("stroke-width", d.hasEndow ? 0.75 : 1);
+      }
+    });
+    g.append("circle").attr("class", "hlring").attr("r", d => d.r + 3).attr("display", "none");
+    g.append("text").attr("x", d => d.r + 4).attr("dy", "0.35em")
+      .attr("class", d => d.isDDF ? "ddf" : d.programs.length > 1 ? "multi" : "single").text(d => d.isDDF ? "Doris Duke Foundation" : d.short || d.id);
+    g.on("mouseenter", function(e, d){ d3.select(this).classed("hover", true).raise().select("text").attr("display", null); showNodeTip(e, d); })
+     .on("mousemove", moveTip)
+     .on("mouseleave", function(){ d3.select(this).classed("hover", false); hideTip(); updateLabels(); })
+     .on("click", (e, d) => { e.stopPropagation(); hideTip(); openFunder(d.id); })
+     .on("keydown", (e, d) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openFunder(d.id); } })
+     .call(d3.drag()
+        .on("start", (e, d) => { if (!e.active) sim.alphaTarget(0.2).restart(); if (!d.isDDF) { d.fx = d.x; d.fy = d.y; } })
+        .on("drag", (e, d) => { if (!d.isDDF) { d.fx = e.x; d.fy = e.y; } })
+        .on("end", (e, d) => { if (!e.active) sim.alphaTarget(0); if (!d.isDDF) { d.fx = null; d.fy = null; } }));
+    return g;
+  });
+  applyHighlight();
+}
+
+function ticked(){
+  const pos = n => typeof n === "object" ? n : nodeMap.get(n);
+  linkSel.attr("x1", d => pos(d.source).x).attr("y1", d => pos(d.source).y).attr("x2", d => pos(d.target).x).attr("y2", d => pos(d.target).y);
+  hitSel.attr("x1", d => pos(d.source).x).attr("y1", d => pos(d.source).y).attr("x2", d => pos(d.target).x).attr("y2", d => pos(d.target).y);
+  nodeSel.attr("transform", d => `translate(${d.x},${d.y})`);
+}
+
+function update(){
+  active = new Set(programs.filter(p => programMatches(p)).map(p => p.id));
+  const visIds = new Set();
+  programs.forEach(p => { if (active.has(p.id)) p.funders.forEach(f => visIds.add(f)); });
+  if (active.size) visIds.add(DDF);
+  visNodes = nodes.filter(n => visIds.has(n.id));
+  visLinks = links.filter(l => l.programs.some(id => active.has(id)));
+  visLinks.forEach(l => { l.source = l.s; l.target = l.t; });
+  computeCenters();
+  // clear selection if it vanished
+  if (state.sel) {
+    if (state.sel.type === "funder" && !visIds.has(state.sel.id)) state.sel = null;
+    if (state.sel && state.sel.type === "link" && !visLinks.some(l => l.id === state.sel.id)) state.sel = null;
+  }
+  // seed new nodes near their targets
+  visNodes.forEach(n => { if (n.x == null) { const t = targetOf(n); n.x = t.x + (Math.random()-.5)*60; n.y = t.y + (Math.random()-.5)*60; } });
+  const ddfNode = nodeMap.get(DDF); ddfNode.fx = W/2; ddfNode.fy = H/2;
+  sim.nodes(visNodes);
+  sim.force("link").links(visLinks);
+  sim.force("x").x(d => targetOf(d).x); sim.force("y").y(d => targetOf(d).y);
+  sim.alpha(0.5).restart();
+  render();
+  syncYears();
+  d3.select("#cntFunders").text(`${visNodes.filter(n => !n.isDDF).length} funders`);
+  d3.select("#cntPrograms").text(`${active.size} programs`);
+  d3.select("#empty").classed("on", active.size === 0);
+  renderMS();
+  drawMap();
+  if (panelStack.length) renderPanel();
+}
+
+function focusSets(){
+  const sel = state.sel;
+  if (!sel) return null;
+  const fn = new Set(), fl = new Set(), ring = new Set();
+  if (sel.type === "funder") {
+    fn.add(sel.id);
+    visLinks.forEach(l => { if (l.s === sel.id || l.t === sel.id) { fl.add(l.id); fn.add(l.s); fn.add(l.t); } });
+    ring.add(sel.id);
+  } else if (sel.type === "program") {
+    const p = progById.get(sel.id);
+    p.funders.forEach(f => { fn.add(f); ring.add(f); });
+    visLinks.forEach(l => { if (l.programs.includes(sel.id)) fl.add(l.id); });
+  } else if (sel.type === "link") {
+    const l = linkMap.get(sel.id); fn.add(l.s); fn.add(l.t); fl.add(l.id); ring.add(l.s); ring.add(l.t);
+  }
+  return { fn, fl, ring };
+}
+function applyHighlight(){
+  const f = focusSets();
+  nodeSel.classed("faded", d => f ? !f.fn.has(d.id) : false);
+  nodeSel.select(".hlring").attr("display", d => f && f.ring.has(d.id) && !d.isDDF ? null : "none");
+  nodeSel.each(function(d){
+    if (d.isDDF || d.hasEndow) return;
+    const on = f && f.fn.has(d.id);
+    d3.select(this).selectAll(".body, .body path").attr("fill-opacity", on ? 0.7 : 0.22);
+  });
+  linkSel
+    .attr("stroke-opacity", d => d.ddf ? (f ? (f.fl.has(d.id) ? 0.95 : 0.05) : 0.32) : (f ? (f.fl.has(d.id) ? 0.38 : 0.025) : 0.16))
+    .attr("stroke", d => d.ddf ? d._color : (f && f.fl.has(d.id) ? "var(--gray-link-hi)" : "var(--gray-link)"))
+    .attr("stroke-width", d => d.ddf ? d._w : (f && f.fl.has(d.id) ? d._w + 0.6 : d._w));
+  hitSel.style("pointer-events", d => f && !f.fl.has(d.id) && !d.ddf ? "none" : null);
+  updateLabels();
+}
+// Labels: always for DDF, multi-program and large funders; others when zoomed in, focused, or hovered
+function updateLabels(){
+  const f = focusSets();
+  nodeSel.select("text").attr("display", d =>
+    d.isDDF || d.programs.length > 1 || d.r >= 10 || zoomK >= 1.8 || (f && f.fn.has(d.id) && f.fn.size <= 30) ? null : "none");
+}
+
+// ---------- tooltips ----------
+const tip = d3.select("#tip");
+function moveTip(e){ const x = Math.min(e.clientX + 14, innerWidth - 300), y = e.clientY + 14; tip.style("left", x + "px").style("top", y + "px"); }
+function hideTip(){ tip.classed("on", false); }
+function showNodeTip(e, d){
+  const ps = d.programs.filter(id => active.has(id)).map(id => progById.get(id));
+  tip.html(`<div><span class="t">${esc(d.id)}</span><span class="more">click for more info ›</span></div>
+    <div class="m">${d.isDDF ? `${ps.length} programs shown` : `Endowment: ${fmt$(d.endowment_usd)} · ${d.programs.length} program${d.programs.length>1?"s":""} with DDF`}</div>
+    ${d.intl && !d.isDDF ? `<div class="m">Funds work outside the US</div>` : ""}`).classed("on", true);
+  moveTip(e);
+}
+function showLinkTip(e, l){
+  const other = l.s === DDF ? l.t : l.s;
+  const ps = l.programs.filter(id => active.has(id)).map(id => progById.get(id));
+  tip.html(`<div class="t">DDF ↔ ${esc(other)}</div>` + ps.map(p => `<div class="m"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.short_name || p.name)} · ${fmt$(p.amount_usd)}</div>`).join("")).classed("on", true);
+  moveTip(e);
+}
+
+// ---------- side panel ----------
+let panelStack = [];
+const main = d3.select("#main"), panel = d3.select("#panel");
+function closePanel(){ panelStack = []; main.classed("with-panel", false); panel.html(""); setTimeout(resize, 0); }
+function panelReset(views){ panelStack = views; openPanel(); }
+function panelPush(view){ panelStack.push(view); openPanel(); }
+function openPanel(){ const was = main.classed("with-panel"); main.classed("with-panel", true); renderPanel(); if (!was) setTimeout(resize, 0); }
+function renderPanel(){
+  const cur = panelStack[panelStack.length - 1]; if (!cur) return;
+  const prev = panelStack[panelStack.length - 2];
+  panel.html(`<div class="top">${prev ? `<button class="back" id="pBack">‹ Back to ${esc(prev.title)}</button>` : "<span></span>"}<button class="x" id="pClose" aria-label="Close panel">×</button></div>` + cur.html());
+  panel.select("#pBack").on("click", () => {
+    panelStack.pop();
+    const top = panelStack[panelStack.length - 1];
+    state.sel = top.sel || (state.program ? { type: "program", id: state.program } : null);
+    renderPanel(); applyHighlight();
+  });
+  panel.select("#pClose").on("click", () => { state.sel = null; state.program = ""; fProgram.property("value", ""); closePanel(); applyHighlight(); });
+  cur.bind && cur.bind(panel);
+  panel.node().scrollTop = 0;
+}
+function openFunder(name){
+  state.sel = { type: "funder", id: name };
+  const cur = panelStack[panelStack.length - 1];
+  if (cur && (cur.kind === "funderList" || cur.kind === "program" || cur.kind === "link")) panelPush(viewFunder(name)); else panelReset([viewFunder(name)]);
+  applyHighlight();
+}
+function openProgram(id){
+  state.sel = { type: "program", id };
+  panelPush(viewProgram(id)); applyHighlight();
+}
+function bindCommon(p){
+  p.selectAll("[data-funder]").on("click", function(){ openFunder(this.dataset.funder); });
+  p.selectAll("[data-program]").on("click", function(){ openProgram(this.dataset.program); });
+  p.selectAll("[data-country]").on("click", function(){ toggleCountry(this.dataset.country); });
+}
+function viewFunderList(){
+  return { kind: "funderList", title: "funders list", sel: null, html(){
+    const fs = visNodes.filter(n => !n.isDDF).sort((a,b) => (b.programs.length - a.programs.length) || a.id.localeCompare(b.id));
+    return `<h2>${fs.length} funders</h2><ul>` + fs.map(n => `<li class="listrow"><button class="linkish" data-funder="${esc(n.id)}">${esc(n.id)}</button><span class="n">${n.programs.length} program${n.programs.length>1?"s":""}</span></li>`).join("") + "</ul>";
+  }, bind: bindCommon };
+}
+function viewProgramList(){
+  return { kind: "programList", title: "programs list", sel: null, html(){
+    const ps = programs.filter(p => active.has(p.id)).sort((a,b) => a.name.localeCompare(b.name));
+    return `<h2>${ps.length} programs</h2><ul>` + ps.map(p => `<li class="listrow"><button class="linkish" data-program="${esc(p.id)}"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.name)}</button><span class="n">${p.year||""}</span></li>`).join("") + "</ul>";
+  }, bind: bindCommon };
+}
+function viewFunder(name){
+  const n = nodeMap.get(name);
+  return { kind: "funder", title: name, sel: { type: "funder", id: name }, html(){
+    const ps = n.programs.map(id => progById.get(id)).sort((a,b) => a.year - b.year);
+    const web = n.website ? ` · <a href="${esc(n.website)}" target="_blank" rel="noopener">Website ↗</a>` : "";
+    return `<h2>${esc(name)}</h2>
+      ${n.isDDF ? `<p class="meta">Assets ${fmt$(n.endowment_usd)}${n.endowment_note ? ` (${esc(n.endowment_note)})` : ""}${web}</p><p class="meta"><b>${ps.length}</b> co-funded programs in this dataset</p>` :
+      `<p class="meta">Endowment ${n.hasEndow ? `<b>${fmt$(n.endowment_usd)}</b>${n.endowment_note ? ` (${esc(n.endowment_note)})` : ""}` : "not found"}${web}</p>
+       <p class="meta"><b>${ps.length}</b> program${ps.length>1?"s":""} with DDF</p>`}
+      ${n.type || n.hq_country ? `<p class="meta">${esc([n.type, n.hq_country && "HQ: " + n.hq_country].filter(Boolean).join(" · "))}</p>` : ""}
+      <h3>Programs</h3><ul>` + ps.map(p => `<li><button class="linkish" data-program="${esc(p.id)}"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.name)}</button> <span class="tag">${p.year||"?"}</span>${p.scope!=="US"?`<span class="tag">${esc(p.scope)}</span>`:""}${active.has(p.id)?"":`<span class="tag">filtered out</span>`}</li>`).join("") + "</ul>";
+  }, bind: bindCommon };
+}
+function viewProgram(id){
+  const p = progById.get(id);
+  return { kind: "program", title: p.short_name || p.name, sel: { type: "program", id }, html(){
+    const fs = [...p.funders].sort((a,b) => (a===DDF?-1:b===DDF?1:a.localeCompare(b)));
+    return `<h2>${esc(p.name)}</h2>
+      <p class="meta"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.area)} · ${p.year || "year unknown"}${p.year_end ? `–${p.year_end}` : ""} · ${p.type === "pooled" ? "Pooled fund" : "Co-funded"}</p>
+      <p class="meta">Amount <b>${p.amount_usd != null ? fmt$(p.amount_usd) : "not found"}</b>${p.amount_note ? ` — ${esc(p.amount_note)}` : ""}</p>
+      ${p.manager ? `<p class="meta">Managed by ${esc(p.manager)}</p>` : ""}
+      <p class="meta">Confidence: ${esc(p.confidence)}</p>
+      <p class="desc">${esc(p.description)}</p>
+      <h3>Where funds go · ${esc(p.scope === "US" ? "US only" : p.scope === "Both" ? "US and international" : "International")}</h3>
+      <div>${p.countries.map(c => c === "Not disclosed" ? `<span class="chip static">Countries not disclosed</span>` : `<span class="chip" data-country="${esc(c)}" title="Filter by ${esc(c)}">${esc(c)}${state.countries.has(c) ? " ✓" : ""}</span>`).join("")}</div>
+      <h3>${fs.length} funders</h3><ul>` + fs.map(f => `<li><button class="linkish" data-funder="${esc(f)}">${esc(f)}</button></li>`).join("") + `</ul>
+      <h3>Sources</h3><ul class="src">` + (p.sources||[]).map(u => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 70))}</a></li>`).join("") + "</ul>";
+  }, bind: bindCommon };
+}
+function viewLink(l){
+  return { kind: "link", title: "connection", sel: { type: "link", id: l.id }, html(){
+    const ps = l.programs.map(id => progById.get(id));
+    return `<h2>${esc(l.s)} ↔ ${esc(l.t)}</h2>
+      <p class="meta">${l.ddf ? "Co-fund with DDF" : "These two funders back the same program(s). The line shows shared membership, not a direct grant between them."}</p>
+      <h3>Shared programs</h3><ul>` + ps.map(p => `<li><button class="linkish" data-program="${esc(p.id)}"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.name)}</button> <span class="tag">${fmt$(p.amount_usd)}</span></li>`).join("") + `</ul>
+      <h3>Funders</h3><ul><li><button class="linkish" data-funder="${esc(l.s)}">${esc(l.s)}</button></li><li><button class="linkish" data-funder="${esc(l.t)}">${esc(l.t)}</button></li></ul>`;
+  }, bind: bindCommon };
+}
+d3.select("#cntFunders").on("click", () => { state.sel = null; panelReset([viewFunderList()]); applyHighlight(); });
+d3.select("#cntPrograms").on("click", () => { state.sel = null; panelReset([viewProgramList()]); applyHighlight(); });
+
+// ---------- map ----------
+const MAP_ALIAS = { "United States": "United States of America", "Democratic Republic of the Congo": "Dem. Rep. Congo", "Republic of the Congo": "Congo", "Côte d'Ivoire": "Côte d'Ivoire", "Ivory Coast": "Côte d'Ivoire", "South Sudan": "S. Sudan", "Central African Republic": "Central African Rep.", "Dominican Republic": "Dominican Rep.", "Eswatini": "eSwatini", "Bosnia and Herzegovina": "Bosnia and Herz.", "North Macedonia": "Macedonia", "Equatorial Guinea": "Eq. Guinea", "Solomon Islands": "Solomon Is.", "Czech Republic": "Czechia", "Palestine": "Palestine", "Western Sahara": "W. Sahara" };
+let world = null;
+const mapSvg = d3.select("#map");
+const mapG = mapSvg.append("g");
+const seqColor = d3.scaleSequential(d3.interpolateRgb("#3a6ea5", "#b3e5fc"));
+d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json").then(t => {
+  world = topojson.feature(t, t.objects.countries).features.filter(f => f.properties.name !== "Antarctica");
+  drawMap();
+}).catch(() => { d3.select("#mapbox .note").text("The world map could not load (it needs an internet connection). The country filter above still works."); });
+function drawMap(){
+  if (!world) return;
+  const w = document.getElementById("mapbox").clientWidth - 28, h = Math.max(220, Math.min(420, w * 0.42));
+  mapSvg.attr("viewBox", [0, 0, w, h]).attr("height", h);
+  const proj = d3.geoNaturalEarth1().fitSize([w, h], { type: "FeatureCollection", features: world });
+  const path = d3.geoPath(proj);
+  const counts = new Map(), progsBy = new Map();
+  programs.forEach(p => { if (programMatches(p, true)) p.countries.forEach(c => { const m = MAP_ALIAS[c] || c; counts.set(m, (counts.get(m)||0) + 1); if (!progsBy.has(m)) progsBy.set(m, []); progsBy.get(m).push(p); }); });
+  const mx = d3.max([...counts.values()]) || 1;
+  seqColor.domain([1, Math.max(2, mx)]);
+  const selMap = new Set([...state.countries].map(c => MAP_ALIAS[c] || c));
+  const selProg = state.sel && state.sel.type === "program" ? new Set(progById.get(state.sel.id).countries.map(c => MAP_ALIAS[c] || c)) : null;
+  const toData = new Map(); programs.forEach(p => p.countries.forEach(c => toData.set(MAP_ALIAS[c] || c, c)));
+  mapG.selectAll("path").data(world, d => d.properties.name).join("path")
+    .attr("class", d => "country" + (counts.has(d.properties.name) ? " has" : "") + (selMap.has(d.properties.name) || (selProg && selProg.has(d.properties.name)) ? " sel" : ""))
+    .attr("d", path)
+    .attr("fill", d => counts.has(d.properties.name) ? seqColor(counts.get(d.properties.name)) : "#262a31")
+    .on("mouseenter", (e, d) => { const ps = progsBy.get(d.properties.name); tip.html(`<div class="t">${esc(d.properties.name)}</div>` + (ps ? ps.map(p => `<div class="m"><span class="dot" style="background:${areaColor.get(p.area)}"></span>${esc(p.short_name || p.name)}</div>`).join("") : `<div class="m">No programs in view</div>`)).classed("on", true); moveTip(e); })
+    .on("mousemove", moveTip).on("mouseleave", hideTip)
+    .on("click", (e, d) => { const c = toData.get(d.properties.name); if (c && counts.has(d.properties.name)) toggleCountry(c); });
+  mapG.selectAll("path.sel").raise();
+  d3.select("#ramp").html(`fewer <i style="background:linear-gradient(90deg,#3a6ea5,#b3e5fc)"></i> more programs`);
+}
+
+// ---------- about + table ----------
+const nEndow = nodes.filter(n => !n.isDDF && n.hasEndow).length;
+d3.select("#aboutBody").html(`
+<p>This network shows ${nodes.length - 1} funders that pooled or co-funded ${programs.length} grant programs with the Doris Duke Foundation (DDF). The data comes from the DDF website, partner foundations' announcements and press coverage, researched ${esc(DATA.meta.updated)}. Each program card lists its sources.</p>
+<ul>
+<li><b>Dots</b> are funders. <b>Color</b> is the DDF program area (official names from dorisduke.org). A funder that backs programs in more than one area is split across those colors.</li>
+<li><b>Size</b> is the funder's endowment or total assets (FY2023 or the latest filing). ${nEndow} funders have a figure. <b>Pale</b> dots had no figure found and get a fixed small size.</li>
+<li><b>Lines from DDF</b> are colored by program area. Their width is the combined announced size of the shared programs, not DDF's or the partner's own share, which is mostly undisclosed. <b>Faint gray lines</b> connect funders that back the same program: they show shared membership, not a direct relationship. <b>Dotted</b> lines mean no amount was found.</li>
+<li><b>Where funds go:</b> each program is tagged US only, International (outside the US only) or Both, with the countries that receive money. Countries come from program pages and grant announcements. Where a program funds work abroad but doesn't name countries, it shows "Countries not disclosed". A <b>dashed ring</b> marks funders in at least one program with money going abroad.</li>
+<li><b>Years</b> are when a program was announced or first reported. Amounts mean different things for different programs (pledge, fundraising goal, first round, cumulative total). Each program card says which.</li>
+<li>The layout groups funders by program around DDF. Dots can be dragged.</li>
+</ul>
+<p>Caveats: this list may be incomplete, because DDF's full grants database was not searched line by line. Rows marked medium or low confidence are flagged on each program card. ${esc(DATA.meta.caveat || "")}</p>`);
+d3.select("#dataTable").html(`<thead><tr><th>Program</th><th>Area</th><th>Year</th><th>Amount</th><th>Scope</th><th>Countries</th><th>Funders</th><th>Confidence</th></tr></thead><tbody>` +
+  [...programs].sort((a,b) => a.year - b.year).map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.area)}</td><td>${p.year||""}</td><td>${fmt$(p.amount_usd)}</td><td>${esc(p.scope)}</td><td>${esc(p.countries.join(", "))}</td><td>${p.funders.length}</td><td>${esc(p.confidence)}</td></tr>`).join("") + "</tbody>");
+d3.select("#foot").text(`Data researched ${DATA.meta.updated}. Built with D3.js.`);
+
+// ---------- layout ----------
+function fit(){
+  // zoom so every visible dot (plus label room) is inside the graph
+  if (!visNodes.length) return svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity);
+  const x0 = d3.min(visNodes, d => d.x - d.r) - 10, x1 = d3.max(visNodes, d => d.x + d.r) + 90;
+  const y0 = d3.min(visNodes, d => d.y - d.r) - 10, y1 = d3.max(visNodes, d => d.y + d.r) + 10;
+  const k = Math.min(1, 0.95 * Math.min(W / (x1 - x0), H / (y1 - y0)));
+  const t = d3.zoomIdentity.translate(W/2, H/2).scale(k).translate(-(x0 + x1)/2, -(y0 + y1)/2);
+  svg.transition().duration(500).call(zoom.transform, t);
+}
+let firstFit = true;
+sim.on("end.fit", () => { if (firstFit) { firstFit = false; fit(); } });
+function resize(){ size(); computeCenters(); const d = nodeMap.get(DDF); d.fx = W/2; d.fy = H/2; sim.force("x").x(n => targetOf(n).x); sim.force("y").y(n => targetOf(n).y); sim.alpha(0.3).restart(); drawMap(); }
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(resize, 150); });
+size(); computeCenters(); update();
+window.__ddf = { state, update, programs, nodes, links, visNodes: () => visNodes, active: () => active };
+})();
+</script>
+</body>
+</html>
