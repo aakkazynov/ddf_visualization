@@ -286,10 +286,31 @@ Use the supplied research data for all names, figures, years, links, and relatio
       <h2>Prompt 8</h2>
       <div class="prompt">Write a README explaining the project files, how to run the site locally, and how to publish it on GitHub Pages, and create a `how-claude-built-this.html` page—linked under the "About this data" section (not inside it)—that lists all of my prompts from this session in order, each paired with a one- or two-line summary of your reply and a "See more" toggle to expand the full response, replacing any personal information on that page (my name, email, local computer folder paths, and GitHub username) with `******`. Commit everything to git on this branch using `******` as the author name and my GitHub no-reply email, then do a full final check of the whole site in the browser covering the filters, Play, map, lists, search, info boxes, the international layer, and the `how-claude-built-this.html` page. Afterward, update `how-claude-built-this.html` so it includes all prompts up to now and commit again, then publish this version to `https://github.com/******/ddf_visualization` so it replaces the old one on `main`, and verify that the GitHub Pages site works properly.</div>
       <p class="label">Summary of reply</p>
-      <p class="summary" id="p8summary">In progress: README and this page written and committed; the final site check, publishing and the GitHub Pages check follow, and this entry is updated afterward.</p>
+      <p class="summary" id="p8summary">Wrote the README and this page (linked below “About this data”), committed with a masked author and the GitHub no-reply email, ran a full final check of the site with everything passing, updated this page, and then published to <code>main</code> for GitHub Pages.</p>
       <button class="toggle" aria-expanded="false">See more</button>
       <div class="full" hidden>
-        <p>This entry is completed after the final check and publication.</p>
+        <h3>Files</h3>
+        <ul>
+          <li><strong>README.md</strong> explains each project file, how to run the site locally (double-click <code>index.html</code>, or <code>python -m http.server 8000</code>), how to rebuild the data, and how to publish on GitHub Pages.</li>
+          <li><strong>how-claude-built-this.html</strong> (this page) lists every prompt with a summary of the reply and a “See more” toggle. Names, email addresses, local folder paths and the GitHub username are replaced with ******. It is linked just below the “About this data” box, not inside it.</li>
+          <li>A <code>.gitignore</code> keeps local Claude Code settings out of the repository, since they contain local folder paths. Before committing, every file (including the text inside the Excel files) was scanned for personal details.</li>
+        </ul>
+        <h3>Final check in the browser</h3>
+        <ul>
+          <li><strong>Filters:</strong> area, year, where funds go and countries (including search) all showed the right funders, and Reset restored the starting view.</li>
+          <li><strong>Play:</strong> stepped through the years with the large year shown, and paused correctly.</li>
+          <li><strong>Map:</strong> 176 countries drawn; clicking France filtered to its 8 funders and turned on the programs-abroad layer.</li>
+          <li><strong>Lists and search:</strong> 80 funders and 13 programs (99 and 22 with the layer on); search narrowed both lists.</li>
+          <li><strong>Info boxes:</strong> funder, program and funder-pair panels opened correctly, and Back went from a program to “Back to David Rockefeller Fund” to “Back to list” with the search kept.</li>
+          <li><strong>International layer:</strong> adds 19 funders and 9 programs, the Building Bridges chip and a 2001 start year; 23 funders show the dashed ring.</li>
+          <li><strong>This page:</strong> all entries present, every “See more” toggle opens and closes, and no personal details appear.</li>
+          <li>No browser console errors anywhere.</li>
+        </ul>
+        <h3>Commits and publishing</h3>
+        <ul>
+          <li>Both commits use ****** as the author name with the GitHub no-reply email.</li>
+          <li>After this update, the commit is published to <code>main</code> at github.com/******/ddf_visualization. It replaces the old site's files while keeping the old commits in the history, and GitHub Pages republishes the site from <code>main</code>.</li>
+        </ul>
       </div>
     </li>
 
