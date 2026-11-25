@@ -4,78 +4,154 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DDF Funders Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <!-- Data comes from data.js (built by build_data.py), so the page works when opened by double-click. -->
 <script src="data.js"></script>
+<script>
+  // Light/dark: start from the saved choice if there is one, otherwise follow the computer's setting.
+  (function () {
+    let saved = null;
+    try { saved = localStorage.getItem("ddf-theme"); } catch (e) { /* storage blocked: just follow the system */ }
+    if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+  })();
+</script>
 <style>
+  /* Light theme by default; dark when the computer is in dark mode. */
   :root {
-    --bg: #111317;
-    --surface: #181b20;
-    --surface-2: #20242b;
-    --line: #2c313a;
-    --ink: #e8eaed;
-    --ink-2: #b3b8c0;
-    --ink-3: #8a909a;
-    --co-link: #8a919c; /* gray: lighter than the background, darker than the DDF lines */
-    --focus: #ffffff;
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface-2: #f1f1ee;
+    --ctl-bg: #ebecee;
+    --line: #e4e4e0;
+    --ink: #1d2127;
+    --ink-2: #4b5563;
+    --ink-3: #6b7280;
+    --edge: #8a929c;      /* lines from DDF */
+    --edge2: #5b636d;     /* lines between two other funders (drawn faint) */
+    --edge-hot: #3f4650;  /* highlighted lines */
+    --node: #4b5563;      /* DDF's dot */
+    --halo: #6b7280;      /* outline around the white labels */
+    --focus: #1d2127;
+    --link: #0f5fa8;
+    --track: #cfd3d9;
+    --yr: #d4d6da;
+    --shadow: rgba(0, 0, 0, .12);
+    /* Map shading: one neutral ramp, light -> dark for more programs. */
+    --map-none: #ecedef; --ramp-1: #d9dce1; --ramp-2: #b7bcc4; --ramp-3: #8f96a1; --ramp-4: #636a75; --ramp-5: #3a404b;
     /* Program-area colors: red, orange, green, blue, and a violet (red-blue variant) for Building Bridges.
-       Checked with the data-viz palette validator on this dark surface, all pairs: lightness band, chroma,
-       contrast >= 3:1, normal-vision ΔE >= 15, worst protan/deutan ΔE 9.4 (target 8). */
+       Checked with the data-viz palette validator, all pairs, on both backgrounds: lightness band, chroma,
+       normal-vision ΔE >= 15, worst protan/deutan ΔE 9.4 (target 8). On the light background orange and
+       green sit just under 3:1 contrast, which the validator allows because every dot has a visible label
+       and the data is also available as a table. */
     --c-arts: #be395e;
     --c-child: #d37e07;
     --c-env: #46ac71;
     --c-med: #2579ab;
     --c-bridges: #b770e6;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14171b; --surface: #1d2227; --surface-2: #262b31; --ctl-bg: #1f242a; --line: #2c313a;
+      --ink: #e7e9ec; --ink-2: #b3b8c0; --ink-3: #9aa3ad;
+      --edge: #7b8590; --edge2: #5d6670; --edge-hot: #c9ced6; --node: #aab2bc; --halo: #3a4149;
+      --focus: #ffffff; --link: #8fb8f0; --track: #353a44; --yr: #2c3239; --shadow: rgba(0, 0, 0, .45);
+      --map-none: #1d2127; --ramp-1: #3a404b; --ramp-2: #59616e; --ramp-3: #7d8592; --ramp-4: #a8afba; --ramp-5: #d9dde3;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14171b; --surface: #1d2227; --surface-2: #262b31; --ctl-bg: #1f242a; --line: #2c313a;
+    --ink: #e7e9ec; --ink-2: #b3b8c0; --ink-3: #9aa3ad;
+    --edge: #7b8590; --edge2: #5d6670; --edge-hot: #c9ced6; --node: #aab2bc; --halo: #3a4149;
+    --focus: #ffffff; --link: #8fb8f0; --track: #353a44; --yr: #2c3239; --shadow: rgba(0, 0, 0, .45);
+    --map-none: #1d2127; --ramp-1: #3a404b; --ramp-2: #59616e; --ramp-3: #7d8592; --ramp-4: #a8afba; --ramp-5: #d9dde3;
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--ink);
-    font: 13px/1.45 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 13px/1.45 var(--font); }
   body { overflow-x: hidden; }
   button, select, input { font: inherit; color: inherit; }
   button { cursor: pointer; }
-  a { color: #8fb8f0; }
+  a { color: var(--link); }
 
-  /* ---------- top bars ---------- */
-  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
-  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 8px 16px; }
-  .bar + .bar { padding-top: 0; }
-  .titleblock { text-align: center; padding: 14px 16px 2px; }
-  .titleblock h1 { font-size: 26px; font-weight: 650; margin: 0; letter-spacing: .005em; }
-  .subtitle { margin: 3px 0 0; color: var(--ink-2); font-size: 14px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
-    border: 1px solid var(--line); background: transparent; color: var(--ink-2); }
-  .chip:hover { border-color: #444b56; color: var(--ink); }
-  .chip[aria-pressed="true"] { background: var(--surface-2); border-color: #5a616d; color: var(--ink); }
-  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  select { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; max-width: 240px; }
-  .years { display: flex; align-items: center; gap: 8px; color: var(--ink-2); }
-  .years input[type=range] { width: 130px; accent-color: #9aa3ae; }
-  #play { min-width: 82px; text-align: left; }
-  .years output { min-width: 34px; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .btn { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; }
-  .btn:hover { border-color: #4a515c; }
-  .btn.active { border-color: #6b7380; background: var(--surface-2); }
-  .spacer { flex: 1; }
+  /* ---------- light / dark switch (top right corner of the page) ---------- */
+  .themebtn { position: absolute; top: 12px; right: 14px; z-index: 20; width: 36px; height: 36px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center; padding: 0;
+    background: var(--ctl-bg); color: var(--ink); border: 1px solid var(--line); }
+  .themebtn:hover { border-color: var(--ink-3); }
+  .themebtn:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  /* Shows the mode you'd switch to: a moon in light mode, a sun in dark mode. */
+  .themebtn .sun { display: none; }
+  html.is-dark .themebtn .sun { display: block; }
+  html.is-dark .themebtn .moon { display: none; }
+
+  /* ---------- title + control box ---------- */
+  header { padding: 18px 16px 0; }
+  .titleblock { text-align: center; margin-bottom: 12px; }
+  .titleblock h1 { font-size: clamp(26px, 5vw, 38px); font-weight: 600; margin: 0; letter-spacing: -0.02em; line-height: 1.15; }
+  .subtitle { margin: 4px 0 0; color: var(--ink-3); font-size: 13px; }
+  .controls { position: sticky; top: 0; z-index: 10; max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px;
+    background: var(--ctl-bg); border-radius: 8px; padding: 10px 12px; color: var(--ink-3); font-size: 12px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
   .lbl { color: var(--ink-3); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px;
+    border: 1px solid var(--line); background: transparent; color: var(--ink-2); white-space: nowrap; }
+  .chip:hover { color: var(--ink); border-color: var(--ink-3); }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  select { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--ink); max-width: 300px; }
+  .pick { display: flex; align-items: center; gap: 8px; flex: 1 1 260px; min-width: 0; }
+  .pick select { flex: 1; min-width: 0; max-width: none; }
+  .btn { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: 12px; color: var(--ink); }
+  .btn:hover { border-color: var(--ink-3); }
+  .btn.active { border-color: var(--ink); }
+  .chip:focus-visible, .btn:focus-visible, select:focus-visible, .tb:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+  /* year: Play + a two-handle range slider */
+  .years { display: flex; align-items: center; gap: 10px; flex: 1 1 360px; min-width: 0; }
+  #play { min-width: 76px; text-align: left; }
+  .yrcap { color: var(--ink); white-space: nowrap; }
+  .yrnote { white-space: nowrap; cursor: help; }
+  #bigYear::before { content: "Programs through"; display: block; font: 600 13px var(--font); letter-spacing: .02em; margin-bottom: 4px; }
+  .years output { min-width: 2.8em; color: var(--ink); font-variant-numeric: tabular-nums; text-align: center; }
+  .rng { position: relative; flex: 1 1 auto; min-width: 120px; height: 28px; }
+  .rtrack, .rfill { position: absolute; top: 13px; height: 2px; border-radius: 1px; }
+  .rtrack { left: 8px; right: 8px; background: var(--track); }
+  .rfill { background: var(--ink-2); }
+  .rng input[type=range] { position: absolute; left: 0; top: 0; width: 100%; height: 28px; margin: 0; background: none;
+    -webkit-appearance: none; appearance: none; pointer-events: none; }
+  .rng input[type=range]::-webkit-slider-runnable-track { background: none; height: 28px; }
+  .rng input[type=range]::-moz-range-track { background: none; height: 28px; }
+  .rng input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; pointer-events: auto; width: 16px; height: 16px;
+    margin-top: 6px; border-radius: 50%; background: var(--bg); border: 2px solid var(--ink-2); cursor: grab; }
+  .rng input[type=range]::-moz-range-thumb { pointer-events: auto; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--ink-2); cursor: grab; }
+  .rng input[type=range]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--link); outline-offset: 2px; }
 
   /* toggle switch */
   .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ink-2); user-select: none; }
   .toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .toggle .track { width: 30px; height: 17px; border-radius: 999px; background: #353a44; position: relative; transition: background .15s; flex: none; }
+  .toggle .track { width: 30px; height: 17px; border-radius: 999px; background: var(--track); position: relative; transition: background .15s; flex: none; }
   .toggle .track::after { content: ""; position: absolute; left: 2px; top: 2px; width: 13px; height: 13px; border-radius: 50%;
-    background: #c9cdd3; transition: transform .15s; }
-  .toggle input:checked + .track { background: #5d7fa8; }
-  .toggle input:checked + .track::after { transform: translateX(13px); background: #fff; }
-  .toggle input:focus-visible + .track { outline: 2px solid #8fb8f0; outline-offset: 2px; }
+    background: var(--bg); box-shadow: 0 1px 2px var(--shadow); transition: transform .15s; }
+  .toggle input:checked + .track { background: var(--ink-2); }
+  .toggle input:checked + .track::after { transform: translateX(13px); }
+  .toggle input:focus-visible + .track { outline: 2px solid var(--link); outline-offset: 2px; }
   .toggle input:checked ~ span:last-child { color: var(--ink); }
+  /* The programs-abroad switch sits in the first row as a pill so it's easy to spot. */
+  .abroadsw { padding: 3px 10px 3px 6px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--ink); white-space: nowrap; }
 
   /* countries multi-select */
   .ms { position: relative; }
   #countryBtn { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #countryPop { position: absolute; top: calc(100% + 6px); left: 0; width: 300px; max-height: 420px; display: flex; flex-direction: column;
-    background: var(--surface); border: 1px solid #3a404a; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.5); z-index: 20; }
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 10px 30px var(--shadow); z-index: 20; color: var(--ink); }
   #countryPop[hidden] { display: none; }
   #countryPop .search { margin: 10px 10px 6px; width: calc(100% - 20px); }
   #countryList { overflow-y: auto; padding: 0 6px 6px; }
@@ -83,75 +159,78 @@
   #countryList label { display: flex; align-items: center; gap: 8px; padding: 4px 6px; border-radius: 5px; cursor: pointer; }
   #countryList label:hover { background: var(--surface-2); }
   #countryList .ct { margin-left: auto; color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: 12px; }
-  #countryList input { accent-color: #8fb8f0; }
   .pop-foot { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-top: 1px solid var(--line); }
 
   /* ---------- stage ---------- */
-  #stage { position: relative; height: 640px; overflow: hidden; }
-  #graph { display: block; width: 100%; height: 100%; cursor: grab; }
+  #stage { position: relative; height: 640px; overflow: hidden; margin-top: 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  #graph { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
   #graph:active { cursor: grabbing; }
-  #bigYear { position: absolute; left: 20px; top: 8px; font-size: 104px; font-weight: 700; line-height: 1;
-    color: rgba(215, 219, 225, .28); pointer-events: none; opacity: 0; transition: opacity .4s;
-    font-variant-numeric: tabular-nums; }
+  #bigYear { position: absolute; left: 16px; top: 8px; font: 700 72px/1 Helvetica, "Helvetica Neue", Arial, sans-serif;
+    color: var(--yr); pointer-events: none; opacity: 0; transition: opacity .4s; font-variant-numeric: tabular-nums; }
   #bigYear.on { opacity: 1; }
-  .lists { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 3; }
-  .zoom { position: absolute; right: 12px; bottom: 12px; display: flex; flex-direction: column; gap: 4px; z-index: 3; }
-  .zoom button { width: 32px; height: 32px; font-size: 18px; line-height: 1; padding: 0; }
-  body.panel-open .lists, body.panel-open .zoom { right: 372px; }
+  /* Top-right corner of the graph: list buttons, then Reset and the zoom buttons. */
+  .tops { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; z-index: 6; }
+  .tb { font-size: 12px; color: var(--ink); background: var(--ctl-bg); border: 1px solid var(--line); height: 34px; padding: 0 12px;
+    border-radius: 6px; white-space: nowrap; }
+  .tb:hover { border-color: var(--ink-3); }
+  .zoom { position: absolute; top: 48px; right: 8px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; z-index: 6; }
+  .zoom button { width: 34px; height: 34px; font: 500 18px/1 var(--font); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 0; }
+  .zoom button.rs { position: absolute; top: 0; right: calc(100% + 6px); width: 64px; font-size: 12px; background: var(--ctl-bg); }
+  .zoom button:hover { border-color: var(--ink-3); }
+  body.panel-open .tops, body.panel-open .zoom { right: 368px; }
 
   /* ---------- legend ---------- */
-  #legend { position: absolute; left: 12px; bottom: 12px; max-width: calc(100% - 80px); padding: 8px 12px;
-    background: rgba(17, 19, 23, .88); border: 1px solid var(--line); border-radius: 8px; color: var(--ink-2);
-    font-size: 12px; z-index: 2; }
+  #legend { max-width: 1240px; margin: 0 auto; padding: 10px 16px 6px; color: var(--ink-2); font-size: 12px; }
   #legend summary { cursor: pointer; color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
   #legend[open] summary { margin-bottom: 6px; }
   #legend .groups { display: flex; flex-wrap: wrap; gap: 8px 26px; }
   #legend .grp { display: flex; flex-direction: column; gap: 3px; }
   #legend .ttl { color: var(--ink-3); font-size: 11px; }
-  #legend .row { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+  #legend .lrow { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
   #legend .sizes { display: flex; align-items: flex-end; gap: 12px; }
   #legend .size { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; text-align: center; }
-  body.panel-open #legend { max-width: calc(100% - 440px); }
 
   /* ---------- graph marks ---------- */
-  .co { stroke: var(--co-link); fill: none; }
-  .hit { stroke: transparent; fill: none; stroke-width: 10px; cursor: pointer; }
-  .ddfl { fill: none; stroke-linecap: round; }
+  /* Every line from DDF is the same neutral gray; dotted when no amount is known. */
+  .ddfl { stroke: var(--edge); fill: none; stroke-linecap: round; }
+  .ddfl.hot { stroke: var(--edge-hot); }
+  /* Lines between two non-DDF funders: 1px, darker gray, faint. */
+  .co { stroke: var(--edge2); stroke-width: 1px; fill: none; }
+  .co.hot { stroke: var(--edge); stroke-width: 1.6px; }
+  .hit { stroke: transparent; fill: none; stroke-width: 12px; cursor: pointer; }
   .node { cursor: pointer; }
-  .node .slice { stroke: var(--bg); stroke-width: 1; }
   .node .ring { fill: none; stroke: var(--focus); }
-  .node .abroad { fill: none; stroke: #d5d9df; stroke-width: 1.2; stroke-dasharray: 2.5 2; }
+  .node .abroad { fill: none; stroke: var(--ink-3); stroke-width: 1.2; stroke-dasharray: 2.5 2; }
   .node:focus { outline: none; }
   .node:focus-visible .ring { stroke-width: 2.5px; }
-  /* A thin dark halo keeps labels readable over lines without blurring them. */
-  .label { fill: var(--ink); font-size: 11px; font-weight: 400; pointer-events: none; paint-order: stroke; stroke: var(--bg);
-    stroke-width: 2px; stroke-opacity: .9; stroke-linejoin: round; text-rendering: geometricPrecision; }
-  .label.ddf { font-size: 13px; font-weight: 600; }
-  .label.hot { font-weight: 500; }
-  .label.hot.center { font-weight: 600; }
-  .label.dim { fill: var(--ink-3); }
+  /* Labels: a name above every funder, white with a gray outline, same size at any zoom. */
+  .label { font: 12px var(--font); fill: #fff; pointer-events: none; paint-order: stroke; stroke: var(--halo);
+    stroke-width: 3px; stroke-linejoin: round; text-anchor: middle; }
+  .label.multi, .label.ddf { font-weight: 600; }
+  .label.single { font-weight: 300; fill: rgba(255, 255, 255, .92); stroke-width: 2.5px; }
+  .label.single.hot { font-weight: 500; fill: #fff; stroke-width: 3px; }
 
   /* ---------- tooltips ---------- */
-  .tip { position: absolute; pointer-events: none; z-index: 6; max-width: 300px; padding: 9px 11px; border-radius: 8px;
-    background: rgba(24, 27, 32, .98); border: 1px solid #3a404a; box-shadow: 0 6px 24px rgba(0,0,0,.4);
-    opacity: 0; transition: opacity .12s; }
+  .tip { position: absolute; pointer-events: none; z-index: 8; max-width: 300px; padding: 8px 10px; border-radius: 8px;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 10px var(--shadow);
+    font-size: 12px; opacity: 0; transition: opacity .12s; }
   .tip.on { opacity: 1; }
-  .tip .nm { font-weight: 600; margin-bottom: 2px; }
+  .tip .nm { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
   .tip .sub { color: var(--ink-3); font-size: 12px; margin-bottom: 6px; }
   .tip ul { margin: 0; padding: 0; list-style: none; }
   .tip li { display: flex; gap: 7px; align-items: baseline; color: var(--ink-2); margin: 2px 0; }
   .tip li .dot { position: relative; top: 1px; }
   .tag { display: inline-block; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2);
-    border: 1px dashed #6b7380; border-radius: 4px; padding: 0 4px; margin-left: 4px; white-space: nowrap; }
+    border: 1px dashed var(--ink-3); border-radius: 4px; padding: 0 4px; margin-left: 4px; white-space: nowrap; font-weight: 400; }
 
   /* ---------- side panel ---------- */
   #panel { position: absolute; top: 0; right: 0; bottom: 0; width: 360px; background: var(--surface);
     border-left: 1px solid var(--line); transform: translateX(100%); transition: transform .22s ease;
-    display: flex; flex-direction: column; z-index: 4; }
+    display: flex; flex-direction: column; z-index: 7; }
   #panel.open { transform: none; }
   .ph { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 10px 14px 12px; border-bottom: 1px solid var(--line); }
-  #back { order: -1; flex-basis: 100%; text-align: left; padding-left: 0; color: #8fb8f0; }
-  .ph .t { flex: 1; font-weight: 600; font-size: 14px; }
+  #back { order: -1; flex-basis: 100%; text-align: left; padding-left: 0; color: var(--link); }
+  .ph .t { flex: 1; font-weight: 600; font-size: 15px; }
   .icon { background: none; border: 1px solid transparent; border-radius: 6px; padding: 2px 8px; color: var(--ink-2); }
   .icon:hover { border-color: var(--line); color: var(--ink); }
   .pb { flex: 1; overflow-y: auto; padding: 14px; }
@@ -164,11 +243,11 @@
   .card .meta .k { color: var(--ink-3); }
   .area-tag { display: inline-flex; align-items: center; gap: 6px; }
   .linkish { background: none; border: none; padding: 0; color: var(--ink); text-align: left; font-weight: 600;
-    text-decoration: underline; text-decoration-color: #555c67; text-underline-offset: 3px; }
+    text-decoration: underline; text-decoration-color: var(--ink-3); text-underline-offset: 3px; }
   .linkish:hover { text-decoration-color: var(--ink); }
   .sec { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; margin: 16px 0 8px; }
   .prose { color: var(--ink-2); margin: 0 0 10px; }
-  .search { width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); margin-bottom: 10px; }
+  .search { width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); margin-bottom: 10px; }
   .list { list-style: none; margin: 0; padding: 0; }
   .list li button { width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid var(--line);
     padding: 8px 4px; display: flex; gap: 10px; align-items: flex-start; }
@@ -178,28 +257,25 @@
   .list .dot { margin-top: 5px; }
   .empty { color: var(--ink-3); padding: 10px 4px; }
   .cchips { display: flex; flex-wrap: wrap; gap: 5px; }
-  .cchip { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 999px;
-    padding: 1px 9px; font-size: 12px; }
-  .cchip:hover { border-color: #6b7380; }
-  .cchip[aria-pressed="true"] { border-color: #e8eaed; }
-  .note { border: 1px dashed #4a515c; border-radius: 8px; padding: 8px 10px; color: var(--ink-2); font-size: 12px; margin: 10px 0; }
+  .cchip { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 999px; padding: 1px 9px; font-size: 12px; }
+  .cchip:hover { border-color: var(--ink-3); }
+  .cchip[aria-pressed="true"] { border-color: var(--ink); }
+  .note { border: 1px dashed var(--ink-3); border-radius: 8px; padding: 8px 10px; color: var(--ink-2); font-size: 12px; margin: 10px 0; }
   .note button { margin-top: 6px; }
 
   /* ---------- empty state ---------- */
-  #empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 3; }
+  #empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 5; }
   #empty[hidden] { display: none; }
   #empty .box { pointer-events: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
-    max-width: 340px; padding: 16px 20px; background: rgba(24, 27, 32, .96); border: 1px solid #3a404a; border-radius: 10px; }
+    max-width: 340px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 2px 10px var(--shadow); }
   #empty #emptyWhy { color: var(--ink-2); font-size: 12px; }
 
   /* ---------- table + about ---------- */
-  #below { border-top: 1px solid var(--line); padding: 4px 16px; }
+  #below { padding: 4px 16px; max-width: 1240px; margin: 0 auto; }
   #below details { border-bottom: 1px solid var(--line); }
-  #below details:last-child { border-bottom: none; }
   #below summary { cursor: pointer; padding: 12px 0; font-size: 14px; font-weight: 600; }
-  #below summary:hover { color: #fff; }
   .sect-body { padding: 0 0 16px; }
-  .builtlink { margin: 0; padding: 12px 0 14px; border-top: 1px solid var(--line); }
+  .builtlink { margin: 0; padding: 12px 0 14px; }
   .builtlink a { font-weight: 600; }
   .builtlink span { color: var(--ink-3); font-size: 12px; margin-left: 6px; }
   .tabs { display: flex; gap: 6px; margin: 4px 0 10px; }
@@ -208,7 +284,7 @@
   .tbl th, .tbl td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--line); }
   .tbl th { position: sticky; top: 0; background: var(--surface-2); color: var(--ink-2); font-weight: 600; white-space: nowrap; z-index: 1; }
   .tbl td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .tbl tbody tr:hover td { background: var(--surface); }
+  .tbl tbody tr:hover td { background: var(--surface-2); }
   .tbl .linkish { font-weight: 500; }
   .about { max-width: 880px; color: var(--ink-2); }
   .about h3 { color: var(--ink); font-size: 13px; margin: 14px 0 4px; }
@@ -217,91 +293,101 @@
   .about li { margin: 3px 0; }
 
   /* ---------- map ---------- */
-  #mapSec { border-top: 1px solid var(--line); padding: 14px 16px 24px; }
+  #mapSec { border-top: 1px solid var(--line); padding: 14px 16px 24px; max-width: 1240px; margin: 0 auto; }
   .maphead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin-bottom: 8px; }
   .maphead h2 { font-size: 15px; font-weight: 600; margin: 0; }
   #mapNote { color: var(--ink-2); margin: 0; flex: 1; min-width: 260px; }
   #mapNote button { margin-left: 6px; }
   #mapLegend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--ink-2); font-size: 12px; }
-  #mapLegend .sw { display: inline-block; width: 18px; height: 11px; border-radius: 2px; vertical-align: -1px; margin-right: 5px; border: 1px solid #3a404a; }
+  #mapLegend .sw { display: inline-block; width: 18px; height: 11px; border-radius: 2px; vertical-align: -1px; margin-right: 5px; border: 1px solid var(--line); }
   #mapWrap { position: relative; }
   #map { display: block; width: 100%; }
-  #map .land { stroke: #0c0e11; stroke-width: .5; }
+  #map .land { stroke: var(--bg); stroke-width: .5; }
   #map .land.funded { cursor: pointer; }
-  #map .land.funded:hover { stroke: #e8eaed; stroke-width: 1; }
-  #map .hl { fill: none; pointer-events: none; stroke-linejoin: round; }
+  #map .land.funded:hover { stroke: var(--ink); stroke-width: 1; }
+  #map .hl { fill: none; pointer-events: none; stroke-linejoin: round; stroke: var(--ink); }
+  /* Country info box: opens when you click a country, like the info box on the graph. */
+  .mappanel { position: absolute; top: 8px; right: 8px; width: 350px; max-height: calc(100% - 16px); display: flex; flex-direction: column;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 24px var(--shadow); z-index: 6; }
+  .mappanel[hidden] { display: none; }
+  .mappanel .pb { overflow-y: auto; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   @media (max-width: 720px) {
-    /* The filter bar is tall on a phone; let it scroll away instead of covering a third of the screen. */
-    header { position: static; }
-    .titleblock { padding: 10px 12px 0; }
-    .titleblock h1 { font-size: 21px; }
-    .subtitle { font-size: 12.5px; }
-    .bar { padding: 6px 10px; gap: 6px 8px; }
+    header { padding: 12px 8px 0; }
+    .controls { position: static; padding: 8px 10px; gap: 6px; }
+    .row { gap: 6px 10px; }
     /* Area chips scroll sideways in one row instead of stacking up. */
     #areaChips { flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 2px; scrollbar-width: none; }
     #areaChips .chip { flex: none; }
-    /* A select is as wide as its longest option unless told otherwise; let it shrink to share a row with Reset. */
-    #programSelect { order: 2; flex: 1 1 0; min-width: 0; width: 100%; max-width: none; }
-    #reset { order: 3; }
-    .bar .spacer { display: none; }
+    .pick { flex-basis: 100%; }
+    .years { flex-basis: 100%; }
     #whereSel { flex: 1; }
     .ms { flex: 1; }
     #countryBtn { width: 100%; max-width: none; }
-    .toggle { flex: 1 1 100%; }
-    .years { flex: 1 1 100%; }
-    .years input[type=range] { flex: 1; width: auto; }
+    .abroadsw { flex: 0 0 auto; }
+    .titleblock { padding: 0 40px; }   /* keep the title clear of the light/dark button */
+    .themebtn { top: 10px; right: 8px; }
     #countryPop { width: min(320px, calc(100vw - 20px)); }
-    .lists { top: 8px; right: 8px; gap: 4px; }
-    .lists .btn { padding: 4px 7px; font-size: 12px; }
+    .tops { top: 6px; right: 6px; gap: 4px; }
+    .tb { height: 32px; padding: 0 8px; }
+    .zoom { top: 44px; right: 6px; }
+    .zoom button { width: 36px; height: 36px; }
     #panel { width: 100%; }
-    body.panel-open .lists, body.panel-open .zoom { right: 8px; }
-    #legend { left: 8px; bottom: 8px; max-width: calc(100% - 64px); max-height: 55%; overflow: auto; }
-    body.panel-open #legend { max-width: calc(100% - 64px); }
-    #bigYear { font-size: 56px; left: 12px; }
-    .zoom { right: 8px; bottom: 8px; }
-    .zoom button { width: 38px; height: 38px; }
+    body.panel-open .tops, body.panel-open .zoom { right: 6px; }
+    #legend { padding: 8px 10px 4px; }
+    #bigYear { font-size: 48px; left: 10px; }
     #below, #mapSec { padding-left: 10px; padding-right: 10px; }
+    .mappanel { position: static; width: 100%; max-height: 70vh; margin-top: 8px; }
     .kv { grid-template-columns: 96px 1fr; }
   }
 </style>
 </head>
 <body>
+<button id="themeBtn" class="themebtn" type="button" aria-label="Switch to dark mode" title="Switch light / dark mode">
+  <svg class="sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>
+  <svg class="moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="currentColor"/></svg>
+</button>
 <header id="header">
   <div class="titleblock">
     <h1>DDF Funders Network</h1>
     <p class="subtitle">Each dot represents a funder. Click a funder or a line for details. Scroll to zoom.</p>
   </div>
-  <div class="bar">
-    <div class="chips" id="areaChips" role="group" aria-label="Filter by DDF program area"></div>
-    <select id="programSelect" aria-label="Grant Programs"></select>
-    <div class="spacer"></div>
-    <button class="btn" id="reset">Reset</button>
-  </div>
-  <div class="bar">
-    <label class="lbl" for="whereSel">Where funds go</label>
-    <select id="whereSel">
-      <option value="all">All</option>
-      <option value="us">US only</option>
-      <option value="intl">International</option>
-      <option value="both">Both</option>
-    </select>
-    <div class="ms">
-      <button class="btn" id="countryBtn" aria-haspopup="true" aria-expanded="false" aria-controls="countryPop">Countries: All ▾</button>
-      <div id="countryPop" hidden role="dialog" aria-label="Filter by country">
-        <input class="search" id="countrySearch" type="search" placeholder="Search countries…" aria-label="Search countries">
-        <div id="countryList"></div>
-        <div class="pop-foot"><button class="btn" id="countryClear">Clear</button><button class="btn" id="countryDone">Done</button></div>
+  <div class="controls" id="controls">
+    <div class="row">
+      <div class="chips" id="areaChips" role="group" aria-label="Filter by DDF program area"></div>
+      <label class="toggle abroadsw"><input type="checkbox" id="abroadToggle" checked><span class="track" aria-hidden="true"></span><span>Show programs abroad</span></label>
+      <label class="pick"><span class="lbl">Grant Programs</span><select id="programSelect" aria-label="Grant Programs"></select></label>
+    </div>
+    <div class="row">
+      <div class="years">
+        <button class="btn" id="play" aria-label="Play timeline">▶ Play</button>
+        <span class="lbl">from</span><output id="yearFromOut" for="yearFrom"></output>
+        <div class="rng">
+          <div class="rtrack"></div><div class="rfill" id="yearFill"></div>
+          <input type="range" id="yearFrom" step="1" aria-label="From year">
+          <input type="range" id="year" step="1" aria-label="To year">
+        </div>
+        <span class="yrcap">Programs through <output id="yearOut" for="year"></output></span>
+        <span class="lbl yrnote" title="The filter shows every program that had started by the selected year. Completed programs stay visible. Dollar figures, commitments and funders appear only from the year they were reported.">Completed programs stay visible ⓘ</span>
       </div>
     </div>
-    <label class="toggle"><input type="checkbox" id="abroadToggle"><span class="track" aria-hidden="true"></span><span>Show programs abroad</span></label>
-    <div class="spacer"></div>
-    <div class="years">
-      <button class="btn" id="play" aria-label="Play timeline">▶ Play</button>
-      <label for="year">Year</label>
-      <input type="range" id="year" step="1">
-      <output id="yearOut" for="year"></output>
+    <div class="row">
+      <label class="lbl" for="whereSel">Where funds go</label>
+      <select id="whereSel">
+        <option value="all">All</option>
+        <option value="us">US only</option>
+        <option value="intl">International</option>
+        <option value="both">Both</option>
+      </select>
+      <div class="ms">
+        <button class="btn" id="countryBtn" aria-haspopup="true" aria-expanded="false" aria-controls="countryPop">Countries: All ▾</button>
+        <div id="countryPop" hidden role="dialog" aria-label="Filter by country">
+          <input class="search" id="countrySearch" type="search" placeholder="Search countries…" aria-label="Search countries">
+          <div id="countryList"></div>
+          <div class="pop-foot"><button class="btn" id="countryClear">Clear</button><button class="btn" id="countryDone">Done</button></div>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -309,16 +395,16 @@
 <main id="stage">
   <svg id="graph" role="img" aria-label="Network of DDF and the funders it co-funded grant programs with"></svg>
   <div id="bigYear" aria-hidden="true"></div>
-  <div class="lists">
-    <button class="btn" id="btnFunders"></button>
-    <button class="btn" id="btnPrograms"></button>
-    <button class="btn" id="btnMap" aria-label="Jump to world map">World map ↓</button>
+  <div class="tops">
+    <button class="tb" id="btnFunders"></button>
+    <button class="tb" id="btnPrograms"></button>
+    <button class="tb" id="btnMap" aria-label="Jump to world map">Map ↓</button>
   </div>
   <div class="zoom">
-    <button class="btn" id="zin" aria-label="Zoom in">+</button>
-    <button class="btn" id="zout" aria-label="Zoom out">−</button>
+    <button class="rs" id="reset">Reset</button>
+    <button id="zin" aria-label="Zoom in">+</button>
+    <button id="zout" aria-label="Zoom out">−</button>
   </div>
-  <details id="legend" open><summary>Legend</summary><div class="groups" id="legendBody"></div></details>
   <div id="tip" class="tip" role="tooltip"></div>
   <div id="empty" hidden><div class="box" role="status">
     <strong>No programs match these filters.</strong>
@@ -334,6 +420,8 @@
     <div class="pb" id="pbody"></div>
   </aside>
 </main>
+
+<details id="legend" open><summary>Legend</summary><div class="groups" id="legendBody"></div></details>
 
 <section id="below" aria-label="Data table and notes">
   <details id="tableSec">
@@ -363,6 +451,10 @@
   <div id="mapWrap">
     <svg id="map" role="img" aria-label="World map shaded by number of programs per country"></svg>
     <div id="mapTip" class="tip" role="tooltip"></div>
+    <aside id="mapPanel" class="mappanel" hidden aria-live="polite">
+      <div class="ph"><div class="t" id="mpTitle"></div><button class="icon" id="mpClose" aria-label="Close country info">✕</button></div>
+      <div class="pb" id="mpBody"></div>
+    </aside>
   </div>
 </section>
 
@@ -393,30 +485,38 @@
   const COUNTRY_BY_NUM = new Map(RAW.countries.map(c => [c.iso_numeric, c]));
   const WHERE_LABEL = { us: "US only", intl: "International", both: "Both (US and abroad)" };
 
-  // Programs: the 13 US programs from the network data, plus the programs abroad (optional layer).
+  // Programs: the base network (all fund US work) plus the international layer. Each program carries dated
+  // "measures" (dollar figures with what they measure, the year they were reported and a source). They are
+  // shown only from that year on and never added together.
   const basePrograms = NET.programs.map((p, i) => ({
-    id: "n" + i, name: p.name, area: p.ddf_program, year: p.year, yearsLabel: String(p.year),
-    amount: p.amount_usd_millions, approx: false, basis: p.amount_basis, sources: p.source ? [p.source] : [],
-    funderNames: p.funders, countries: p.countries, abroad: false, usWork: true, roles: null
+    id: "n" + i, name: p.name, area: p.ddf_program, year: p.year,
+    yearsLabel: typeof p.years_label === "string" ? p.years_label : String(p.year),
+    yearsSteps: Array.isArray(p.years_label) ? p.years_label : null,
+    measures: p.measures || [], sources: p.sources || (p.source ? [p.source] : []),
+    funderNames: p.funders, funderFrom: p.funder_from || {}, fundersNote: p.funders_note || null, note: p.note || null, // note: text, or dated steps like years_label
+    countries: [], artistOrigins: [], abroad: false, usWork: true, roles: null, partners: []
   }));
-  const intlFunder = new Map(INTL.funders.map(f => [f.id, f]));
+  const intlFunder = new Map(INTL.funders.concat(INTL.partners || []).map(f => [f.id, f]));
   const abroadPrograms = INTL.programs.map(p => {
     const roles = new Map();
-    INTL.links.filter(l => l.program_id === p.id).forEach(l => roles.set(intlFunder.get(l.funder_id).name, l));
+    INTL.links.filter(l => l.program_id === p.id && l.is_funder).forEach(l => roles.set(intlFunder.get(l.funder_id).name, l));
     return {
       id: p.id, name: p.name, area: p.ddf_program, year: p.start_year, yearsLabel: p.years,
-      amount: p.amount_usd_millions, approx: p.amount_is_approximate, basis: p.total_pool,
-      ddfContribution: p.ddf_contribution, description: p.description, caveats: p.caveats,
+      measures: p.measures || [], ddfContribution: p.ddf_contribution, description: p.description, caveats: p.caveats,
       confidence: p.confidence, meetsTest: p.meets_outside_us_test, administrator: p.administrator,
-      sources: p.sources, funderNames: p.funder_ids.map(id => intlFunder.get(id).name),
-      countries: p.countries, abroad: true, usWork: p.funds_us_work, roles
+      sources: p.sources, funderNames: p.funder_ids.map(id => intlFunder.get(id).name), funderFrom: {}, fundersNote: null, note: null,
+      partners: (p.partners || []).map(x => ({ name: (intlFunder.get(x.funder_id) || { name: x.funder_id }).name, role: x.role })),
+      countries: p.countries, artistOrigins: p.artist_origins || [], abroad: true, usWork: p.funds_us_work, roles
     };
   });
   const programs = basePrograms.concat(abroadPrograms);
   programs.forEach(p => {
-    p.countriesAll = p.abroad && p.usWork ? ["USA"].concat(p.countries) : p.countries.slice();
-    p.where = !p.abroad ? "us" : p.usWork ? "both" : "intl";
+    // countriesAll = funded activity locations only. Artists' home countries are kept apart (artistOrigins).
+    p.countriesAll = (p.usWork ? ["USA"] : []).concat(p.countries);
+    p.where = !p.countries.length ? "us" : p.usWork ? "both" : "intl";
   });
+  const ORIGINS = new Map((RAW.artist_origin_countries || []).map(c => [c.iso3, c]));
+  const ORIGIN_BY_NUM = new Map((RAW.artist_origin_countries || []).map(c => [c.iso_numeric, c]));
 
   // Funders: network funders first, then any funder that only appears in the programs abroad.
   const funders = [{
@@ -440,17 +540,19 @@
   funders.forEach(f => {
     f.progs = programs.filter(p => p.funders.includes(f));
     f.inBase = f.isDDF || f.progs.some(p => !p.abroad);
-    f.hasAbroad = f.progs.some(p => p.abroad);
+    f.hasAbroad = f.progs.some(p => p.countries.length > 0); // funds activity outside the US
     f.tier = tierOf(f.endow);
-    f.r = f.tier.r;
+    f.r = f.isDDF ? 8 : f.tier.r; // DDF is drawn as a small solid dark-gray dot at the center
   });
 
+  // Dot size: reported assets in $ billions. Each tier includes its lower bound exactly
+  // ($10B is in the top tier, $1B in the second, $100M in the third).
   function tierOf(b) {
-    if (b == null) return { key: "na", r: 5, label: "Endowment not found" };
-    if (b > 10) return { key: "L", r: 21, label: "Over $10 billion" };
-    if (b > 1) return { key: "M", r: 14, label: "Over $1 billion" };
-    if (b > 0.1) return { key: "S", r: 9, label: "Over $100 million" };
-    return { key: "XS", r: 6, label: "Below $100 million" };
+    if (b == null) return { key: "na", r: 5, label: "Not available" };
+    if (b >= 10) return { key: "L", r: 21, label: "$10B or more" };
+    if (b >= 1) return { key: "M", r: 14, label: "$1B to under $10B" };
+    if (b >= 0.1) return { key: "S", r: 9, label: "$100M to under $1B" };
+    return { key: "XS", r: 6, label: "Under $100M" };
   }
 
   // ------------------------------------------------------------ formatting
@@ -468,80 +570,81 @@
   const extLink = (url, text) => url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(text || url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""))}</a>` : null;
   const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
   const cName = iso => (COUNTRY.get(iso) || { name: iso }).name;
-  const abroadTag = p => p.abroad ? `<span class="tag">abroad</span>` : "";
+  const abroadTag = p => !p.abroad ? "" : p.countries.length ? `<span class="tag">abroad</span>` : `<span class="tag">int'l artists</span>`;
+  // Reported assets: the measure, year and source behind each funder's figure (from the reference data).
+  function assetInfo(basis) {
+    const b = (basis || "").toLowerCase();
+    const measure = /endowment/.test(b) ? "Endowment" : /aum/.test(b) ? "Assets under management" : /total assets/.test(b) ? "Total assets" : "Measure not stated";
+    const fy = (basis || "").match(/FY\s?(\d{2,4})/i), yr = (basis || "").match(/(19|20)\d{2}/);
+    const year = fy ? "FY" + (fy[1].length === 2 ? "20" + fy[1] : fy[1]) : yr ? yr[0] : "Year not stated";
+    const doc = /annual report/.test(b) ? "annual report" : measure === "Total assets" ? "tax filings" : null;
+    return { measure, year, doc };
+  }
+  const assetsText = f => f.endow == null ? "Not available" : fmtEndow(f.endow);
+  function assetsHtml(f) {
+    if (f.endow == null) return na("Not available");
+    const a = assetInfo(f.basis);
+    return `${esc(fmtEndow(f.endow))}<div class="na" style="font-size:12px">${esc(a.measure)} · ${esc(a.year)} · source: ${extLink(NET.source, "DDF Funders Network reference data")}${a.doc ? " (citing " + esc(a.doc) + ")" : ""}</div>`;
+  }
 
   // ------------------------------------------------------------------ state
-  const state = { area: null, year: 0, program: null, funder: null, pair: null, hover: null, hoverLink: null, abroad: false, where: "all", countries: new Set() };
+  const state = { area: null, yearFrom: 0, year: 0, program: null, funder: null, pair: null, hover: null, hoverLink: null, abroad: true, where: "all", countries: new Set() };
   let T = d3.zoomIdentity;
 
   const inLayer = p => !p.abroad || state.abroad;
   const layerPrograms = () => programs.filter(inLayer);
   const filterOk = (p, ignoreCountries) =>
-    inLayer(p) && (!state.area || p.area === state.area) && p.year <= state.year &&
+    inLayer(p) && (!state.area || p.area === state.area) && p.year >= state.yearFrom && p.year <= state.year &&
     (state.where === "all" || p.where === state.where) &&
     (ignoreCountries || !state.countries.size || p.countriesAll.some(c => state.countries.has(c)));
   const isActive = p => filterOk(p, false);
+  // Date text in dated steps: a later event (an announcement, the final cohort) appears only from its year.
+  const noteText = p => !p.note ? null : Array.isArray(p.note) ? p.note.filter(st => st.year <= state.year).map(st => st.text).join(" ") || null : p.note;
+  const yearsText = p => p.yearsSteps ? p.yearsSteps.filter(st => st.year <= state.year).map(st => st.text).join("; ") || String(p.year) : p.yearsLabel;
+  // A funder counts in a program from the year its participation is documented (default: the program's start).
+  const funderIn = (p, f) => (p.funderFrom[f.name] ?? p.year) <= state.year;
+  const pairActive = d => d.progs.filter(p => isActive(p) && funderIn(p, d.a) && funderIn(p, d.b));
+  // Figures reported by the selected year (a later commitment or grant total never shows early).
+  const measuresAt = p => p.measures.filter(m => m.as_of_year <= state.year);
+  const latest = ms => ms.reduce((a, b) => (a && a.as_of_year > b.as_of_year ? a : b), null);
+  const primaryAt = p => latest(measuresAt(p).filter(m => m.scope === "program"));
+  const SCOPE_NOTE = { program: "", ddf: "DDF's own contribution", component: "one component", goal: "a goal, not money committed",
+    grants: "a separate grant measure", partners: "partners' commitments toward a wider strategy" };
+  const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+  const measureAmt = m => (m.qualifier && m.qualifier !== "~" ? cap(m.qualifier) + " " : "") + fmtMoney(m.value_usd_millions, m.qualifier === "~");
+  const measureLine = (m, withSource) => `<strong>${esc(measureAmt(m))}</strong> ${esc(m.what)} <span class="na">(${esc(m.as_of)}${m.scope !== "program" ? " · " + SCOPE_NOTE[m.scope] : ""})</span>${withSource && m.source ? " " + extLink(m.source, "source") : ""}`;
+  function amountsHtml(p, withSource) {
+    const ms = measuresAt(p).slice().sort((a, b) => (a.scope !== "program") - (b.scope !== "program") || a.as_of_year - b.as_of_year);
+    if (!ms.length) return na(p.measures.length ? "No amount documented as of " + state.year : "Not available");
+    return ms.map(m => `<div>${measureLine(m, withSource)}</div>`).join("");
+  }
   const progsInLayer = f => f.progs.filter(inLayer);
-  const activeProgs = f => f.progs.filter(isActive);
+  const activeProgs = f => f.progs.filter(p => isActive(p) && funderIn(p, f));
   const nodeInLayer = f => f.isDDF || f.progs.some(inLayer);
   const nodeVisible = f => f.isDDF || activeProgs(f).length > 0;
-  const alwaysLabel = f => f.isDDF || (f.endow != null && f.endow > 1) || progsInLayer(f).length > 1;
   const yearBounds = () => d3.extent(layerPrograms(), p => p.year);
 
-  // ----------------------------------------------------------------- layout
-  // Invisible anchor nodes, one per program, pull each program's funders into a cluster.
-  // Stage 1 lays out the US network on its own; stage 2 adds the programs abroad around it with
-  // the US network held still, so turning the layer on doesn't rearrange what you've seen.
-  const anchors = programs.map(p => ({ id: "anchor:" + p.id, anchor: true, prog: p }));
-  const anchorOf = new Map(anchors.map(a => [a.prog, a]));
-  function linksFor(progList) {
-    const out = [];
-    progList.forEach(p => {
-      const a = anchorOf.get(p);
-      p.funders.forEach(f => {
-        if (f.isDDF) out.push({ source: f, target: a, dist: p.abroad ? 260 : 170, str: p.abroad ? 0.12 : 0.25 });
-        else if (p.abroad && f.inBase) out.push({ source: f, target: a, dist: 140, str: 0.04 });
-        else out.push({ source: f, target: a, dist: 26 + f.r + Math.sqrt(p.funders.length) * 9, str: 0.9 / f.progs.filter(q => q.abroad === p.abroad).length });
-      });
-    });
-    return out;
+  // ------------------------------------------------------------ stage size
+  const header = document.getElementById("header");
+  const controls = document.getElementById("controls");
+  const stage = document.getElementById("stage");
+  // The stage never scrolls; undo any scroll the browser makes to reveal a focused element.
+  stage.addEventListener("scroll", () => { stage.scrollLeft = 0; stage.scrollTop = 0; });
+  // The graph fills the rest of the screen under the title and control box, so the whole network is
+  // visible on load (the control box then stays pinned while scrolling on wide screens).
+  function sizeStage() {
+    const h = window.innerWidth < 720
+      ? Math.max(420, Math.round(window.innerWidth * 0.76) + 150)
+      : Math.max(520, window.innerHeight - header.getBoundingClientRect().height - 12);
+    stage.style.height = Math.round(h) + "px";
   }
-  function simulate(nodes, links, ticks) {
-    const sim = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).distance(d => d.dist).strength(d => d.str))
-      .force("charge", d3.forceManyBody().strength(d => d.anchor ? -260 : -40 - d.r * 5))
-      // DDF gets a wide collision radius so its label stays clear; the y-pull is stronger than the x-pull
-      // so the network spreads sideways and fits a landscape screen.
-      .force("collide", d3.forceCollide(d => d.anchor ? 4 : d.isDDF ? d.r + 34 : d.r + 3).iterations(2))
-      .force("x", d3.forceX(0).strength(0.012))
-      .force("y", d3.forceY(0).strength(0.07))
-      .stop();
-    for (let i = 0; i < ticks; i++) sim.tick();
-  }
-  DDF.fx = 0; DDF.fy = 0;
-  const baseNodes = funders.filter(f => f.inBase).concat(anchors.filter(a => !a.prog.abroad));
-  simulate(baseNodes, linksFor(basePrograms), 500);
-  baseNodes.forEach(n => { n.fx = n.x; n.fy = n.y; });
-  const R0 = d3.max(baseNodes, n => Math.hypot(n.x, n.y));
-  const extraAnchors = anchors.filter(a => a.prog.abroad);
-  extraAnchors.forEach((a, i) => {
-    const ang = -Math.PI / 2 + (i + 0.5) * (2 * Math.PI / extraAnchors.length);
-    a.x = Math.cos(ang) * (R0 + 140) * 1.6; a.y = Math.sin(ang) * (R0 + 140) * 0.75;
-  });
-  const extraFunders = funders.filter(f => !f.inBase);
-  extraFunders.forEach(f => {
-    const a = anchorOf.get(f.progs[0]);
-    f.x = a.x + (Math.random() - 0.5) * 30; f.y = a.y + (Math.random() - 0.5) * 30;
-  });
-  simulate(baseNodes.concat(extraAnchors, extraFunders), linksFor(programs), 400);
-
-  // ------------------------------------------------------------------ links
-  // DDF -> funder, one per shared program; width = program amount, dotted when the amount is missing.
-  const ddfLinks = [];
-  funders.filter(f => !f.isDDF).forEach(f => {
-    f.progs.forEach((p, i) => ddfLinks.push({ f, p, i, n: f.progs.length }));
-  });
-  const wScale = d3.scaleSqrt().domain([0, 500]).range([1, 9]);
+  sizeStage();
+  let lastControlsH = controls.offsetHeight;
+  new ResizeObserver(() => {
+    if (controls.offsetHeight === lastControlsH) return;
+    lastControlsH = controls.offsetHeight;
+    sizeStage();
+  }).observe(controls);
 
   // Funder <-> funder, for each pair that co-funded at least one program (DDF excluded).
   const pairMap = new Map();
@@ -556,24 +659,149 @@
   });
   const coLinks = Array.from(pairMap.values());
 
-  // ------------------------------------------------------------------- svg
-  const header = document.getElementById("header");
-  const stage = document.getElementById("stage");
-  // The stage never scrolls; undo any scroll the browser makes to reveal a focused element.
-  stage.addEventListener("scroll", () => { stage.scrollLeft = 0; stage.scrollTop = 0; });
-  function sizeStage() {
-    const min = window.innerWidth < 720 ? 440 : 520;
-    stage.style.height = Math.max(min, window.innerHeight - header.offsetHeight) + "px";
+  // ----------------------------------------------------------------- layout
+  // A wide 1240×940 canvas with DDF in the center. Each program area pulls its funders toward its own
+  // spot (a funder in several areas sits between them); lines from DDF are long (240–400px, shorter for
+  // bigger amounts, log scale); strong repulsion, a collision radius of dot + 20px, and a collision rule
+  // for the label boxes so no two names overlap. Lines between co-funders keep each program grouped.
+  // Stage 1 lays out the US network; stage 2 adds the programs abroad with the US network held still,
+  // so turning that layer on doesn't move anything you've already seen.
+  const W = 1240, H = 940;
+  const HOME = {
+    "Environment": [0.50, 0.10], "Child Well-being": [0.86, 0.28], "Medical Research": [0.84, 0.82],
+    "Arts": [0.25, 0.58], "Building Bridges": [0.50, 0.95]
+  };
+  // Line length uses the largest documented program-level amount among the funder's programs (never a sum).
+  const programLevel = ps => { const v = ps.flatMap(p => p.measures.filter(m => m.scope === "program").map(m => m.value_usd_millions)); return v.length ? d3.max(v) : null; };
+  const dScale = d3.scaleLog().domain([2, 600]).range([400, 240]).clamp(true);
+  const wScale = d3.scaleLog().domain([2, 600]).range([1.2, 6]).clamp(true);
+  // Label boxes are sized for the scale the canvas is first shown at, so names don't collide on screen.
+  const fitScale = Math.min(1, (stage.clientWidth - 140) / W, (stage.clientHeight - 60) / H);
+  const LBL = 1 / Math.max(0.6, fitScale);
+  function homeOf(f, ps) {
+    if (f.isDDF) return [W / 2, H / 2];
+    const ks = Object.keys(HOME).filter(k => ps.some(p => p.area === k));
+    if (!ks.length) return [W / 2, H / 2];
+    return [W * d3.mean(ks, k => HOME[k][0]), H * d3.mean(ks, k => HOME[k][1])];
   }
-  sizeStage();
-  // The header can wrap to another line (e.g. when the Building Bridges chip appears); keep the graph filling the screen.
-  let lastHeaderH = header.offsetHeight;
-  new ResizeObserver(() => {
-    if (header.offsetHeight === lastHeaderH) return;
-    lastHeaderH = header.offsetHeight;
-    sizeStage();
-  }).observe(header);
+  // The label sits above the dot, so each node's box covers the dot plus the name above it.
+  function boxOf(d) {
+    return { w: (Math.max(2 * d.r, d.name.length * 7) + 6) * LBL, h: 2 * d.r + 20 * LBL, cy: d.y - 8 * LBL };
+  }
+  function rectCollide() {
+    let ns = [];
+    function force() {
+      for (let i = 0; i < ns.length; i++) {
+        const a = ns[i], ba = boxOf(a);
+        for (let j = i + 1; j < ns.length; j++) {
+          const b = ns[j], bb = boxOf(b);
+          const dx = b.x - a.x, dy = bb.cy - ba.cy;
+          const ox = (ba.w + bb.w) / 2 - Math.abs(dx), oy = (ba.h + bb.h) / 2 - Math.abs(dy);
+          if (ox <= 0 || oy <= 0) continue;
+          const aF = a.fx != null, bF = b.fx != null;
+          if (aF && bF) continue;
+          const share = aF || bF ? 1 : 0.5, k = 0.8;
+          if (ox < oy) {
+            const sx = (dx >= 0 ? 1 : -1) * ox * k;
+            if (!aF) a.x -= sx * share; if (!bF) b.x += sx * share;
+          } else {
+            const sy = (dy >= 0 ? 1 : -1) * oy * k;
+            if (!aF) a.y -= sy * share; if (!bF) b.y += sy * share;
+          }
+        }
+      }
+    }
+    force.initialize = n => { ns = n; };
+    return force;
+  }
+  function clampToCanvas(d) {
+    if (d.fx != null) return;
+    d.x = Math.max(50, Math.min(W - 50, d.x));
+    d.y = Math.max(34, Math.min(H - 16, d.y));
+  }
+  function layoutLinks(fs, keep) {
+    const inSet = new Set(fs), out = [];
+    fs.forEach(f => {
+      if (f.isDDF) return;
+      const t = programLevel(f.progs.filter(keep));
+      out.push({ source: DDF, target: f, dist: t != null ? dScale(Math.max(t, 2)) : 430, str: 0.06 });
+    });
+    coLinks.forEach(c => {
+      if (!inSet.has(c.a) || !inSet.has(c.b)) return;
+      const ps = c.progs.filter(keep);
+      if (!ps.length) return;
+      const big = d3.max(ps, p => p.funders.length);
+      // Very large programs (Mosaic, Artist Relief: 20+ funders) are held together more loosely so their names have room.
+      out.push({ source: c.a, target: c.b, dist: big > 10 ? 125 + 18 * Math.sqrt(big) : 90 + 14 * Math.sqrt(big),
+        str: Math.min(0.9, (big > 10 ? 0.12 : 0.35) + 0.15 * ps.length) });
+    });
+    return out;
+  }
+  function simulate(nodes, links, ticks) {
+    const sim = d3.forceSimulation(nodes).randomSource(d3.randomLcg(0.42))
+      .force("link", d3.forceLink(links).distance(e => e.dist).strength(e => e.str))
+      .force("charge", d3.forceManyBody().strength(-620).distanceMax(420))
+      .force("collide", d3.forceCollide(d => d.r + 20))
+      .force("rect", rectCollide())
+      .force("x", d3.forceX(d => d.home[0]).strength(0.07))
+      .force("y", d3.forceY(d => d.home[1]).strength(0.07))
+      .stop();
+    for (let i = 0; i < ticks; i++) { sim.tick(); nodes.forEach(clampToCanvas); }
+    // Settle: only the label-box and dot collisions, until no two names overlap.
+    const settle = rectCollide();
+    settle.initialize(nodes);
+    for (let i = 0; i < 300 && overlaps(nodes) > 0; i++) { settle(); nodes.forEach(clampToCanvas); }
+  }
+  function overlaps(nodes) {
+    let n = 0;
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i], ba = boxOf(a);
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j], bb = boxOf(b);
+        if ((ba.w + bb.w) / 2 - Math.abs(b.x - a.x) > 0.5 && (ba.h + bb.h) / 2 - Math.abs(bb.cy - ba.cy) > 0.5) n++;
+      }
+    }
+    return n;
+  }
+  const rand = d3.randomLcg(0.7); // fixed seed: the same layout on every load
+  DDF.x = DDF.fx = W / 2; DDF.y = DDF.fy = H / 2; DDF.home = [W / 2, H / 2];
+  const baseFunders = funders.filter(f => f.inBase);
+  baseFunders.forEach(f => {
+    if (f.isDDF) return;
+    f.home = homeOf(f, f.progs.filter(p => !p.abroad));
+    f.x = f.home[0] + (rand() - 0.5) * 160; f.y = f.home[1] + (rand() - 0.5) * 160;
+  });
+  simulate(baseFunders, layoutLinks(baseFunders, p => !p.abroad), 600);
+  baseFunders.forEach(f => { f.fx = f.x; f.fy = f.y; });
+  const extraFunders = funders.filter(f => !f.inBase);
+  extraFunders.forEach(f => {
+    f.home = homeOf(f, f.progs);
+    f.x = f.home[0] + (rand() - 0.5) * 160; f.y = f.home[1] + (rand() - 0.5) * 160;
+  });
+  simulate(funders, layoutLinks(funders, () => true), 500);
+  const layoutOverlaps = { us: overlaps(baseFunders), all: overlaps(funders) };
+  // Each dot's laid-out position is its home. Dots are not frozen: a live simulation (below) pulls
+  // them back home after a drag. Only DDF stays fixed in the center.
+  funders.forEach(f => {
+    f.hx = f.x; f.hy = f.y; f.vx = 0; f.vy = 0;
+    if (!f.isDDF) { f.fx = null; f.fy = null; }
+  });
 
+  // ------------------------------------------------------------------ links
+  // One line from DDF per funder and shared program. Its width is that PROGRAM's documented total, so the same
+  // figure repeats on every participating funder's line; it is not the funder's contribution and the widths
+  // must never be added up. Neutral width when only DDF's own share or one component is known; dotted when
+  // no amount is documented by the selected year.
+  const ddfLinks = [];
+  funders.filter(f => !f.isDDF).forEach(f => f.progs.forEach((p, i) => ddfLinks.push({ f, p, i, n: f.progs.length })));
+  function edgeStyle(p) {
+    const m = primaryAt(p);
+    if (m) return { w: wScale(Math.max(m.value_usd_millions, 2)), dash: null, kind: "program" };
+    if (measuresAt(p).length) return { w: 1.6, dash: null, kind: "neutral" };
+    return { w: 1, dash: "2 4", kind: "none" };
+  }
+
+  // ------------------------------------------------------------------- svg
   const svg = d3.select("#graph");
   const gCo = svg.append("g");
   const gDDF = svg.append("g");
@@ -583,10 +811,7 @@
   const gLabels = svg.append("g");
 
   const coSel = gCo.selectAll("line").data(coLinks).join("line").attr("class", "co");
-  const ddfSel = gDDF.selectAll("path").data(ddfLinks).join("path").attr("class", "ddfl")
-    .attr("stroke", d => COLOR[d.p.area])
-    .attr("stroke-width", d => d.p.amount == null ? 1.3 : wScale(d.p.amount))
-    .attr("stroke-dasharray", d => d.p.amount == null ? "2 4" : null);
+  const ddfSel = gDDF.selectAll("path").data(ddfLinks).join("path").attr("class", "ddfl");
   // Wider invisible copies of each line take the pointer, so thin lines are easy to hover and click.
   // Funder-to-funder lines are click-only (no hover), as there are hundreds of them in the big clusters.
   const coHitSel = gCoHit.selectAll("line").data(coLinks).join("line").attr("class", "hit");
@@ -598,35 +823,40 @@
     .attr("tabindex", 0).attr("role", "button").attr("aria-label", d => d.name);
 
   // Node fill shows the program areas of the funder's programs in the current layer (pie if several).
+  // Funders whose reported assets aren't available are hollow rings: a faint fill with an outline in their color.
   function drawShapes() {
     nodeSel.each(function (d) {
       const g = d3.select(this);
       g.selectAll("*").remove();
-      const progs = d.isDDF ? layerPrograms() : progsInLayer(d);
-      const counts = d3.rollup(progs.length ? progs : d.progs, v => v.length, p => p.area);
-      const areas = AREAS.filter(a => counts.has(a)).map(a => ({ area: a, n: counts.get(a) }));
-      d.areas = areas;
-      if (areas.length === 1) {
-        g.append("circle").attr("class", "slice").attr("r", d.r).attr("fill", COLOR[areas[0].area]);
+      if (d.isDDF) {
+        g.append("circle").attr("class", "slice").attr("r", d.r).style("fill", "var(--node)");
+        d.areas = [];
       } else {
-        const arc = d3.arc().innerRadius(0).outerRadius(d.r);
-        g.selectAll("path").data(pie(areas)).join("path").attr("class", "slice")
-          .attr("d", arc).attr("fill", s => COLOR[s.data.area]);
+        const progs = progsInLayer(d);
+        const counts = d3.rollup(progs.length ? progs : d.progs, v => v.length, p => p.area);
+        const areas = AREAS.filter(a => counts.has(a)).map(a => ({ area: a, n: counts.get(a) }));
+        d.areas = areas;
+        const hollow = d.endow == null;
+        const paint = (sel, area) => sel.style("fill", COLOR[area]).style("fill-opacity", hollow ? 0.18 : 0.92)
+          .style("stroke", hollow ? COLOR[area] : "var(--bg)").style("stroke-width", hollow ? 1.2 : 1);
+        if (areas.length === 1) {
+          paint(g.append("circle").attr("class", "slice").attr("r", d.r), areas[0].area);
+        } else {
+          const arc = d3.arc().innerRadius(0).outerRadius(d.r);
+          g.selectAll("path").data(pie(areas)).join("path").attr("class", "slice").attr("d", arc)
+            .each(function (s) { paint(d3.select(this), s.data.area); });
+        }
       }
-      if (d.endow == null) g.selectAll(".slice").attr("fill-opacity", 0.38);
-      if (d.isDDF) g.append("circle").attr("r", d.r + 3.5).attr("fill", "none").attr("stroke", "#e8eaed").attr("stroke-width", 1.5);
       // Dashed ring: this funder has at least one program abroad.
-      if (d.hasAbroad) g.append("circle").attr("class", "abroad").attr("r", d.r + (d.isDDF ? 7.5 : 3.5));
-      g.append("circle").attr("class", "ring").attr("r", d.r + (d.isDDF ? 11 : d.hasAbroad ? 7 : 3.5)).attr("stroke-width", 0);
+      if (d.hasAbroad) g.append("circle").attr("class", "abroad").attr("r", d.r + 3.5);
+      g.append("circle").attr("class", "ring").attr("r", d.r + (d.hasAbroad ? 7 : 3.5)).attr("stroke-width", 0);
       // Larger invisible hit target for small nodes (bigger still on touch screens, so dots are easy to tap).
       g.append("circle").attr("class", "hitdot").attr("r", Math.max(d.r + 3, touchUI() ? 16 : 10)).attr("fill", "transparent");
     });
   }
 
-  const labelSel = gLabels.selectAll("text").data(funders).join("text")
-    .attr("class", d => "label" + (d.isDDF ? " ddf" : ""))
-    .attr("text-anchor", "middle")
-    .text(d => d.name);
+  // A name above every funder.
+  const labelSel = gLabels.selectAll("text").data(funders).join("text").attr("class", "label").text(d => d.name);
 
   // Which funders and programs are emphasised right now (hover beats selection).
   function focus() {
@@ -634,15 +864,15 @@
     if (h) {
       const progs = new Set(h.isDDF ? programs.filter(isActive) : activeProgs(h));
       const nodes = new Set([h]);
-      progs.forEach(p => p.funders.forEach(f => nodes.add(f)));
+      progs.forEach(p => p.funders.forEach(f => { if (funderIn(p, f)) nodes.add(f); }));
       return { nodes, progs, center: h };
     }
     if (state.program) {
       const p = state.program;
-      return { nodes: new Set(p.funders), progs: new Set([p]), center: null };
+      return { nodes: new Set(p.funders.filter(f => funderIn(p, f))), progs: new Set([p]), center: null };
     }
     if (state.pair) {
-      const progs = new Set(state.pair.progs.filter(isActive));
+      const progs = new Set(pairActive(state.pair));
       return { nodes: new Set([state.pair.a, state.pair.b, DDF]), progs, center: null, pair: state.pair };
     }
     return null;
@@ -651,110 +881,116 @@
   // ------------------------------------------------------------ rendering
   function px(d) { return T.applyX(d.x); }
   function py(d) { return T.applyY(d.y); }
-  // DDF's label sits above its node so it doesn't cover the funders clustered just below it.
-  // Other labels go below their node; restyle() moves one above or to the right (d.labelPos) when that spot is taken.
-  function labelY(d) {
-    if (d.isDDF) return py(d) - d.r - 14;
-    if (d.labelPos === "above") return py(d) - d.r - 6;
-    if (d.labelPos === "right") return py(d) + 4;
-    return py(d) + d.r + 12;
-  }
-  function labelX(d) { return d.labelPos === "right" ? px(d) + d.r + 5 : px(d); }
+  const labelY = d => py(d) - d.r * dotScale() - 5;
+  const lineTo = (sel, a, b) => sel.attr("x1", d => px(a(d))).attr("y1", d => py(a(d))).attr("x2", d => px(b(d))).attr("y2", d => py(b(d)));
 
+  // On phones the canvas is shown far below full size, so dots shrink with it (never below 40%).
+  const dotScale = () => window.innerWidth < 720 ? Math.max(0.4, Math.min(1, T.k)) : 1;
+  // A funder's several programs get slightly bent lines so each one stays visible.
   function curve(d) {
     const x1 = px(DDF), y1 = py(DDF), x2 = px(d.f), y2 = py(d.f);
-    const off = (d.i - (d.n - 1) / 2) * 0.22;
+    const off = (d.i - (d.n - 1) / 2) * 0.14;
     const mx = (x1 + x2) / 2 - (y2 - y1) * off, my = (y1 + y2) / 2 + (x2 - x1) * off;
     return `M${x1},${y1}Q${mx},${my} ${x2},${y2}`;
   }
-
   function place() {
-    coSel.attr("x1", d => px(d.a)).attr("y1", d => py(d.a)).attr("x2", d => px(d.b)).attr("y2", d => py(d.b));
-    coHitSel.attr("x1", d => px(d.a)).attr("y1", d => py(d.a)).attr("x2", d => px(d.b)).attr("y2", d => py(d.b));
+    const ds = dotScale();
+    lineTo(coSel, d => d.a, d => d.b);
+    lineTo(coHitSel, d => d.a, d => d.b);
     ddfSel.attr("d", curve);
     ddfHitSel.attr("d", curve);
-    nodeSel.attr("transform", d => `translate(${px(d)},${py(d)})`);
-    labelSel.attr("x", labelX).attr("y", labelY);
+    nodeSel.attr("transform", d => `translate(${px(d)},${py(d)})` + (ds < 1 ? ` scale(${ds})` : ""));
+    if (ds < 1) nodeSel.select(".hitdot").attr("r", d => Math.max(d.r + 3, 16 / ds));
+    labelSel.attr("x", px).attr("y", labelY);
   }
 
   function restyle() {
     const F = focus();
-    const zoomedIn = T.k >= 1.8;
+    const phone = window.innerWidth < 720;
 
     nodeSel
       .style("display", d => nodeInLayer(d) ? null : "none")
-      .style("opacity", d => !nodeVisible(d) ? 0.06 : F && !F.nodes.has(d) ? 0.14 : 1)
+      .style("opacity", d => !nodeVisible(d) ? 0.06 : F && !F.nodes.has(d) ? 0.12 : 1)
       .style("pointer-events", d => nodeVisible(d) ? null : "none");
     nodeSel.select(".ring")
       .attr("stroke-width", d => (d === state.funder || (state.program && !state.funder && F && F.nodes.has(d) && !d.isDDF)) ? 1.5 : 0);
 
+    // Lines from DDF: one per shared program; width from that program's documented total at the selected year.
+    const edgeOn = d => inLayer(d.p) && isActive(d.p) && funderIn(d.p, d.f);
     const ddfOpacity = d => {
-      if (!isActive(d.p)) return 0;
+      if (!edgeOn(d)) return 0;
       if (state.hoverLink === d) return 1;
       if (!F) return 0.55;
-      if (F.pair) return (d.f === F.pair.a || d.f === F.pair.b) && F.progs.has(d.p) ? 0.95 : 0.05;
-      if (F.center && !F.center.isDDF) return d.f === F.center && F.progs.has(d.p) ? 0.95 : 0.05;
-      return F.progs.has(d.p) ? 0.95 : 0.05;
+      if (F.pair) return (d.f === F.pair.a || d.f === F.pair.b) && F.progs.has(d.p) ? 0.9 : 0.05;
+      if (F.center && !F.center.isDDF) return d.f === F.center && F.progs.has(d.p) ? 0.9 : 0.05;
+      return F.progs.has(d.p) ? 0.9 : 0.05;
     };
-    ddfSel.style("display", d => inLayer(d.p) ? null : "none").style("opacity", ddfOpacity);
-    ddfHitSel.style("display", d => inLayer(d.p) && isActive(d.p) ? null : "none")
+    ddfSel.style("display", d => inLayer(d.p) ? null : "none")
+      .each(function (d) {
+        const st = edgeStyle(d.p);
+        this.setAttribute("stroke-width", st.w);
+        if (st.dash) this.setAttribute("stroke-dasharray", st.dash); else this.removeAttribute("stroke-dasharray");
+      })
+      .style("opacity", ddfOpacity)
+      .classed("hot", d => ddfOpacity(d) >= 0.9);
+    ddfHitSel.style("display", d => edgeOn(d) ? null : "none")
       .style("pointer-events", d => ddfOpacity(d) >= 0.5 ? "stroke" : "none");
 
-    // Funder-to-funder lines are gray (not white), and stay gray when a program is highlighted.
+    // Lines between two other funders: 1px, darker gray, faint; a bit stronger when their program is highlighted.
     const coOpacity = d => {
-      const act = d.progs.filter(isActive);
+      const act = pairActive(d);
       if (!act.length) return 0;
-      if (!F) return 0.16;
+      if (!F) return 0.13;
       const shared = act.some(p => F.progs.has(p));
-      if (F.pair) return d === F.pair ? 0.95 : 0.03;
+      if (F.pair) return d === F.pair ? 0.9 : 0.03;
       if (F.center && !F.center.isDDF) return shared && (d.a === F.center || d.b === F.center) ? 0.6 : 0.03;
-      return shared ? 0.45 : 0.03;
+      return shared ? 0.6 : 0.03;
     };
-    coSel
-      .attr("stroke-width", d => Math.min(0.6 + 0.5 * d.progs.filter(isActive).length, 2))
-      .style("opacity", coOpacity);
-    coHitSel.style("display", d => d.progs.some(isActive) ? null : "none")
-      .style("pointer-events", d => coOpacity(d) >= 0.15 ? "stroke" : "none");
+    coSel.style("opacity", coOpacity).classed("hot", d => coOpacity(d) >= 0.6);
+    coHitSel.style("display", d => pairActive(d).length ? null : "none")
+      .style("pointer-events", d => coOpacity(d) >= 0.13 ? "stroke" : "none");
 
-    // Decide which labels want to show, then drop lower-priority ones that would overlap.
-    const wants = d => {
-      if (!nodeVisible(d)) return false;
-      if (F) return F.nodes.has(d) ? (F.center === d || F.nodes.size <= 30 || alwaysLabel(d) || zoomedIn) : zoomedIn;
-      return alwaysLabel(d) || zoomedIn;
-    };
-    const prio = d => (d.isDDF ? 1e6 : 0) + (F && F.center === d ? 1e5 : 0) + (F && F.nodes.has(d) ? 1e4 : 0)
-      + progsInLayer(d).length * 100 + (d.endow ?? 0);
-    const placed = [];
-    const shown = new Set();
-    // The fallback spots (above, right) also avoid neighbouring dots, so a moved label doesn't land on one.
-    const nodeBoxes = funders.filter(nodeVisible).map(d => ({ x0: px(d) - d.r, x1: px(d) + d.r, y0: py(d) - d.r, y1: py(d) + d.r, d }));
-    const hits = (box, list) => list.some(b => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0);
-    funders.forEach(d => { d.labelPos = "below"; });
-    funders.filter(wants).sort((a, b) => prio(b) - prio(a)).forEach(d => {
-      const w = d.name.length * (d.isDDF ? 7.4 : 6.2), h = d.isDDF ? 15 : 13;
-      const boxAt = pos => {
-        d.labelPos = pos;
-        const y = labelY(d) - h + 3, x = pos === "right" ? labelX(d) : px(d) - w / 2;
-        return { x0: x, x1: x + w, y0: y, y1: y + h };
-      };
-      const forced = d.isDDF || (F && F.center === d);
-      let box = boxAt("below");
-      if (!forced && hits(box, placed)) {
-        const others = nodeBoxes.filter(b => b.d !== d);
-        let chosen = null;
-        for (const pos of ["above", "right"]) {
-          const b = boxAt(pos);
-          if (!hits(b, placed) && !hits(b, others)) { chosen = b; break; }
-        }
-        if (!chosen) { d.labelPos = "below"; return; }
-        box = chosen;
+    // Labels: re-checked after every zoom, pan, filter and hover. Names are placed most-important-first
+    // (DDF, funders in 2+ programs, then bigger reported assets); a name that would touch one already placed is
+    // hidden, and comes back when you zoom in and there's room. The hovered or clicked funder and the funders
+    // connected to it always keep their names, even if that means overlapping. Hidden names still show in
+    // the hover tooltip.
+    const forced = d => !!F && F.nodes.has(d) && !(F.center && F.center.isDDF && d !== F.center);
+    const labelClass = d => d.isDDF ? "ddf" : progsInLayer(d).length > 1 ? "multi" : "single";
+    const prio = d => (d.isDDF ? 1e7 : 0) + (progsInLayer(d).length > 1 ? 1e5 : 0) + (d.endow ?? 0) * 100 + progsInLayer(d).length;
+    const cand = funders.filter(d => nodeInLayer(d) && nodeVisible(d));
+    const order = cand.filter(forced).concat(cand.filter(d => !forced(d)).sort((a, b) => prio(b) - prio(a)));
+    const placed = [], shown = new Set();
+    const SW = stage.clientWidth;
+    for (const d of order) {
+      const weight = labelClass(d) === "single" ? (F && F.nodes.has(d) ? 500 : 300) : 600;
+      const w = textWidth(d.name, weight) + 4, x0 = px(d) - w / 2, y0 = labelY(d) - 12;
+      const box = [x0, y0, x0 + w, y0 + 16];           // 2px clear space around each name
+      // A name the left or right edge would cut in half is hidden too (fully off-screen ones don't matter).
+      const clipped = box[0] < 2 && box[2] > 0 || box[2] > SW - 2 && box[0] < SW;
+      if (!forced(d) && clipped) continue;
+      if (forced(d) ||!placed.some(o => box[0] < o[2] && box[2] > o[0] && box[1] < o[3] && box[3] > o[1])) {
+        placed.push(box); shown.add(d);
       }
-      placed.push(box); shown.add(d);
-    });
-    labelSel.attr("x", labelX).attr("y", labelY).attr("text-anchor", d => d.labelPos === "right" ? "start" : "middle")
-      .style("display", d => shown.has(d) ? null : "none").classed("dim", d => F && !F.nodes.has(d))
-      .classed("hot", d => !!F && F.nodes.has(d) && !d.isDDF).classed("center", d => !!F && F.center === d);
+    }
+    labelSel
+      .style("display", d => shown.has(d) ? null : "none")
+      .style("opacity", d => F && !F.nodes.has(d) ? 0.12 : 1)
+      .attr("class", d => "label " + labelClass(d) + (F && F.nodes.has(d) ? " hot" : ""));
   }
+
+  // Measure a label's width in Inter at 12px (cached; re-measured once the web font has loaded).
+  const measureCtx = document.createElement("canvas").getContext("2d");
+  const widthCache = new Map();
+  function textWidth(text, weight) {
+    const key = weight + "|" + text;
+    if (!widthCache.has(key)) {
+      measureCtx.font = `${weight} 12px Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif`;
+      widthCache.set(key, measureCtx.measureText(text).width);
+    }
+    return widthCache.get(key);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { widthCache.clear(); restyle(); });
 
   // Everything that depends on filters or selection.
   function update() {
@@ -774,11 +1010,90 @@
     if (!none) return;
     const parts = [];
     if (state.area) parts.push(state.area);
-    if (state.year < Y1) parts.push("up to " + state.year);
+    if (state.yearFrom > Y0 || state.year < Y1) parts.push(state.yearFrom === state.year ? String(state.year) : state.yearFrom + "–" + state.year);
     if (state.where !== "all") parts.push(WHERE_LABEL[state.where]);
     if (state.countries.size) parts.push(Array.from(state.countries).map(cName).join(", "));
     document.getElementById("emptyWhy").textContent = parts.length ? "Current filters: " + parts.join(" · ") : "";
   }
+
+  // -------------------------------------------------------- live simulation
+  // A force simulation keeps running: every dot is pulled toward its home (d3 forceX/forceY, strength 0.1)
+  // and DDF stays fixed. While a dot is dragged it repels and collides with the dots around it, so they get
+  // nudged aside. Only the dragged dot pushes: if every dot collided with every other, a neighbor shoved
+  // past another dot could get trapped behind it on the way back. Once you let go, each dot is pulled
+  // straight home, so the layout always returns to exactly what it was.
+  let dragging = null, hoverBlocked = false;
+  function dragNudge() {
+    let ns = [];
+    function force(alpha) {
+      const d = dragging;
+      if (!d) return;
+      for (const n of ns) {
+        if (n === d || n.fx != null) continue;
+        let dx = n.x - d.x, dy = n.y - d.y, dist = Math.hypot(dx, dy) || 0.01;
+        const reach = d.r + n.r + 70;                      // short-range push (the "charge")
+        if (dist < reach) {
+          const push = (reach - dist) / reach;
+          n.vx += dx / dist * push * 9 * alpha; n.vy += dy / dist * push * 9 * alpha;
+        }
+        const minD = d.r + n.r + 14;                       // collision: never let the dragged dot overlap
+        if (dist < minD) { n.x += dx / dist * (minD - dist) * 0.6; n.y += dy / dist * (minD - dist) * 0.6; }
+      }
+    }
+    force.initialize = nodes => { ns = nodes; };
+    return force;
+  }
+  const live = d3.forceSimulation().stop()
+    .alphaMin(0.002)
+    .velocityDecay(0.35)
+    .force("homeX", d3.forceX(d => d.hx).strength(0.1))
+    .force("homeY", d3.forceY(d => d.hy).strength(0.1))
+    .force("nudge", dragNudge());
+  // The simulation holds the dots of the current layer (updated when the programs-abroad layer changes).
+  function resetLive() { live.nodes(funders.filter(nodeInLayer)); }
+  // d3 scales the home pull by alpha, which decays after release. While any dot is still away from home
+  // (for up to 5s after release), alpha is kept at 0.4 or more so the dots finish the trip in a second or two.
+  let releasedAt = 0;
+  live.on("tick", () => {
+    place();
+    if (dragging) return;
+    let far = 0;
+    for (const n of live.nodes()) if (n.fx == null) far = Math.max(far, Math.abs(n.x - n.hx) + Math.abs(n.y - n.hy));
+    if (far > 0.5 && live.alpha() < 0.4 && performance.now() - releasedAt < 5000) live.alpha(0.4);
+  }).on("end", () => {
+    // Clear any sub-pixel remainder so the resting layout is exactly the home layout.
+    live.nodes().forEach(n => { if (n.fx == null) { n.x = n.hx; n.y = n.hy; n.vx = n.vy = 0; } });
+    place(); restyle();
+  });
+  resetLive();
+
+  // Drag a funder dot (mouse or finger). Dragging a dot never pans the graph; dragging empty space still
+  // pans and scrolling still zooms. A press that moves less than 4px stays a click and opens the info box.
+  const svgNode = document.getElementById("graph");
+  svgNode.addEventListener("mousemove", e => { if (hoverBlocked && (e.movementX || e.movementY)) hoverBlocked = false; });
+  const drag = d3.drag()
+    .container(svgNode)
+    .clickDistance(4)
+    .subject((e, d) => ({ x: px(d), y: py(d) }))        // work in screen coordinates…
+    .on("start", (e, d) => {
+      dragging = d; hideTip();
+      live.alphaTarget(0.25).restart();
+      d.fx = d.x; d.fy = d.y;
+    })
+    .on("drag", (e, d) => {
+      const [x, y] = T.invert([e.x, e.y]);              // …and convert to graph coordinates under the current zoom
+      d.fx = x; d.fy = y;
+    })
+    .on("end", (e, d) => {
+      live.alphaTarget(0);
+      d.fx = null; d.fy = null;                         // released: it drifts home over a second or two
+      dragging = null;
+      releasedAt = performance.now();
+      // The dot drifts away from a mouse that isn't moving, so the browser never sends "mouseleave":
+      // clear the hover now and ignore hover until the mouse really moves again.
+      if (e.sourceEvent && e.sourceEvent.type !== "click") { hoverBlocked = true; state.hover = null; hideTip(); restyle(); }
+    });
+  nodeSel.filter(d => !d.isDDF).call(drag);
 
   // ------------------------------------------------------------------ zoom
   const zoom = d3.zoom().scaleExtent([0.2, 8])
@@ -786,16 +1101,17 @@
   svg.call(zoom).on("dblclick.zoom", null);
 
   const panelW = () => document.body.classList.contains("panel-open") && stage.clientWidth > 720 ? 360 : 0;
-  const legendH = () => { const el = document.getElementById("legend"); return el.offsetParent ? el.offsetHeight : 0; };
+  const legendH = () => 0; // the legend sits below the graph, not over it
 
   function fit(animate) {
     const W = stage.clientWidth - panelW();
     const H = stage.clientHeight;
     // Side padding leaves room for labels that hang past the outermost dots.
-    const pad = { t: 56, r: 60, b: legendH() + 24, l: 60 };
+    const phone = window.innerWidth < 720;
+    const pad = phone ? { t: 96, r: 14, b: 12, l: 14 } : { t: 50, r: 70, b: legendH() + 16, l: 70 };
     const vis = funders.filter(f => nodeInLayer(f) && nodeVisible(f));
     const x0 = d3.min(vis, d => d.x - d.r), x1 = d3.max(vis, d => d.x + d.r);
-    const y0 = d3.min(vis, d => d.y - d.r - 24), y1 = d3.max(vis, d => d.y + d.r + 24);
+    const y0 = d3.min(vis, d => d.y - d.r - 22), y1 = d3.max(vis, d => d.y + d.r + 8);
     const k = Math.min((W - pad.l - pad.r) / (x1 - x0 || 1), (H - pad.t - pad.b) / (y1 - y0 || 1), 2.2);
     const t = d3.zoomIdentity
       .translate(pad.l + (W - pad.l - pad.r) / 2, pad.t + (H - pad.t - pad.b) / 2)
@@ -822,7 +1138,7 @@
     const endow = fmtEndow(f.endow);
     const hidden = f.isDDF ? 0 : f.progs.length - progs.length;
     tip.innerHTML = `<div class="nm">${esc(f.name)}</div>
-      <div class="sub">Endowment: ${endow ? esc(endow) : "not found"} · ${plural(progs.length, "DDF program")}${hidden ? ` · ${hidden} more abroad (layer off)` : ""}</div>
+      <div class="sub">Reported assets: ${endow ? esc(endow) : "not available"} · ${plural(progs.length, "DDF program")}${hidden ? ` · ${hidden} more abroad (layer off)` : ""}</div>
       <ul>${progs.map(p => `<li><span class="dot" style="background:${COLOR[p.area]}"></span><span>${esc(p.name)} (${p.year})${abroadTag(p)}</span></li>`).join("")}</ul>`;
     tip.classList.add("on");
     moveTip(tip, stage, e);
@@ -838,20 +1154,24 @@
   function hideTip() { tip.classList.remove("on"); }
 
   nodeSel
-    .on("mouseenter", (e, d) => { state.hover = d; restyle(); showTip(e, d); })
+    .on("mouseenter", (e, d) => { if (dragging || hoverBlocked) return; state.hover = d; restyle(); showTip(e, d); })
     .on("mousemove", (e) => moveTip(tip, stage, e))
     .on("mouseleave", () => { state.hover = null; restyle(); hideTip(); })
     .on("click", (e, d) => { e.stopPropagation(); hideTip(); selectFunder(d); })
     .on("keydown", (e, d) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectFunder(d); } });
   svg.on("click", () => { if (state.funder || state.program || state.pair) clearSelection(); });
 
-  // Lines from DDF: hover names the program and its amount; click opens the program.
+  // Lines from DDF: hover names the program, its documented figure (amount, year, basis) and what the line
+  // width means; click opens the program.
   ddfHitSel
     .on("mouseenter", (e, d) => {
       state.hoverLink = d; restyle();
-      tip.innerHTML = `<div class="nm">${esc(d.p.name)}${abroadTag(d.p)}</div>
-        <div class="sub">DDF ↔ ${esc(d.f.name)} · ${esc(d.p.area)} · ${esc(d.p.yearsLabel)}</div>
-        <div>${d.p.amount != null ? `<strong>${esc(fmtAmt(d.p.amount, d.p.approx))}</strong> <span class="na">${esc(d.p.basis || "")}</span>` : na("Amount not found")}</div>`;
+      const p = d.p, m = primaryAt(p), others = measuresAt(p).filter(x => x !== m);
+      tip.innerHTML = `<div class="nm">${esc(p.name)}${abroadTag(p)}</div>
+        <div class="sub">DDF ↔ ${esc(d.f.name)} · ${esc(p.area)} · ${esc(yearsText(p))}</div>
+        ${m ? `<div>${measureLine(m)}</div><div class="na" style="font-size:11px;margin-top:3px">Program-level figure, repeated on each participating funder's line; not ${esc(d.f.name)}'s own contribution.</div>`
+            : `<div class="na">No program-level total documented as of ${state.year}${others.length ? "; line drawn at a neutral width" : ""}.</div>`}
+        ${others.map(x => `<div style="margin-top:3px">${measureLine(x)}</div>`).join("")}`;
       tip.classList.add("on"); moveTip(tip, stage, e);
     })
     .on("mousemove", e => moveTip(tip, stage, e))
@@ -909,8 +1229,7 @@
   const areaTag = a => `<span class="area-tag"><span class="dot" style="background:${COLOR[a]}"></span>${esc(a)}</span>`;
   const countryChips = p => `<span class="cchips">${p.countriesAll.map(c =>
     `<button class="cchip" data-country="${c}" aria-pressed="${state.countries.size === 1 && state.countries.has(c)}" title="Filter by ${esc(cName(c))}">${esc(cName(c))}</button>`).join("")}</span>`;
-  const amountHtml = p => p.amount != null ? esc(fmtAmt(p.amount, p.approx)) : na("Amount not found");
-  const basisHtml = p => p.amount != null && p.basis ? esc(p.basis) : na("Not available");
+  const primaryText = p => { const m = primaryAt(p); return m ? measureAmt(m) : null; };
   const sourcesHtml = p => p.sources.length
     ? p.sources.map((u, i) => extLink(u, p.sources.length > 1 ? "Source " + (i + 1) : "Source")).join(" · ")
     : na("Not available");
@@ -922,9 +1241,8 @@
       <h3><button class="linkish" data-prog="${p.id}">${esc(p.name)}</button>${abroadTag(p)}</h3>
       <div class="meta">
         <span class="k">Area</span><span>${areaTag(p.area)}</span>
-        <span class="k">Year</span><span>${esc(p.yearsLabel)}</span>
-        <span class="k">Amount</span><span>${amountHtml(p)}</span>
-        <span class="k">What it is</span><span>${basisHtml(p)}</span>
+        <span class="k">Year</span><span>${esc(yearsText(p))}</span>
+        <span class="k">Amounts</span><span>${amountsHtml(p, false)}</span>
         <span class="k">${otherLabel}</span><span>${otherCount} besides DDF</span>
         <span class="k">Countries</span>${countryChips(p)}
         <span class="k">Source</span><span>${sourcesHtml(p)}</span>
@@ -938,7 +1256,7 @@
     const endow = fmtEndow(f.endow);
     pbody.innerHTML = `<div class="kv">
         ${f.fullName && f.fullName !== f.name ? `<span class="k">Full name</span><span>${esc(f.fullName)}</span>` : ""}
-        <span class="k">Endowment</span><span>${endow ? esc(endow) + (f.basis ? ` <span class="na">(${esc(f.basis)})</span>` : "") : na("Not found")}</span>
+        <span class="k">Reported assets</span><span>${assetsHtml(f)}</span>
         <span class="k">Website</span><span>${extLink(f.website) || na("Not found")}</span>
         ${f.type ? `<span class="k">Type</span><span>${esc(f.type)}</span>` : ""}
         ${f.hq ? `<span class="k">Headquarters</span><span>${esc(f.hq)}</span>` : ""}
@@ -955,21 +1273,24 @@
     const fs = p.funders.slice().sort((a, b) => (b.isDDF - a.isDDF) || ((b.endow ?? -1) - (a.endow ?? -1)) || a.name.localeCompare(b.name));
     pbody.innerHTML = `<div class="kv">
         <span class="k">Area</span><span>${areaTag(p.area)}</span>
-        <span class="k">Year</span><span>${esc(p.yearsLabel)}</span>
-        <span class="k">Amount</span><span>${amountHtml(p)}</span>
-        <span class="k">What it is</span><span>${basisHtml(p)}</span>
+        <span class="k">Year</span><span>${esc(yearsText(p))}</span>
+        <span class="k">Amounts</span><span>${amountsHtml(p, true)}</span>
         ${p.abroad ? `<span class="k">DDF contribution</span><span>${esc(p.ddfContribution || "Not disclosed")}</span>` : ""}
         <span class="k">Where funds go</span><span>${esc(WHERE_LABEL[p.where])}</span>
-        <span class="k">Countries</span>${countryChips(p)}
+        <span class="k">Funded activity in</span>${countryChips(p)}
+        ${p.artistOrigins.length ? `<span class="k">Artists' home countries</span><span>${esc(p.artistOrigins.map(c => (ORIGINS.get(c) || { name: c }).name).join(", "))} <span class="na">(not funded locations)</span></span>` : ""}
         ${p.abroad ? `<span class="k">Run by</span><span>${esc(p.administrator)}</span>` : ""}
         ${p.abroad ? `<span class="k">Confidence</span><span>${esc(p.confidence)}${p.meetsTest === "Borderline" ? ` <span class="na">(borderline: may not send money abroad)</span>` : ""}</span>` : ""}
         <span class="k">Source</span><span>${sourcesHtml(p)}</span>
-        <span class="k">Funders</span><span>${p.funders.length} (DDF + ${p.funders.length - 1})</span>
+        <span class="k">Funders</span><span>${p.funders.filter(f => funderIn(p, f)).length} including DDF${state.year < Y1 ? " (as of " + state.year + ")" : ""}</span>
       </div>
       ${p.description ? `<p class="prose">${esc(p.description)}</p>` : ""}
       ${p.caveats ? `<div class="note"><strong>Caveats.</strong> ${esc(p.caveats)}</div>` : ""}
-      <div class="sec">Funders</div>
-      <ul class="list">${fs.map(f => listFunderItem(f, p)).join("")}</ul>`;
+      ${noteText(p) ? `<div class="note">${esc(noteText(p))}</div>` : ""}
+      <div class="sec">Funders${state.year < Y1 ? " as of " + state.year : ""}</div>
+      ${p.fundersNote ? `<p class="na" style="font-size:12px;margin:0 0 6px">${esc(p.fundersNote)}</p>` : ""}
+      <ul class="list">${fs.filter(f => funderIn(p, f)).map(f => listFunderItem(f, p)).join("")}</ul>
+      ${p.partners.length ? `<div class="sec">Other organizations (not funders)</div><ul class="list">${p.partners.map(x => `<li><span style="display:block;padding:6px 4px">${esc(x.name)} <span class="na">· ${esc(x.role)}</span></span></li>`).join("")}</ul>` : ""}`;
     wirePanelLinks();
   }
 
@@ -980,12 +1301,12 @@
     const role = prog && prog.roles && prog.roles.get(f.name);
     const roleTxt = role ? esc(role.role) + (role.contribution && role.contribution !== "Not disclosed" ? " (" + esc(role.contribution) + ")" : "") + " · " : "";
     return `<li><button data-funder="${esc(f.id)}" aria-label="${esc(f.name)}"><span class="dot" style="background:${col};${f.endow == null ? "opacity:.45" : ""}"></span>
-      <span><div class="nm">${esc(f.name)}${f.hasAbroad ? `<span class="tag">abroad</span>` : ""}</div><div class="sub">${roleTxt}${endow ? "Endowment " + esc(endow) : "Endowment not found"} · ${plural(progs, "program")}</div></span></button></li>`;
+      <span><div class="nm">${esc(f.name)}${f.hasAbroad ? `<span class="tag">abroad</span>` : ""}</div><div class="sub">${roleTxt}Reported assets ${endow ? esc(endow) : "not available"} · ${plural(progs, "program")}</div></span></button></li>`;
   }
   function listProgramItem(p) {
-    const where = p.abroad ? " · " + esc(p.countries.map(cName).join(", ")) : "";
+    const where = p.countries.length ? " · " + esc(p.countries.map(cName).join(", ")) : p.artistOrigins.length ? " · US tours (international artists)" : "";
     return `<li><button data-prog="${p.id}" aria-label="${esc(p.name)}"><span class="dot" style="background:${COLOR[p.area]}"></span>
-      <span><div class="nm">${esc(p.name)}${abroadTag(p)}</div><div class="sub">${esc(p.area)} · ${p.year} · ${p.amount != null ? esc(fmtAmt(p.amount, p.approx)) : "amount not found"} · ${plural(p.funders.length - 1, "co-funder")}${where}</div></span></button></li>`;
+      <span><div class="nm">${esc(p.name)}${abroadTag(p)}</div><div class="sub">${esc(p.area)} · ${p.year} · ${primaryText(p) ? esc(primaryText(p)) : "no program total"} · ${plural(p.funders.length - 1, "co-funder")}${where}</div></span></button></li>`;
   }
 
   function wirePanelLinks() {
@@ -1104,7 +1425,7 @@
   // Drop a selection that the filters no longer show.
   function checkSelection() {
     if (state.program && !isActive(state.program)) clearSelection();
-    else if (state.pair && !state.pair.progs.some(isActive)) clearSelection();
+    else if (state.pair && !pairActive(state.pair).length) clearSelection();
     else if (state.funder && !nodeVisible(state.funder)) clearSelection();
     else refreshPanel();
   }
@@ -1207,11 +1528,13 @@
     }
     if (state.area && !layerPrograms().some(p => p.area === state.area)) state.area = null;
     const [y0, y1] = yearBounds();
-    yr.min = y0; yr.max = y1;
-    const atMax = state.year >= Y1;
+    const atMax = state.year >= Y1, atMin = state.yearFrom <= Y0;
     Y0 = y0; Y1 = y1;
-    setYear(atMax ? y1 : Math.min(Math.max(state.year, y0), y1), true);
+    [yrFrom, yr].forEach(i => { i.min = y0; i.max = y1; });
+    const keep = v => Math.min(Math.max(v, y0), y1);
+    setYears(atMin ? y0 : keep(state.yearFrom), atMax ? y1 : keep(state.year), true);
     drawShapes();
+    resetLive();
     place();
     renderChips();
     renderLegend();
@@ -1221,28 +1544,39 @@
     update();
   }
 
-  // Year
+  // Year: a two-handle range (from, to). Play moves the "to" handle forward from the "from" year.
   const yr = document.getElementById("year"), yrOut = document.getElementById("yearOut");
+  const yrFrom = document.getElementById("yearFrom"), yrFromOut = document.getElementById("yearFromOut");
+  const yrFill = document.getElementById("yearFill");
   const bigYear = document.getElementById("bigYear");
   let [Y0, Y1] = yearBounds();
-  yr.min = Y0; yr.max = Y1; yr.value = Y1;
-  function setYear(y, silent) {
-    state.year = +y; yr.value = y; yrOut.textContent = y; bigYear.textContent = y;
+  [yrFrom, yr].forEach(i => { i.min = Y0; i.max = Y1; });
+  function setYears(from, to, silent) {
+    from = +from; to = +to;
+    if (from > to) [from, to] = [to, from];
+    state.yearFrom = from; state.year = to;
+    yrFrom.value = from; yr.value = to;
+    yrFromOut.textContent = from; yrOut.textContent = to; bigYear.textContent = to;
+    const span = (Y1 - Y0) || 1, a = (from - Y0) / span, b = (to - Y0) / span;
+    yrFill.style.left = `calc(8px + (100% - 16px) * ${a})`;
+    yrFill.style.width = `calc((100% - 16px) * ${b - a})`;
     if (!silent) { checkSelection(); update(); }
   }
-  yr.oninput = () => { stopPlay(); setYear(yr.value); };
+  const setYear = (y, silent) => setYears(Math.min(state.yearFrom, +y), y, silent);
+  yrFrom.oninput = () => { stopPlay(); setYears(Math.min(+yrFrom.value, state.year), state.year); };
+  yr.oninput = () => { stopPlay(); setYears(state.yearFrom, Math.max(+yr.value, state.yearFrom)); };
 
   const playBtn = document.getElementById("play");
   let timer = null, hideTimer = null;
   function startPlay() {
     clearTimeout(hideTimer);
-    if (state.year >= Y1) setYear(Y0);
+    if (state.year >= Y1) setYears(state.yearFrom, state.yearFrom);
     bigYear.textContent = state.year;
     bigYear.classList.add("on");
     playBtn.textContent = "❚❚ Pause"; playBtn.setAttribute("aria-label", "Pause timeline");
     timer = setInterval(() => {
       if (state.year >= Y1) { stopPlay(); return; }
-      setYear(state.year + 1);
+      setYears(state.yearFrom, state.year + 1);
     }, 750);
   }
   function stopPlay() {
@@ -1259,16 +1593,17 @@
     state.area = null; renderChips();
     state.where = "all"; whereSel.value = "all";
     state.countries = new Set();
-    setYear(Y1, true);
+    setYears(Y0, Y1, true);
     if (!silent) { checkSelection(); update(); }
   }
   document.getElementById("emptyClear").onclick = () => clearFilters(false);
   document.getElementById("reset").onclick = () => {
     clearFilters(true);
     bigYear.classList.remove("on");
-    setAbroad(false, { refit: false });
+    setAbroad(true, { refit: false });   // the default view includes the programs abroad
     clearSelection();
     openCountries(false);
+    closeMapPanel();
     fit(true);
   };
 
@@ -1276,6 +1611,9 @@
   function updateListButtons() {
     btnFunders.textContent = plural(funders.filter(f => !f.isDDF && nodeInLayer(f)).length, "funder");
     btnPrograms.textContent = plural(layerPrograms().length, "grant program");
+    const scope = state.abroad ? "Full dataset (base network + international layer)" : "Base network only (international layer off)";
+    btnFunders.title = scope + "; filters not applied. Open the list to search.";
+    btnPrograms.title = scope + "; filters not applied. Open the list to search.";
   }
   btnFunders.onclick = () => showList("funders");
   btnPrograms.onclick = () => showList("programs");
@@ -1290,25 +1628,29 @@
   const tiers = [tierOf(15), tierOf(5), tierOf(0.5), tierOf(0.05)];
   const sw = (svgInner, w = 26, h = 20) => `<svg width="${w}" height="${h}" aria-hidden="true">${svgInner}</svg>`;
   const sizeSw = (r, extra = "") => sw(`<circle cx="${r + 1}" cy="${r + 1}" r="${r}" fill="#9aa1ab" ${extra}/>`, 2 * r + 2, 2 * r + 2);
-  const sizeLabels = ["> $10B", "> $1B", "> $100M", "< $100M"];
+  const sizeLabels = ["$10B+", "$1B–<$10B", "$100M–<$1B", "<$100M"];
   function renderLegend() {
     const areas = AREAS.filter(a => layerPrograms().some(p => p.area === a));
+    const lineSw = (style) => sw(`<line x1="2" y1="10" x2="40" y2="10" style="${style}" stroke-linecap="round"/>`, 44);
     document.getElementById("legendBody").innerHTML = `
       <div class="grp"><span class="ttl">Program area</span>
-        ${areas.map(a => `<span class="row"><span class="dot" style="background:${COLOR[a]}"></span>${esc(a)}</span>`).join("")}
-        <span class="row">${sw(`<circle cx="9" cy="10" r="7" fill="${COLOR.Arts}"/><path d="M9,10 L9,3 A7,7 0 0 1 9,17 Z" fill="${COLOR.Environment}"/>`, 20)}Several areas</span>
+        ${areas.map(a => `<span class="lrow"><span class="dot" style="background:${COLOR[a]}"></span>${esc(a)}</span>`).join("")}
+        <span class="lrow">${sw(`<circle cx="9" cy="10" r="7" fill="${COLOR.Arts}"/><path d="M9,10 L9,3 A7,7 0 0 1 9,17 Z" fill="${COLOR.Environment}"/>`, 20)}Several areas</span>
+        <span class="lrow">${sw(`<circle cx="9" cy="10" r="5" style="fill:var(--node)"/>`, 20)}Doris Duke Foundation</span>
       </div>
-      <div class="grp"><span class="ttl">Endowment (node size)</span>
+      <div class="grp"><span class="ttl">Reported assets (dot size)</span>
         <div class="sizes">
           ${tiers.map((t, i) => `<span class="size">${sizeSw(t.r)}${sizeLabels[i]}</span>`).join("")}
-          <span class="size">${sizeSw(5, 'fill-opacity=".38"')}Not found<br>(pale)</span>
+          <span class="size">${sw(`<circle cx="7" cy="7" r="5.5" fill="#9aa1ab" fill-opacity=".18" stroke="#9aa1ab" stroke-width="1.2"/>`, 14, 14)}Not available<br>(ring)</span>
         </div>
-        <span class="row">${sw(`<circle cx="10" cy="10" r="5" fill="#9aa1ab"/><circle cx="10" cy="10" r="8.5" fill="none" stroke="#d5d9df" stroke-width="1.2" stroke-dasharray="2.5 2"/>`, 20)}Dashed ring: has a program abroad</span>
+        <span class="lrow">${sw(`<circle cx="10" cy="10" r="5" fill="#9aa1ab"/><circle cx="10" cy="10" r="8.5" fill="none" style="stroke:var(--ink-3)" stroke-width="1.2" stroke-dasharray="2.5 2"/>`, 20)}Dashed ring: has a program abroad</span>
       </div>
-      <div class="grp"><span class="ttl">Links</span>
-        <span class="row">${sw(`<line x1="2" y1="10" x2="40" y2="10" stroke="#c3c8d0" stroke-width="5" stroke-linecap="round"/>`, 44)}DDF link, width = program amount</span>
-        <span class="row">${sw(`<line x1="2" y1="10" x2="40" y2="10" stroke="#c3c8d0" stroke-width="1.5" stroke-dasharray="2 4" stroke-linecap="round"/>`, 44)}Amount not found (dotted)</span>
-        <span class="row">${sw(`<line x1="2" y1="10" x2="40" y2="10" stroke="#8a919c" stroke-opacity=".8" stroke-width="1"/>`, 44)}Co-funded the same program (gray)</span>
+      <div class="grp"><span class="ttl">Lines</span>
+        <span class="lrow">${lineSw("stroke:var(--edge);stroke-width:4")}One line per shared program; width = that program's documented total</span>
+        <span class="lrow" style="white-space:normal;max-width:330px;color:var(--ink-3);font-size:11px;padding-left:51px">The same program figure repeats on every participating funder's line. It is not that funder's contribution; don't add line widths.</span>
+        <span class="lrow">${lineSw("stroke:var(--edge);stroke-width:1.6")}Neutral width: only DDF's share or one component is known</span>
+        <span class="lrow">${lineSw("stroke:var(--edge);stroke-width:1.2;stroke-dasharray:2 4")}Dotted: no amount documented by the selected year</span>
+        <span class="lrow">${lineSw("stroke:var(--edge2);stroke-width:1;stroke-opacity:.5")}Funders listed for the same program</span>
       </div>`;
   }
 
@@ -1317,18 +1659,20 @@
   // country filter itself (so the other countries stay visible for comparison).
   const BINS = [{ min: 1, max: 1, label: "1" }, { min: 2, max: 2, label: "2" }, { min: 3, max: 5, label: "3–5" },
     { min: 6, max: 10, label: "6–10" }, { min: 11, max: Infinity, label: "11+" }];
-  const RAMP = ["#3a404b", "#59616e", "#7d8592", "#a8afba", "#d9dde3"]; // one neutral hue, dark -> light on the dark surface
-  const NO_DATA = "#1d2127";
+  // One neutral ramp from CSS variables, so the map follows the light or dark theme.
+  const RAMP = [1, 2, 3, 4, 5].map(i => `var(--ramp-${i})`);
+  const NO_DATA = "var(--map-none)";
   const binColor = n => { if (!n) return NO_DATA; const i = BINS.findIndex(b => n >= b.min && n <= b.max); return RAMP[i]; };
   const mapSvg = d3.select("#map"), mapWrap = document.getElementById("mapWrap"), mapTip = document.getElementById("mapTip");
-  const gLand = mapSvg.append("g"), gHl = mapSvg.append("g");
+  const gLand = mapSvg.append("g"), gOrigin = mapSvg.append("g"), gHl = mapSvg.append("g");
   let world = null, mapPath = null;
 
   document.getElementById("mapLegend").innerHTML =
     `<span>Programs:</span>` + BINS.map((b, i) => `<span><span class="sw" style="background:${RAMP[i]}"></span>${b.label}</span>`).join("") +
     `<span><span class="sw" style="background:${NO_DATA}"></span>None</span>` +
-    `<span><span class="sw" style="background:transparent;border:2px solid #e8eaed"></span>Country filter</span>` +
-    `<span><span class="sw" style="background:transparent;border:2px dashed #e8eaed"></span>Selected program's countries</span>`;
+    `<span><span class="sw" style="background:transparent;border:1.5px dotted var(--ink-3)"></span>Artists' home country (not counted)</span>` +
+    `<span><span class="sw" style="background:transparent;border:2px solid var(--ink)"></span>Country filter</span>` +
+    `<span><span class="sw" style="background:transparent;border:2px dashed var(--ink)"></span>Selected program's countries</span>`;
 
   function mapCounts() {
     const counts = new Map();
@@ -1345,22 +1689,27 @@
     const proj = d3.geoNaturalEarth1().fitExtent([[6, 6], [w - 6, h - 6]], { type: "FeatureCollection", features: world });
     mapPath = d3.geoPath(proj);
     gLand.selectAll("path").data(world, d => d.id).join("path")
-      .attr("class", d => "land" + (COUNTRY_BY_NUM.has(d.id) ? " funded" : ""))
+      .attr("class", d => "land" + (COUNTRY_BY_NUM.has(d.id) || ORIGIN_BY_NUM.has(d.id) ? " funded" : ""))
       .attr("d", mapPath)
       .on("mouseenter mousemove", (e, d) => showMapTip(e, d))
       .on("mouseleave", () => mapTip.classList.remove("on"))
       .on("click", (e, d) => {
+        mapTip.classList.remove("on");
         const c = COUNTRY_BY_NUM.get(d.id);
-        if (!c) return;
-        setCountries(state.countries.size === 1 && state.countries.has(c.iso3) ? [] : [c.iso3]);
-        showMapTip(e, d);
+        if (!c) { showCountryPanel(null, (d.properties && d.properties.name) || "This country", ORIGIN_BY_NUM.get(d.id)); return; }
+        // Clicking a country filters by it and opens its info box; clicking it again clears both.
+        if (state.countries.size === 1 && state.countries.has(c.iso3) && mapCountry === c && !mapPanel.hidden) {
+          closeMapPanel(); setCountries([]);
+        } else {
+          setCountries([c.iso3]); showCountryPanel(c);
+        }
       });
     updateMap();
   }
   function updateMap() {
     if (!world || !mapPath) return;
     const counts = mapCounts();
-    gLand.selectAll("path").attr("fill", d => {
+    gLand.selectAll("path").style("fill", d => {
       const c = COUNTRY_BY_NUM.get(d.id);
       return binColor(c && counts.has(c.iso3) ? counts.get(c.iso3).length : 0);
     }).attr("aria-label", d => {
@@ -1371,22 +1720,32 @@
     const progCountries = new Set(state.program ? state.program.countriesAll : []);
     const hl = world.filter(d => { const c = COUNTRY_BY_NUM.get(d.id); return c && (state.countries.has(c.iso3) || progCountries.has(c.iso3)); });
     gHl.selectAll("path").data(hl, d => d.id).join("path").attr("class", "hl").attr("d", mapPath)
-      .attr("stroke", "#e8eaed")
       .attr("stroke-width", d => state.countries.has(COUNTRY_BY_NUM.get(d.id).iso3) ? 2.2 : 1.6)
       .attr("stroke-dasharray", d => state.countries.has(COUNTRY_BY_NUM.get(d.id).iso3) ? null : "4 3");
+    // Artists' home countries (e.g. Center Stage ensembles) get a dotted outline; they are never shaded or counted.
+    const originHere = new Set(programs.filter(p => filterOk(p, true)).flatMap(p => p.artistOrigins));
+    const og = world.filter(d => { const o = ORIGIN_BY_NUM.get(d.id); return o && originHere.has(o.iso3); });
+    gOrigin.selectAll("path").data(og, d => d.id).join("path").attr("d", mapPath)
+      .style("fill", "none").style("stroke", "var(--ink-3)").style("stroke-width", 1.2).style("stroke-dasharray", "1.5 2.5").style("pointer-events", "none");
+    if (!mapPanel.hidden && mapCountry) showCountryPanel(mapCountry);
     const nAbroad = new Set(abroadPrograms.flatMap(p => p.countries)).size;
     const note = document.getElementById("mapNote");
     if (!state.abroad) {
-      note.innerHTML = `All 13 programs in the network fund work in the United States. ${abroadPrograms.length} co-funded programs abroad reach ${nAbroad} more countries.<button class="btn" id="mapAbroad">Show programs abroad</button>`;
+      note.innerHTML = `Base network (layer off): all ${basePrograms.length} programs fund work in the United States. The international layer adds ${abroadPrograms.length} programs, with funded activity in ${nAbroad} more countries.<button class="btn" id="mapAbroad">Show programs abroad</button>`;
       document.getElementById("mapAbroad").onclick = () => setAbroad(true);
     } else {
-      note.textContent = "Shaded by the number of programs matching the filters above. Click a country to filter by it.";
+      note.textContent = `Shaded by how many programs matching the current filters fund activity in each country (the country filter itself isn't applied to the shading). Full dataset: ${programs.length} programs with funded activity in ${RAW.countries.length} countries including the US; artists' home countries are outlined, not counted. Click a country for details.`;
     }
   }
   function showMapTip(e, d) {
-    const c = COUNTRY_BY_NUM.get(d.id);
-    const name = c ? c.name : (d.properties && d.properties.name) || "";
+    const c = COUNTRY_BY_NUM.get(d.id), o = ORIGIN_BY_NUM.get(d.id);
+    const name = c ? c.name : o ? o.name : (d.properties && d.properties.name) || "";
     const ps = c ? (mapCounts().get(c.iso3) || []) : [];
+    if (!c && o) {
+      const from = programs.filter(p => p.artistOrigins.includes(o.iso3));
+      mapTip.innerHTML = `<div class="nm">${esc(name)}</div><div class="sub">Artists from here: ${esc(from.map(p => p.name).join(", "))}. Funded activity was in the United States, so this country is not counted.</div>`;
+      mapTip.classList.add("on"); moveTip(mapTip, mapWrap, e); return;
+    }
     mapTip.innerHTML = `<div class="nm">${esc(name)}</div>` + (c
       ? `<div class="sub">${plural(ps.length, "program")} with current filters${c.iso3 !== "USA" && !state.abroad ? " (turn on Show programs abroad)" : ""}</div>
          <ul>${ps.slice(0, 10).map(p => `<li><span class="dot" style="background:${COLOR[p.area]}"></span><span>${esc(p.name)}</span></li>`).join("")}${ps.length > 10 ? `<li>…and ${ps.length - 10} more</li>` : ""}</ul>`
@@ -1394,6 +1753,49 @@
     mapTip.classList.add("on");
     moveTip(mapTip, mapWrap, e);
   }
+  // ---- country info box
+  const mapPanel = document.getElementById("mapPanel");
+  const mpTitle = document.getElementById("mpTitle"), mpBody = document.getElementById("mpBody");
+  let mapCountry = null;
+  function closeMapPanel() { mapPanel.hidden = true; mapCountry = null; }
+  document.getElementById("mpClose").onclick = closeMapPanel;
+  function showCountryPanel(c, fallbackName, origin) {
+    mapPanel.hidden = false;
+    mapCountry = c;
+    if (!c) {
+      mpTitle.textContent = fallbackName;
+      const from = origin ? programs.filter(p => p.artistOrigins.includes(origin.iso3)) : [];
+      mpBody.innerHTML = from.length
+        ? `<p class="prose">Artists from ${esc(fallbackName)} took part in ${esc(from.map(p => p.name).join(", "))}. The funded activity took place in the United States, so ${esc(fallbackName)} is not counted as a funded location.</p>`
+        : `<p class="prose">No DDF co-funded programs were found that fund work here.</p>`;
+      return;
+    }
+    const ps = (mapCounts().get(c.iso3) || []).slice().sort((a, b) => (a.abroad - b.abroad) || a.year - b.year);
+    const all = programs.filter(p => p.countriesAll.includes(c.iso3));
+    const hiddenN = all.length - ps.length;
+    const fs = new Set(); ps.forEach(p => p.funders.forEach(f => fs.add(f)));
+    const withTotal = ps.filter(p => primaryAt(p));
+    mpTitle.textContent = c.name;
+    mpBody.innerHTML = `<div class="kv">
+        <span class="k">Region</span><span>${esc(c.region)}</span>
+        <span class="k">Programs</span><span>${ps.length}${hiddenN ? ` <span class="na">(+${hiddenN} hidden by the filters)</span>` : ""}</span>
+        <span class="k">Funders</span><span>${fs.size} including DDF</span>
+        <span class="k">Program totals</span><span>${withTotal.length} of ${ps.length} programs have a documented total</span>
+      </div>
+      ${ps.length ? `<p class="na" style="font-size:12px;margin:0 0 10px">Each card shows that program's own figures, not the part spent in ${esc(c.name)}. Program figures are not added together, because they measure different things.</p>` : `<p class="prose">No programs here match the current filters.</p>`}
+      ${ps.length ? `<div class="sec">Programs funding work here</div>` : ""}
+      ${ps.map(p => programCard(p, null)).join("")}`;
+    // Program names open the program on the graph; country chips switch the filter.
+    mpBody.querySelectorAll("[data-prog]").forEach(b => b.onclick = () => {
+      selectProgram(programs.find(p => p.id === b.dataset.prog));
+      stage.scrollIntoView({ behavior: "smooth" });
+    });
+    mpBody.querySelectorAll("[data-country]").forEach(b => b.onclick = () => {
+      const other = COUNTRY.get(b.dataset.country);
+      setCountries([other.iso3]); showCountryPanel(other);
+    });
+  }
+
   async function loadMap() {
     try {
       const topo = await (await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json")).json();
@@ -1435,22 +1837,21 @@
     }
     if (tableKind === "programs") {
       wrap.innerHTML = `<table class="tbl"><caption class="sr-only">Grant programs</caption><thead><tr>
-        <th scope="col">Program</th><th scope="col">Area</th><th scope="col">Year</th><th scope="col">Amount</th>
-        <th scope="col">What the amount is</th><th scope="col">Where funds go</th><th scope="col">Countries</th>
+        <th scope="col">Program</th><th scope="col">Area</th><th scope="col">Year</th><th scope="col">Amounts documented by ${state.year}</th>
+        <th scope="col">Where funds go</th><th scope="col">Funded activity in</th>
         <th scope="col">Funders</th><th scope="col">Source</th></tr></thead><tbody>${active.map(p => `<tr>
           <td><button class="linkish" data-prog="${p.id}">${esc(p.name)}</button>${abroadTag(p)}</td>
-          <td>${areaTag(p.area)}</td><td>${esc(p.yearsLabel)}</td>
-          <td class="num">${p.amount != null ? esc(fmtAmt(p.amount, p.approx)) : na("Not found")}</td>
-          <td>${p.amount != null && p.basis ? esc(p.basis) : na("Not available")}</td>
-          <td>${esc(WHERE_LABEL[p.where])}</td><td>${esc(p.countriesAll.map(cName).join(", "))}</td>
+          <td>${areaTag(p.area)}</td><td>${esc(yearsText(p))}</td>
+          <td>${amountsHtml(p, true)}</td>
+          <td>${esc(WHERE_LABEL[p.where])}</td><td>${esc(p.countriesAll.map(cName).join(", "))}${p.artistOrigins.length ? `<div class="na">Artists from ${esc(p.artistOrigins.map(c => (ORIGINS.get(c) || { name: c }).name).join(", "))} (not funded locations)</div>` : ""}</td>
           <td class="num">${p.funders.length}</td><td>${sourcesHtml(p)}</td></tr>`).join("")}</tbody></table>`;
     } else {
       wrap.innerHTML = `<table class="tbl"><caption class="sr-only">Funders</caption><thead><tr>
-        <th scope="col">Funder</th><th scope="col">Endowment</th><th scope="col">Endowment basis</th><th scope="col">Website</th>
+        <th scope="col">Funder</th><th scope="col">Reported assets</th><th scope="col">Measure and year</th><th scope="col">Website</th>
         <th scope="col">Programs</th><th scope="col">Program names</th></tr></thead><tbody>${fs.map(f => {
           const ps = f.isDDF ? active : activeProgs(f);
           return `<tr><td><button class="linkish" data-funder="${esc(f.id)}">${esc(f.name)}</button>${f.hasAbroad ? `<span class="tag">abroad</span>` : ""}</td>
-            <td class="num">${f.endow != null ? esc(fmtEndow(f.endow)) : na("Not found")}</td><td>${f.basis ? esc(f.basis) : ""}</td>
+            <td class="num">${f.endow != null ? esc(fmtEndow(f.endow)) : na("Not available")}</td><td>${f.endow != null ? esc(assetInfo(f.basis).measure + ", " + assetInfo(f.basis).year) : ""}</td>
             <td>${extLink(f.website) || na("Not found")}</td><td class="num">${ps.length}</td>
             <td>${esc(ps.map(p => p.name).join("; "))}</td></tr>`; }).join("")}</tbody></table>`;
     }
@@ -1472,21 +1873,30 @@
       come from the DDF Funders Network research (${extLink(NET.source, "source page")}). The ${nAbroad} programs abroad come from separate research and are an optional layer.</p>
       <h3>Dot size and color</h3>
       <ul>
-        <li><strong>Size</strong> is the funder's endowment tier: over $10 billion, over $1 billion, over $100 million, or below $100 million.
-          Figures are FY23 assets under management where available, otherwise total assets from tax filings or annual reports; each funder's panel says which.</li>
-        <li><strong>Small pale dots</strong> are funders whose endowment wasn't found (${noEndow} of ${nBaseF} in the US network, and all ${nExtraF} funders that appear only abroad). No figure is estimated.</li>
+        <li><strong>Size</strong> is the funder's reported assets: $10 billion or more, $1 billion to under $10 billion, $100 million to under $1 billion, or under $100 million.
+          The figures are FY2023 assets under management where available, otherwise total assets from tax filings or annual reports, as given in the reference data. None is reported as an endowment, so the page says "reported assets"; each funder's panel names the measure, the year and the source.</li>
+        <li><strong>Hollow rings</strong> are funders whose reported assets are not available (${noEndow} of ${nBaseF} in the US network, and all ${nExtraF} funders that appear only abroad). No figure is estimated.</li>
         <li><strong>Color</strong> is the DDF program area of the funder's programs; a funder in several areas is drawn as a small pie. The colors were checked to stay distinct for common color-vision deficiencies.</li>
-        <li>DDF has a white ring. A <strong>dashed ring</strong> marks a funder with at least one program abroad.</li>
+        <li>DDF is the small solid gray dot in the center. A <strong>dashed ring</strong> marks a funder with at least one program abroad.</li>
       </ul>
       <h3>Lines</h3>
       <ul>
-        <li>A <strong>colored line from DDF</strong> is one shared program. Its width shows the program's total size (square-root scale); hover it for the program and amount.</li>
-        <li>A <strong>dotted line</strong> means the program's amount wasn't found.</li>
-        <li>A <strong>gray line</strong> joins two funders who co-funded the same program. Click it to see which programs they share.</li>
+        <li>Each <strong>gray line from DDF</strong> is one program that funder shares with DDF. Its width shows that <em>program's</em> documented total (log scale), so the same figure repeats on every participating funder's line. It is not the funder's own contribution, and widths should never be added up.</li>
+        <li>A line has a <strong>neutral width</strong> when only DDF's own share or one component of the program is known, and is <strong>dotted</strong> when no amount is documented by the selected year. Hover a line for the amount, the year it was reported and what it measures.</li>
+        <li>A <strong>faint darker line</strong> joins two funders listed for the same program. A program's funder list can be a full roster (Mosaic Network and Fund), which shows shared membership but not that both funded the same round or year.</li>
+      </ul>
+      <h3>Timeline and geography</h3>
+      <ul>
+        <li>The year filter shows <strong>programs through</strong> the selected year: every program that had started by then, including completed ones. Commitments, grant totals and funders appear only from the year they were reported (for example, the Tribal Nations Conservation Pledge launched in 2022, and its $102.5 million in commitments was announced in March 2023).</li>
+        <li>Countries count as funded locations only where the program's activity took place. Artists' home countries (such as Center Stage ensembles touring the US) are outlined on the map but not shaded, filtered or counted.</li>
+      </ul>
+      <h3>Layout</h3>
+      <ul>
+        <li>DDF sits in the center. Each program area has its own spot (Environment at the top, Child Well-being top right, Medical Research bottom right, Arts on the left), and a funder in several areas sits between them. Funders in the same program are pulled together.</li>
       </ul>
       <h3>Programs abroad</h3>
-      <p>Turning on “Show programs abroad” adds ${nAbroad} programs where DDF and at least one other named funder put money into work outside the US, reaching ${nCountries} countries,
-      plus ${nExtraF} funders not in the US network. It turns on by itself when you choose International or Both, a country outside the US, or a program abroad; Reset turns it off.</p>
+      <p>“Show programs abroad” is on by default. It adds ${nAbroad} programs where DDF and at least one other named funder put money into work outside the US, reaching ${nCountries} countries,
+      plus ${nExtraF} funders not in the US network. Switch it off to see only the ${nBase} US programs; it turns back on by itself when you choose International or Both, a country outside the US, or a program abroad, and Reset turns it back on.</p>
       <ul>
         <li><strong>Where funds go:</strong> US only = the ${nBase} US programs; International = programs that fund work only abroad; Both = programs that also funded US work (for example two-way artist exchanges).</li>
         <li>The <strong>map</strong> is shaded by how many programs match the filters (the country filter itself is ignored so you can compare countries).</li>
@@ -1494,7 +1904,7 @@
       <h3>Caveats</h3>
       <ul>
         <li>Amounts measure different things (a multi-year commitment, a first round of grants, a cumulative total). “What the amount is” explains each one, so compare line widths with care.</li>
-        <li>Endowment figures mix years and measures (assets under management vs. total assets).</li>
+        <li>Reported-asset figures mix years and measures (assets under management vs. total assets).</li>
         <li>For programs abroad, the amount is the headline figure in the research notes (“~” marks an estimate), the year is the first year of the program's date range, and “funds US work” was judged from the research descriptions.
           Each has a confidence rating; Center Stage is borderline, as its money mainly paid for US tours. Some details rest on search summaries because older DDF pages are offline.</li>
         <li>Funder names are the short labels used in the research. The Mosaic Network and Fund lists its full funder roster, which may include funders who joined after DDF.</li>
@@ -1502,12 +1912,35 @@
       </ul>`;
   })();
 
+  // ------------------------------------------------------------ theme switch
+  // The button sets data-theme="light" or "dark" on <html> (the CSS reads it) and remembers the choice.
+  const themeBtn = document.getElementById("themeBtn");
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const isDark = () => {
+    const t = document.documentElement.getAttribute("data-theme");
+    return t ? t === "dark" : systemDark.matches;
+  };
+  function syncThemeButton() {
+    const dark = isDark();
+    document.documentElement.classList.toggle("is-dark", dark);
+    themeBtn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    themeBtn.title = dark ? "Switch to light mode" : "Switch to dark mode";
+  }
+  themeBtn.onclick = () => {
+    const next = isDark() ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("ddf-theme", next); } catch (e) { /* storage blocked: the switch still works for this visit */ }
+    syncThemeButton();
+  };
+  systemDark.addEventListener("change", syncThemeButton);
+  syncThemeButton();
+
   // -------------------------------------------------------------------- go
   if (window.innerWidth < 720) document.getElementById("legend").open = false; // keep the small graph clear on phones
   drawShapes();
   renderChips();
   renderLegend();
-  setYear(Y1, true);
+  setYears(Y0, Y1, true);
   place();
   update();
   fit(false);

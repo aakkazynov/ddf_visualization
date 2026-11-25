@@ -33,6 +33,50 @@
           "Packard",
           "Siegel Endowment"
         ],
+        "years_label": [
+          {
+            "year": 2025,
+            "text": "Announced October 2025; five-year commitment"
+          },
+          {
+            "year": 2026,
+            "text": "first pooled grants announced May 2026"
+          }
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 500,
+            "qualifier": "",
+            "what": "five-year commitment announced by the coalition",
+            "scope": "program",
+            "as_of": "announced October 14, 2025",
+            "as_of_year": 2025,
+            "source": "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai"
+          },
+          {
+            "value_usd_millions": 18,
+            "qualifier": "more than",
+            "what": "in new pooled grants announced (a separate measure; not added to the $500 million)",
+            "scope": "grants",
+            "as_of": "announced May 12, 2026",
+            "as_of_year": 2026,
+            "source": "https://www.mellon.org/news/humanity-ai-announces-more-than-18-million-in-new-grants"
+          }
+        ],
+        "sources": [
+          "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai",
+          "https://www.mellon.org/news/humanity-ai-announces-more-than-18-million-in-new-grants"
+        ],
+        "note": [
+          {
+            "year": 2025,
+            "text": "The $500 million is the coalition's announced five-year commitment."
+          },
+          {
+            "year": 2026,
+            "text": "Pooled grants announced in May 2026 are reported separately and are not added to it."
+          }
+        ],
         "countries": [
           "USA"
         ]
@@ -52,6 +96,52 @@
           "MacArthur",
           "Omidyar"
         ],
+        "years_label": [
+          {
+            "year": 2026,
+            "text": "Announced January 7, 2026; three-year goal"
+          }
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 6.5,
+            "qualifier": "",
+            "what": "committed by DDF, Mozilla, Hewlett and Ford toward the larger three-year goal",
+            "scope": "program",
+            "as_of": "announced January 7, 2026",
+            "as_of_year": 2026,
+            "source": "https://www.dorisduke.org/grants/projects/artists-make-technology"
+          },
+          {
+            "value_usd_millions": 11,
+            "qualifier": "",
+            "what": "planned across three pillars (the larger three-year goal)",
+            "scope": "goal",
+            "as_of": "announced January 7, 2026",
+            "as_of_year": 2026,
+            "source": "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation"
+          },
+          {
+            "value_usd_millions": 6,
+            "qualifier": "",
+            "what": "planned for the AMT Lab, DDF's second iteration of the Lab",
+            "scope": "component",
+            "as_of": "announced January 7, 2026",
+            "as_of_year": 2026,
+            "source": "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation"
+          }
+        ],
+        "sources": [
+          "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation",
+          "https://www.dorisduke.org/grants/projects/artists-make-technology"
+        ],
+        "note": [
+          {
+            "year": 2026,
+            "text": "DDF's individual share of the $6.5 million isn't disclosed in any primary source found. The $6 million is the planned budget for the Lab component, not part of the committed $6.5 million."
+          }
+        ],
+        "funders_note": "DDF's January 2026 announcement names DDF, Mozilla, Hewlett and Ford as the funders of the $6.5 million. MacArthur and Omidyar Network are named as supporters on later Mozilla program pages (not opened for this audit); their dates and amounts aren't documented.",
         "countries": [
           "USA"
         ]
@@ -69,12 +159,26 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 4,
+            "qualifier": "",
+            "what": "More than $4M over five years",
+            "scope": "program",
+            "as_of_year": 2026,
+            "source": "https://www.americantheatre.org/2026/07/06/duke-partners-with-ford-to-fund-performing-arts-tech-innovation/",
+            "as_of": "2026"
+          }
+        ],
+        "sources": [
+          "https://www.americantheatre.org/2026/07/06/duke-partners-with-ford-to-fund-performing-arts-tech-innovation/"
         ]
       },
       {
         "name": "Mosaic Network and Fund",
         "ddf_program": "Arts",
-        "year": 2020,
+        "year": 2018,
         "amount_usd_millions": 4.5,
         "amount_basis": "First-round grants (2020); funder list is the fund's full roster",
         "source": "https://thenytrust.org/collaborative-fund/mosaic-network-and-fund",
@@ -106,6 +210,32 @@
           "Jerome",
           "Dreyfus Foundation"
         ],
+        "years_label": [
+          {
+            "year": 2018,
+            "text": "Established 2018"
+          },
+          {
+            "year": 2020,
+            "text": "$4.5M in grants announced February 2020"
+          }
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 4.5,
+            "qualifier": "",
+            "what": "committed to 27 arts groups (reported by Grantmakers in the Arts, a secondary source)",
+            "scope": "component",
+            "as_of": "announced February 2020",
+            "as_of_year": 2020,
+            "source": "https://www.giarts.org/node/7590"
+          }
+        ],
+        "sources": [
+          "https://thenytrust.org/collaborative-fund/mosaic-network-and-fund/",
+          "https://www.giarts.org/node/7590"
+        ],
+        "funders_note": "The funder list is the fund's full roster from the New York Community Trust page. It shows shared membership in the fund, not that every donor funded the same round or took part in 2018; individual join dates aren't published.",
         "countries": [
           "USA"
         ]
@@ -145,6 +275,20 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 10,
+            "qualifier": "",
+            "what": "Initial $10M: $5M Mellon seed plus $5M from 23 foundations",
+            "scope": "program",
+            "as_of_year": 2020,
+            "source": "https://www.joanmitchellfoundation.org/uploads/pdf/Artist-Relief_Press-Release-20200408.pdf",
+            "as_of": "2020"
+          }
+        ],
+        "sources": [
+          "https://www.joanmitchellfoundation.org/uploads/pdf/Artist-Relief_Press-Release-20200408.pdf"
         ]
       },
       {
@@ -160,12 +304,26 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 28.6,
+            "qualifier": "",
+            "what": "Cumulative DDF and Mellon regranting since 2008",
+            "scope": "program",
+            "as_of_year": 2008,
+            "source": "https://mapfund.org/about/history",
+            "as_of": "2008"
+          }
+        ],
+        "sources": [
+          "https://mapfund.org/about/history"
         ]
       },
       {
-        "name": "National Dance Project (reported 2025)",
+        "name": "National Dance Project",
         "ddf_program": "Arts",
-        "year": 2025,
+        "year": 1998,
         "amount_usd_millions": null,
         "amount_basis": "Amount not found",
         "source": null,
@@ -173,6 +331,44 @@
           "Doris Duke Foundation",
           "Mellon"
         ],
+        "years_label": [
+          {
+            "year": 1996,
+            "text": "Launched 1996"
+          },
+          {
+            "year": 1998,
+            "text": "DDF funding from 1998"
+          },
+          {
+            "year": 2026,
+            "text": "final production-grant cohort awarded September 2026"
+          }
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 25.6,
+            "qualifier": "",
+            "what": "in cumulative DDF support since its first grant in 1998 (DDF only; its lifetime total is unknown)",
+            "scope": "ddf",
+            "as_of": "as of May 9, 2012",
+            "as_of_year": 2012,
+            "source": "https://www.nefa.org/node/507"
+          }
+        ],
+        "sources": [
+          "https://www.nefa.org/node/14496",
+          "https://www.nefa.org/node/507",
+          "https://www.nefa.org/node/403",
+          "https://www.nefa.org/node/14485"
+        ],
+        "note": [
+          {
+            "year": 2012,
+            "text": "NEFA reported $25.6 million in DDF support as of May 2012; DDF's lifetime contribution after that is unknown."
+          }
+        ],
+        "funders_note": "When Mellon's support began isn't documented here; the program's funder list is shown from DDF's first grant in 1998.",
         "countries": [
           "USA"
         ]
@@ -180,7 +376,7 @@
       {
         "name": "Tribal Nations Conservation Pledge",
         "ddf_program": "Environment",
-        "year": 2023,
+        "year": 2022,
         "amount_usd_millions": 102.5,
         "amount_basis": "$102.5M pledge over five years; DDF's share about $32M",
         "source": "https://www.philanthropy.com/article/15-grant-makers-pool-102-5-million-for-indigenous-led-conservation-efforts",
@@ -201,6 +397,60 @@
           "Hewlett",
           "Wyss"
         ],
+        "years_label": [
+          {
+            "year": 2022,
+            "text": "Launched November 7, 2022"
+          },
+          {
+            "year": 2023,
+            "text": "$102.5M in commitments announced March 21, 2023"
+          }
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 1,
+            "qualifier": "",
+            "what": "launch grant from DDF to Native Americans in Philanthropy, over 2 years (DDF grant record, search result)",
+            "scope": "ddf",
+            "as_of": "awarded June 6, 2022",
+            "as_of_year": 2022,
+            "source": "https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/native-americans-in-philanthropy"
+          },
+          {
+            "value_usd_millions": 102.5,
+            "qualifier": "",
+            "what": "in collective commitments over five years",
+            "scope": "program",
+            "as_of": "announced March 21, 2023",
+            "as_of_year": 2023,
+            "source": "https://20951050.fs1.hubspotusercontent-na1.net/hubfs/20951050/NAP_Conservation%20Pledge%20Press%20Release_03.21.23.pdf"
+          },
+          {
+            "value_usd_millions": 32,
+            "qualifier": "",
+            "what": "from DDF, about a third of the total commitment",
+            "scope": "ddf",
+            "as_of": "announced March 21, 2023",
+            "as_of_year": 2023,
+            "source": "https://www.dorisduke.org/news/doris-duke-foundation-and-partners-announce-over-100-million-for-tribal-led-conservation"
+          }
+        ],
+        "sources": [
+          "https://tribes.nativephilanthropy.org/hubfs/11%2007%202022%20Pledge%20and%20Fund%20Press%20Release%20.pdf?hsLang=en",
+          "https://20951050.fs1.hubspotusercontent-na1.net/hubfs/20951050/NAP_Conservation%20Pledge%20Press%20Release_03.21.23.pdf",
+          "https://www.dorisduke.org/news/doris-duke-foundation-and-partners-announce-over-100-million-for-tribal-led-conservation"
+        ],
+        "funder_from": {
+          "Alaska Conservation": 2023,
+          "Decolonizing Wealth": 2023,
+          "Moore": 2023,
+          "Grousemont": 2023,
+          "J.M. Kaplan Fund": 2023,
+          "Resources Legacy Fund": 2023,
+          "Wyss": 2023
+        },
+        "funders_note": "Funders appear from the year they were first named: the November 2022 announcement named DDF, the Christensen Fund (seed donor), Hewlett, Packard, Walton, Re:wild, the Water Foundation and Wilburforce, among others.",
         "countries": [
           "USA"
         ]
@@ -218,6 +468,20 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 2.5,
+            "qualifier": "",
+            "what": "Fund total as reported with the 2019 grants",
+            "scope": "program",
+            "as_of_year": 2019,
+            "source": "https://landscapeconservation.org/wp-content/uploads/2017/12/Catalyst-Fund_2019-Grants-Descriptions_Final.pdf",
+            "as_of": "2019"
+          }
+        ],
+        "sources": [
+          "https://landscapeconservation.org/wp-content/uploads/2017/12/Catalyst-Fund_2019-Grants-Descriptions_Final.pdf"
         ]
       },
       {
@@ -231,6 +495,32 @@
           "Doris Duke Foundation",
           "Duke Endowment",
           "Aviv"
+        ],
+        "years_label": [
+          {
+            "year": 2024,
+            "text": "Launched March 11, 2024; three-year initiative"
+          }
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 33,
+            "qualifier": "",
+            "what": "three-year initiative total",
+            "scope": "program",
+            "as_of": "announced March 11, 2024",
+            "as_of_year": 2024,
+            "source": "https://www.dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention"
+          }
+        ],
+        "sources": [
+          "https://www.dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention"
+        ],
+        "note": [
+          {
+            "year": 2024,
+            "text": "DDF's individual contribution isn't disclosed; the $33 million is the initiative's three-year total across the coalition."
+          }
         ],
         "countries": [
           "USA"
@@ -252,6 +542,20 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 47.5,
+            "qualifier": "",
+            "what": "Audacious Project award, 2023",
+            "scope": "program",
+            "as_of_year": 2023,
+            "source": "https://www.insidephilanthropy.com/home/2024/5/22/seven-funders-working-to-improve-child-welfare-and-foster-care",
+            "as_of": "2023"
+          }
+        ],
+        "sources": [
+          "https://www.insidephilanthropy.com/home/2024/5/22/seven-funders-working-to-improve-child-welfare-and-foster-care"
         ]
       },
       {
@@ -273,6 +577,10 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [],
+        "sources": [
+          "https://www.dorisduke.org/news--insights/articles/revisiting-research-pathways"
         ]
       },
       {
@@ -292,6 +600,20 @@
         ],
         "countries": [
           "USA"
+        ],
+        "measures": [
+          {
+            "value_usd_millions": 12.1,
+            "qualifier": "",
+            "what": "First round of grants to 22 medical schools",
+            "scope": "program",
+            "as_of_year": 2021,
+            "source": "https://www.dorisduke.org/siteassets/news--insights/2021-press-releases/11.16.21-covid19-frcs-press-release.pdf",
+            "as_of": "2021"
+          }
+        ],
+        "sources": [
+          "https://www.dorisduke.org/siteassets/news--insights/2021-press-releases/11.16.21-covid19-frcs-press-release.pdf"
         ]
       }
     ],
@@ -1064,9 +1386,12 @@
           "F01",
           "F02"
         ],
+        "partners": [],
         "countries": [
           "ETH"
-        ]
+        ],
+        "artist_origins": [],
+        "measures": []
       },
       {
         "id": "P02",
@@ -1074,7 +1399,7 @@
         "ddf_program": "Medical Research",
         "years": "2016–2024",
         "administrator": "Health Alliance International (DDF grant); University of Washington (NIH grant); Mozambique Ministry of Health; Beira Operations Research Center",
-        "total_pool": "~$11.6M (DDF $8.8M + NIH $2.82M)",
+        "total_pool": "Not disclosed (parallel grants: DDF $8.8M over 6 years; NIH/NICHD $2.82M, FY2018–2022; not added together)",
         "ddf_contribution": "$8.8M over 6 years",
         "meets_outside_us_test": "Yes",
         "confidence": "Medium-High",
@@ -1088,15 +1413,18 @@
         "funds_us_work": false,
         "us_work_evidence": "Work in Mozambique (NIH grant paid to a US university for the Mozambique study)",
         "start_year": 2016,
-        "amount_usd_millions": 11.6,
-        "amount_is_approximate": true,
+        "amount_usd_millions": null,
+        "amount_is_approximate": false,
         "funder_ids": [
           "F00",
           "F03"
         ],
+        "partners": [],
         "countries": [
           "MOZ"
-        ]
+        ],
+        "artist_origins": [],
+        "measures": []
       },
       {
         "id": "P03",
@@ -1122,12 +1450,19 @@
         "amount_is_approximate": false,
         "funder_ids": [
           "F00",
-          "F04",
-          "F05"
+          "F04"
+        ],
+        "partners": [
+          {
+            "funder_id": "F05",
+            "role": "Partner named in one source"
+          }
         ],
         "countries": [
           "GHA"
-        ]
+        ],
+        "artist_origins": [],
+        "measures": []
       },
       {
         "id": "P04",
@@ -1154,9 +1489,12 @@
           "F00",
           "F06"
         ],
+        "partners": [],
         "countries": [
           "UGA"
-        ]
+        ],
+        "artist_origins": [],
+        "measures": []
       },
       {
         "id": "P05",
@@ -1186,26 +1524,31 @@
           "F08",
           "F09"
         ],
+        "partners": [],
         "countries": [
           "CHN"
-        ]
+        ],
+        "artist_origins": [],
+        "measures": []
       },
       {
         "id": "P06",
         "name": "French-American Jazz Exchange (FAJE)",
         "ddf_program": "Arts",
-        "years": "2006–2019",
+        "years": "2006–at least 2019, including touring",
         "administrator": "Chamber Music America (from 2006); Mid Atlantic Arts Foundation (US side, from c.2010); FACE Foundation / Albertine Foundation (French side)",
         "total_pool": "~$1.4M over the program's life (104 projects)",
         "ddf_contribution": "$71,725 (2010); $72,400 (2011)",
         "meets_outside_us_test": "Yes",
         "confidence": "High",
         "description": "Grants for joint French and US jazz projects, with concerts and recordings in both countries.",
-        "caveats": "French musicians are named grantees, but no source shows how the money was split between countries.",
+        "caveats": "Launched in 2006 (DDCF's 2009 assessment: 'launched in 2006 as a partnership project of the Doris Duke Charitable Foundation'). Activity runs to at least 2019, including touring: the Albertine Foundation (formerly FACE) lists a 2018/2019 FAJE grantee cycle; a grant agreement documenting 2018–19 touring was cited for this audit but could not be located online. The end of DDF's own funding is unconfirmed. French musicians are named grantees, but no source shows how the money was split between countries.",
         "sources": [
           "https://the-nation-of-france.blogspot.com/2012",
           "https://www.bard.edu/news/releases/pr/fstory.php?id=11409",
-          "https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/2010-Mid-Atlantic-Arts-Foundation-Inc"
+          "https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/2010-Mid-Atlantic-Arts-Foundation-Inc",
+          "https://albertinefoundation.org/?p=830",
+          "https://www.dorisduke.org/globalassets/news-and-publications/imported-news-and-publications/2009-faje-subramaniam-report-final.pdf"
         ],
         "funds_us_work": true,
         "us_work_evidence": "Concerts and recordings in both countries; US side run by Mid Atlantic Arts",
@@ -1222,8 +1565,21 @@
           "F16",
           "F15"
         ],
+        "partners": [],
         "countries": [
           "FRA"
+        ],
+        "artist_origins": [],
+        "measures": [
+          {
+            "value_usd_millions": 1.4,
+            "qualifier": "~",
+            "what": "~$1.4M over the program's life (104 projects)",
+            "scope": "program",
+            "as_of_year": 2019,
+            "source": "https://the-nation-of-france.blogspot.com/2012",
+            "as_of": "2019"
+          }
         ]
       },
       {
@@ -1252,8 +1608,21 @@
           "F16",
           "F11"
         ],
+        "partners": [],
         "countries": [
           "FRA"
+        ],
+        "artist_origins": [],
+        "measures": [
+          {
+            "value_usd_millions": 0.167,
+            "qualifier": "",
+            "what": "$166,683 (2014–15 round)",
+            "scope": "component",
+            "as_of_year": 2014,
+            "source": "https://www.nefa.org/node/623",
+            "as_of": "2014"
+          }
         ]
       },
       {
@@ -1282,6 +1651,7 @@
           "F17",
           "F18"
         ],
+        "partners": [],
         "countries": [
           "ARG",
           "BRA",
@@ -1293,24 +1663,28 @@
           "HND",
           "MEX",
           "URY"
-        ]
+        ],
+        "artist_origins": [],
+        "measures": []
       },
       {
         "id": "P09",
         "name": "Center Stage (borderline)",
         "ddf_program": "Building Bridges",
-        "years": "2012–2025 (DDF: season 3, 2016; season 8, 2025)",
+        "years": "2012–2025 (DDF support documented for season 3, 2016, and season 8, 2025)",
         "administrator": "New England Foundation for the Arts (producer); Lisa Booth Management",
         "total_pool": "Not disclosed",
         "ddf_contribution": "$300,000 (season 3)",
-        "meets_outside_us_test": "Borderline",
+        "meets_outside_us_test": "No (activity in the US)",
         "confidence": "Low (borderline)",
-        "description": "State Department cultural diplomacy program that brought foreign ensembles on US tours.",
-        "caveats": "Co-funding is well documented, but the money mainly paid for touring inside the US. Ensembles' home countries are listed, but no source confirms fees were paid abroad.",
+        "description": "U.S. Department of State program, produced by NEFA, that brought international ensembles to tour U.S. communities. Funded activity (performances) took place in the United States; the ensembles' home countries are listed separately.",
+        "caveats": "Kept in the international layer because its artists came from abroad, but no source documents funded activity in the artists' home countries (outreach there was media coverage and U.S. embassy promotion). Its home countries are therefore not counted as funded locations.",
         "sources": [
           "https://www.nefa.org/node/8087",
           "https://centerstageus.org/node/51765",
-          "https://centerstageus.org/about"
+          "https://centerstageus.org/about",
+          "https://www.nefa.org/node/44",
+          "https://centerstageus.org/node/51674"
         ],
         "funds_us_work": true,
         "us_work_evidence": "Money mainly paid for tours inside the US",
@@ -1325,14 +1699,17 @@
           "F22",
           "F17"
         ],
-        "countries": [
+        "partners": [],
+        "countries": [],
+        "artist_origins": [
           "DZA",
           "TZA",
           "EGY",
           "IDN",
           "PAK",
           "UKR"
-        ]
+        ],
+        "measures": []
       }
     ],
     "funders": [
@@ -1395,17 +1772,6 @@
         "type": "Government agency",
         "hq_country": "South Korea",
         "website": "https://www.koica.go.kr",
-        "program_ids": [
-          "P03"
-        ]
-      },
-      {
-        "id": "F05",
-        "name": "JICA",
-        "full_name": "Japan International Cooperation Agency",
-        "type": "Government agency",
-        "hq_country": "Japan",
-        "website": "https://www.jica.go.jp",
         "program_ids": [
           "P03"
         ]
@@ -1601,244 +1967,289 @@
         ]
       }
     ],
+    "partners": [
+      {
+        "id": "F05",
+        "name": "JICA",
+        "full_name": "Japan International Cooperation Agency",
+        "type": "Government agency",
+        "hq_country": "Japan",
+        "website": "https://www.jica.go.jp",
+        "program_ids": []
+      }
+    ],
     "links": [
       {
         "program_id": "P01",
         "funder_id": "F00",
         "role": "Supplemental funder",
         "contribution": "$5.0M",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P01",
         "funder_id": "F01",
         "role": "Lead funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P01",
         "funder_id": "F02",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P02",
         "funder_id": "F00",
         "role": "Program funder",
         "contribution": "$8.8M",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P02",
         "funder_id": "F03",
         "role": "Parallel research co-funder (R01HD092449)",
         "contribution": "$2,817,882 (FY2018–2022)",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P03",
         "funder_id": "F00",
         "role": "Program funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P03",
         "funder_id": "F04",
         "role": "Parallel scale-up funder (Upper East Region)",
         "contribution": "Not disclosed",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P03",
         "funder_id": "F05",
         "role": "Partner named in one source",
         "contribution": "Not disclosed",
-        "confidence": "Low"
+        "confidence": "Low",
+        "is_funder": false
       },
       {
         "program_id": "P04",
         "funder_id": "F00",
         "role": "Funder (Innovations in Clinical Research Award)",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P04",
         "funder_id": "F06",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P05",
         "funder_id": "F00",
         "role": "Funder",
         "contribution": "$21M over 3 years",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P05",
         "funder_id": "F07",
         "role": "Co-funder of Energy Foundation in the same period",
         "contribution": "$5M (2008)",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P05",
         "funder_id": "F08",
         "role": "Founding lead funder of the China program",
         "contribution": "$22.2M (1999 founding grant)",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P05",
         "funder_id": "F09",
         "role": "Co-funder of the China program",
         "contribution": "$1.5M (2008)",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F00",
         "role": "Funder (partnership project)",
         "contribution": "$71,725 (2010); $72,400 (2011)",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F10",
         "role": "Co-funder and partner",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F11",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F12",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F13",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F14",
         "role": "Co-funder (2016)",
         "contribution": "Not disclosed",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F16",
         "role": "Co-funder (2016)",
         "contribution": "Not disclosed",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P06",
         "funder_id": "F15",
         "role": "Funder of one project",
         "contribution": "Not disclosed",
-        "confidence": "Medium"
+        "confidence": "Medium",
+        "is_funder": true
       },
       {
         "program_id": "P07",
         "funder_id": "F00",
         "role": "Co-lead funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P07",
         "funder_id": "F16",
         "role": "Co-lead funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P07",
         "funder_id": "F11",
         "role": "Additional funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P08",
         "funder_id": "F00",
         "role": "Funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P08",
         "funder_id": "F17",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "Medium-High"
+        "confidence": "Medium-High",
+        "is_funder": true
       },
       {
         "program_id": "P08",
         "funder_id": "F18",
         "role": "Co-funder (Los Angeles artists only)",
         "contribution": "Not disclosed",
-        "confidence": "Medium-High"
+        "confidence": "Medium-High",
+        "is_funder": true
       },
       {
         "program_id": "P09",
         "funder_id": "F00",
         "role": "Co-funder",
         "contribution": "$300,000 (season 3)",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P09",
         "funder_id": "F19",
         "role": "Lead funder (plus funding from US embassies)",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P09",
         "funder_id": "F20",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P09",
         "funder_id": "F21",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P09",
         "funder_id": "F22",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       },
       {
         "program_id": "P09",
         "funder_id": "F17",
         "role": "Co-funder",
         "contribution": "Not disclosed",
-        "confidence": "High"
+        "confidence": "High",
+        "is_funder": true
       }
     ],
     "countries": [
@@ -1847,6 +2258,7 @@
         "country": "Ethiopia",
         "iso3": "ETH",
         "region": "Sub-Saharan Africa",
+        "role": "Activity location",
         "detail": "Four regions (not named)"
       },
       {
@@ -1854,6 +2266,7 @@
         "country": "Mozambique",
         "iso3": "MOZ",
         "region": "Sub-Saharan Africa",
+        "role": "Activity location",
         "detail": "12 districts in Sofala and Manica provinces"
       },
       {
@@ -1861,6 +2274,7 @@
         "country": "Ghana",
         "iso3": "GHA",
         "region": "Sub-Saharan Africa",
+        "role": "Activity location",
         "detail": "Upper East, Northern and Volta regions"
       },
       {
@@ -1868,6 +2282,7 @@
         "country": "Uganda",
         "iso3": "UGA",
         "region": "Sub-Saharan Africa",
+        "role": "Activity location",
         "detail": "Kampala (Makerere University / Mulago Hospital)"
       },
       {
@@ -1875,6 +2290,7 @@
         "country": "China",
         "iso3": "CHN",
         "region": "East Asia & Pacific",
+        "role": "Activity location",
         "detail": "China Sustainable Energy Program, Beijing; amount not disclosed"
       },
       {
@@ -1882,6 +2298,7 @@
         "country": "France",
         "iso3": "FRA",
         "region": "Europe & Central Asia",
+        "role": "Activity location",
         "detail": "French musicians and co-productions"
       },
       {
@@ -1889,6 +2306,7 @@
         "country": "France",
         "iso3": "FRA",
         "region": "Europe & Central Asia",
+        "role": "Activity location",
         "detail": "Paris, Marseille, Vanves, Val-de-Marne and other venues"
       },
       {
@@ -1896,6 +2314,7 @@
         "country": "Argentina",
         "iso3": "ARG",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1903,6 +2322,7 @@
         "country": "Brazil",
         "iso3": "BRA",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1910,6 +2330,7 @@
         "country": "Chile",
         "iso3": "CHL",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1917,6 +2338,7 @@
         "country": "Colombia",
         "iso3": "COL",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1924,6 +2346,7 @@
         "country": "Cuba",
         "iso3": "CUB",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1931,6 +2354,7 @@
         "country": "Guatemala",
         "iso3": "GTM",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": "e.g., Grupo de Teatro Artzenico"
       },
       {
@@ -1938,6 +2362,7 @@
         "country": "Haiti",
         "iso3": "HTI",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1945,6 +2370,7 @@
         "country": "Honduras",
         "iso3": "HND",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1952,6 +2378,7 @@
         "country": "Mexico",
         "iso3": "MEX",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1959,6 +2386,7 @@
         "country": "Uruguay",
         "iso3": "URY",
         "region": "Latin America & Caribbean",
+        "role": "Activity location",
         "detail": null
       },
       {
@@ -1966,42 +2394,48 @@
         "country": "Algeria",
         "iso3": "DZA",
         "region": "Middle East & North Africa",
-        "detail": "Season 3 (2016, DDF-funded)"
+        "role": "Artist home country",
+        "detail": "Artists' home country; the ensemble toured the U.S. (Season 3 (2016, DDF-funded))"
       },
       {
         "program_id": "P09",
         "country": "Tanzania",
         "iso3": "TZA",
         "region": "Sub-Saharan Africa",
-        "detail": "Season 3 (2016, DDF-funded)"
+        "role": "Artist home country",
+        "detail": "Artists' home country; the ensemble toured the U.S. (Season 3 (2016, DDF-funded))"
       },
       {
         "program_id": "P09",
         "country": "Egypt",
         "iso3": "EGY",
         "region": "Middle East & North Africa",
-        "detail": "Season 8 (2025)"
+        "role": "Artist home country",
+        "detail": "Artists' home country; the ensemble toured the U.S. (Season 8 (2025))"
       },
       {
         "program_id": "P09",
         "country": "Indonesia",
         "iso3": "IDN",
         "region": "East Asia & Pacific",
-        "detail": "Season 8 (2025)"
+        "role": "Artist home country",
+        "detail": "Artists' home country; the ensemble toured the U.S. (Season 8 (2025))"
       },
       {
         "program_id": "P09",
         "country": "Pakistan",
         "iso3": "PAK",
         "region": "South Asia",
-        "detail": "Season 8 (2025)"
+        "role": "Artist home country",
+        "detail": "Artists' home country; the ensemble toured the U.S. (Season 8 (2025))"
       },
       {
         "program_id": "P09",
         "country": "Ukraine",
         "iso3": "UKR",
         "region": "Europe & Central Asia",
-        "detail": "Season 8 (2025)"
+        "role": "Artist home country",
+        "detail": "Artists' home country; the ensemble toured the U.S. (Season 8 (2025))"
       }
     ]
   },
@@ -2013,22 +2447,10 @@
       "iso_numeric": "156"
     },
     {
-      "iso3": "IDN",
-      "name": "Indonesia",
-      "region": "East Asia & Pacific",
-      "iso_numeric": "360"
-    },
-    {
       "iso3": "FRA",
       "name": "France",
       "region": "Europe & Central Asia",
       "iso_numeric": "250"
-    },
-    {
-      "iso3": "UKR",
-      "name": "Ukraine",
-      "region": "Europe & Central Asia",
-      "iso_numeric": "804"
     },
     {
       "iso3": "ARG",
@@ -2091,28 +2513,10 @@
       "iso_numeric": "858"
     },
     {
-      "iso3": "DZA",
-      "name": "Algeria",
-      "region": "Middle East & North Africa",
-      "iso_numeric": "012"
-    },
-    {
-      "iso3": "EGY",
-      "name": "Egypt",
-      "region": "Middle East & North Africa",
-      "iso_numeric": "818"
-    },
-    {
       "iso3": "USA",
       "name": "United States",
       "region": "North America",
       "iso_numeric": "840"
-    },
-    {
-      "iso3": "PAK",
-      "name": "Pakistan",
-      "region": "South Asia",
-      "iso_numeric": "586"
     },
     {
       "iso3": "ETH",
@@ -2133,16 +2537,48 @@
       "iso_numeric": "508"
     },
     {
-      "iso3": "TZA",
-      "name": "Tanzania",
-      "region": "Sub-Saharan Africa",
-      "iso_numeric": "834"
-    },
-    {
       "iso3": "UGA",
       "name": "Uganda",
       "region": "Sub-Saharan Africa",
       "iso_numeric": "800"
+    }
+  ],
+  "artist_origin_countries": [
+    {
+      "iso3": "IDN",
+      "name": "Indonesia",
+      "region": "East Asia & Pacific",
+      "iso_numeric": "360"
+    },
+    {
+      "iso3": "UKR",
+      "name": "Ukraine",
+      "region": "Europe & Central Asia",
+      "iso_numeric": "804"
+    },
+    {
+      "iso3": "DZA",
+      "name": "Algeria",
+      "region": "Middle East & North Africa",
+      "iso_numeric": "012"
+    },
+    {
+      "iso3": "EGY",
+      "name": "Egypt",
+      "region": "Middle East & North Africa",
+      "iso_numeric": "818"
+    },
+    {
+      "iso3": "PAK",
+      "name": "Pakistan",
+      "region": "South Asia",
+      "iso_numeric": "586"
+    },
+    {
+      "iso3": "TZA",
+      "name": "Tanzania",
+      "region": "Sub-Saharan Africa",
+      "iso_numeric": "834"
     }
   ]
 }

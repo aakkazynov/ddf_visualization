@@ -87,9 +87,41 @@ def start_year(text):
     return int(m.group(0))
 
 
+# A program's dollar figures are kept as separate dated "measures" and are never added together.
+# scope: "program"   = a documented program-level amount (the only kind that sets line width)
+#        "ddf"       = DDF's own contribution
+#        "component" = one part or round of the program
+#        "goal"      = a target, not money committed
+#        "grants"    = grants announced as a separate measure (e.g. a later grant round)
+#        "partners"  = commitments made by partners toward a wider strategy
+SCOPES = {"program", "ddf", "component", "goal", "grants", "partners"}
+
+
+def check_measures(name, measures):
+    for m in measures:
+        missing = [k for k in ("value_usd_millions", "what", "scope", "as_of_year", "source") if m.get(k) in (None, "")]
+        if missing:
+            raise SystemExit(f"{name}: measure is missing {missing}: {m}")
+        if m["scope"] not in SCOPES:
+            raise SystemExit(f"{name}: unknown measure scope {m['scope']!r}")
+        m.setdefault("qualifier", "")
+        m.setdefault("as_of", str(m["as_of_year"]))
+    return measures
+
+
 def build_network():
     src = json.loads(NETWORK_JSON.read_text(encoding="utf-8"))
-    programs = [dict(p, countries=list(NETWORK_COUNTRIES)) for p in src["programs"]]
+    programs = []
+    for p in src["programs"]:
+        p = dict(p, countries=list(NETWORK_COUNTRIES))
+        if "measures" not in p:
+            # Records not yet audited: their single figure is treated as a program-level amount for its year.
+            p["measures"] = [] if p.get("amount_usd_millions") is None else [{
+                "value_usd_millions": p["amount_usd_millions"], "qualifier": "", "what": p["amount_basis"],
+                "scope": "program", "as_of_year": p["year"], "source": p.get("source")}]
+        p["measures"] = check_measures(p["name"], p["measures"])
+        p.setdefault("sources", [p["source"]] if p.get("source") else [])
+        programs.append(p)
     return {
         "source": src["source"],
         "ddf": src["ddf"],
@@ -116,6 +148,8 @@ def build_international():
         "Source URL(s)": "sources",
         "Also Funds US Work": "funds_us_work",
         "US Work Evidence": "us_work_evidence",
+        "Amount Scope": "amount_scope",
+        "Amount As Of Year": "amount_as_of_year",
     }, "P")
     funders = read_tab(wb, "Funders", {
         "Funder ID": "id",
@@ -137,8 +171,12 @@ def build_international():
         "Country": "country",
         "ISO3": "iso3",
         "Region": "region",
+        "Role": "role",
         "Detail": "detail",
     }, "P")
+    for row in countries:
+        if row["role"] not in ("Activity location", "Artist home country"):
+            raise SystemExit(f"Countries tab: Role must be 'Activity location' or 'Artist home country': {row}")
 
     # The workbook's count columns are Excel formulas with no saved values,
     # so the counts are worked out here from the link and country rows.
@@ -147,6 +185,7 @@ def build_international():
     for row in links:
         if row["program_id"] not in program_ids or row["funder_id"] not in funder_ids:
             raise SystemExit(f"Link points to an unknown program or funder: {row}")
+        row["is_funder"] = "funder" in (row["role"] or "").lower()
     for row in countries:
         if row["program_id"] not in program_ids:
             raise SystemExit(f"Country row points to an unknown program: {row}")
@@ -158,21 +197,41 @@ def build_international():
         p["start_year"] = start_year(p["years"])
         p["amount_usd_millions"], p["amount_is_approximate"] = parse_amount(p["total_pool"])
         p["sources"] = split_list(p["sources"], ";")
-        p["funder_ids"] = [l["funder_id"] for l in links if l["program_id"] == p["id"]]
-        p["countries"] = [c["iso3"] for c in countries if c["program_id"] == p["id"]]
+        # Only organizations whose role is a funder role count as funders; others stay in their documented role.
+        p["funder_ids"] = [l["funder_id"] for l in links if l["program_id"] == p["id"] and l["is_funder"]]
+        p["partners"] = [{"funder_id": l["funder_id"], "role": l["role"]} for l in links
+                         if l["program_id"] == p["id"] and not l["is_funder"]]
+        # Funded activity locations (shade the map, drive filters) vs. artists' home countries (shown separately).
+        p["countries"] = [c["iso3"] for c in countries if c["program_id"] == p["id"] and c["role"] == "Activity location"]
+        p["artist_origins"] = [c["iso3"] for c in countries if c["program_id"] == p["id"] and c["role"] == "Artist home country"]
+        scope = (p.pop("amount_scope") or "none").strip().lower()
+        as_of = p.pop("amount_as_of_year")
+        if p["amount_usd_millions"] is not None and scope != "none":
+            if scope not in SCOPES or not as_of:
+                raise SystemExit(f"{p['id']}: 'Amount Scope' must be one of {sorted(SCOPES)} or none, with 'Amount As Of Year'")
+            p["measures"] = check_measures(p["name"], [{
+                "value_usd_millions": p["amount_usd_millions"], "qualifier": "~" if p["amount_is_approximate"] else "",
+                "what": p["total_pool"], "scope": scope, "as_of_year": int(as_of), "source": p["sources"][0]}])
+        else:
+            p["measures"] = []
     for f in funders:
-        f["program_ids"] = [l["program_id"] for l in links if l["funder_id"] == f["id"]]
+        f["program_ids"] = [l["program_id"] for l in links if l["funder_id"] == f["id"] and l["is_funder"]]
     for row in countries:
         row["detail"] = row["detail"] or None
+    # Organizations that are only partners (not funders) don't become funder nodes.
+    partner_only = [f for f in funders if not f["program_ids"] and f["id"] != "F00"]
+    funders = [f for f in funders if f["program_ids"] or f["id"] == "F00"]
 
-    return {"programs": programs, "funders": funders, "links": links, "countries": countries}
+    return {"programs": programs, "funders": funders, "partners": partner_only, "links": links, "countries": countries}
 
 
-def build_country_index(intl):
-    """One entry per country that any program funds, with region and map code."""
-    seen = {US["iso3"]: dict(US)}
+def build_country_index(intl, role):
+    """One entry per country with the given role ('Activity location' or 'Artist home country'), with map code.
+    Activity locations always include the United States (every base program funds US work)."""
+    seen = {US["iso3"]: dict(US)} if role == "Activity location" else {}
     for row in intl["countries"]:
-        seen.setdefault(row["iso3"], {"iso3": row["iso3"], "name": row["country"], "region": row["region"]})
+        if row["role"] == role:
+            seen.setdefault(row["iso3"], {"iso3": row["iso3"], "name": row["country"], "region": row["region"]})
     missing = sorted(k for k in seen if k not in ISO_NUMERIC)
     if missing:
         raise SystemExit(f"Add ISO numeric codes for: {missing}")
@@ -188,7 +247,10 @@ def main():
         "inputs": [str(p.relative_to(ROOT)).replace("\\", "/") for p in (NETWORK_JSON, INTL_XLSX)],
         "network": build_network(),
         "international": intl,
-        "countries": build_country_index(intl),
+        # Countries where funded activity happens (map shading, filters, counts)...
+        "countries": build_country_index(intl, "Activity location"),
+        # ...and artists' home countries, shown separately and never counted as funded locations.
+        "artist_origin_countries": build_country_index(intl, "Artist home country"),
     }
 
     (ROOT / "data.json").write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -199,7 +261,8 @@ def main():
     net, intl = data["network"], data["international"]
     print(f"network: {len(net['programs'])} programs, {len(net['funders'])} funders + DDF")
     print(f"international: {len(intl['programs'])} programs, {len(intl['funders'])} funders (incl. DDF), "
-          f"{len(intl['links'])} links, {len({c['iso3'] for c in intl['countries']})} countries")
+          f"{len(intl['links'])} links, {len(data['countries'])} activity countries (incl. US), "
+          f"{len(data['artist_origin_countries'])} artist home countries")
     print("wrote data.json and data.js")
 
 

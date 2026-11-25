@@ -34,6 +34,50 @@
         "Omidyar",
         "Packard",
         "Siegel Endowment"
+      ],
+      "years_label": [
+        {
+          "year": 2025,
+          "text": "Announced October 2025; five-year commitment"
+        },
+        {
+          "year": 2026,
+          "text": "first pooled grants announced May 2026"
+        }
+      ],
+      "measures": [
+        {
+          "value_usd_millions": 500,
+          "qualifier": "",
+          "what": "five-year commitment announced by the coalition",
+          "scope": "program",
+          "as_of": "announced October 14, 2025",
+          "as_of_year": 2025,
+          "source": "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai"
+        },
+        {
+          "value_usd_millions": 18,
+          "qualifier": "more than",
+          "what": "in new pooled grants announced (a separate measure; not added to the $500 million)",
+          "scope": "grants",
+          "as_of": "announced May 12, 2026",
+          "as_of_year": 2026,
+          "source": "https://www.mellon.org/news/humanity-ai-announces-more-than-18-million-in-new-grants"
+        }
+      ],
+      "sources": [
+        "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai",
+        "https://www.mellon.org/news/humanity-ai-announces-more-than-18-million-in-new-grants"
+      ],
+      "note": [
+        {
+          "year": 2025,
+          "text": "The $500 million is the coalition's announced five-year commitment."
+        },
+        {
+          "year": 2026,
+          "text": "Pooled grants announced in May 2026 are reported separately and are not added to it."
+        }
       ]
     },
     {
@@ -50,7 +94,53 @@
         "Ford",
         "MacArthur",
         "Omidyar"
-      ]
+      ],
+      "years_label": [
+        {
+          "year": 2026,
+          "text": "Announced January 7, 2026; three-year goal"
+        }
+      ],
+      "measures": [
+        {
+          "value_usd_millions": 6.5,
+          "qualifier": "",
+          "what": "committed by DDF, Mozilla, Hewlett and Ford toward the larger three-year goal",
+          "scope": "program",
+          "as_of": "announced January 7, 2026",
+          "as_of_year": 2026,
+          "source": "https://www.dorisduke.org/grants/projects/artists-make-technology"
+        },
+        {
+          "value_usd_millions": 11,
+          "qualifier": "",
+          "what": "planned across three pillars (the larger three-year goal)",
+          "scope": "goal",
+          "as_of": "announced January 7, 2026",
+          "as_of_year": 2026,
+          "source": "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation"
+        },
+        {
+          "value_usd_millions": 6,
+          "qualifier": "",
+          "what": "planned for the AMT Lab, DDF's second iteration of the Lab",
+          "scope": "component",
+          "as_of": "announced January 7, 2026",
+          "as_of_year": 2026,
+          "source": "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation"
+        }
+      ],
+      "sources": [
+        "https://dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation",
+        "https://www.dorisduke.org/grants/projects/artists-make-technology"
+      ],
+      "note": [
+        {
+          "year": 2026,
+          "text": "DDF's individual share of the $6.5 million isn't disclosed in any primary source found. The $6 million is the planned budget for the Lab component, not part of the committed $6.5 million."
+        }
+      ],
+      "funders_note": "DDF's January 2026 announcement names DDF, Mozilla, Hewlett and Ford as the funders of the $6.5 million. MacArthur and Omidyar Network are named as supporters on later Mozilla program pages (not opened for this audit); their dates and amounts aren't documented."
     },
     {
       "name": "DDF and Ford technology grants",
@@ -67,7 +157,7 @@
     {
       "name": "Mosaic Network and Fund",
       "ddf_program": "Arts",
-      "year": 2020,
+      "year": 2018,
       "amount_usd_millions": 4.5,
       "amount_basis": "First-round grants (2020); funder list is the fund's full roster",
       "source": "https://thenytrust.org/collaborative-fund/mosaic-network-and-fund",
@@ -98,7 +188,33 @@
         "MacKenzie Scott",
         "Jerome",
         "Dreyfus Foundation"
-      ]
+      ],
+      "years_label": [
+        {
+          "year": 2018,
+          "text": "Established 2018"
+        },
+        {
+          "year": 2020,
+          "text": "$4.5M in grants announced February 2020"
+        }
+      ],
+      "measures": [
+        {
+          "value_usd_millions": 4.5,
+          "qualifier": "",
+          "what": "committed to 27 arts groups (reported by Grantmakers in the Arts, a secondary source)",
+          "scope": "component",
+          "as_of": "announced February 2020",
+          "as_of_year": 2020,
+          "source": "https://www.giarts.org/node/7590"
+        }
+      ],
+      "sources": [
+        "https://thenytrust.org/collaborative-fund/mosaic-network-and-fund/",
+        "https://www.giarts.org/node/7590"
+      ],
+      "funders_note": "The funder list is the fund's full roster from the New York Community Trust page. It shows shared membership in the fund, not that every donor funded the same round or took part in 2018; individual join dates aren't published."
     },
     {
       "name": "Artist Relief",
@@ -147,21 +263,59 @@
       ]
     },
     {
-      "name": "National Dance Project (reported 2025)",
+      "name": "National Dance Project",
       "ddf_program": "Arts",
-      "year": 2025,
+      "year": 1998,
       "amount_usd_millions": null,
       "amount_basis": "Amount not found",
       "source": null,
       "funders": [
         "Doris Duke Foundation",
         "Mellon"
-      ]
+      ],
+      "years_label": [
+        {
+          "year": 1996,
+          "text": "Launched 1996"
+        },
+        {
+          "year": 1998,
+          "text": "DDF funding from 1998"
+        },
+        {
+          "year": 2026,
+          "text": "final production-grant cohort awarded September 2026"
+        }
+      ],
+      "measures": [
+        {
+          "value_usd_millions": 25.6,
+          "qualifier": "",
+          "what": "in cumulative DDF support since its first grant in 1998 (DDF only; its lifetime total is unknown)",
+          "scope": "ddf",
+          "as_of": "as of May 9, 2012",
+          "as_of_year": 2012,
+          "source": "https://www.nefa.org/node/507"
+        }
+      ],
+      "sources": [
+        "https://www.nefa.org/node/14496",
+        "https://www.nefa.org/node/507",
+        "https://www.nefa.org/node/403",
+        "https://www.nefa.org/node/14485"
+      ],
+      "note": [
+        {
+          "year": 2012,
+          "text": "NEFA reported $25.6 million in DDF support as of May 2012; DDF's lifetime contribution after that is unknown."
+        }
+      ],
+      "funders_note": "When Mellon's support began isn't documented here; the program's funder list is shown from DDF's first grant in 1998."
     },
     {
       "name": "Tribal Nations Conservation Pledge",
       "ddf_program": "Environment",
-      "year": 2023,
+      "year": 2022,
       "amount_usd_millions": 102.5,
       "amount_basis": "$102.5M pledge over five years; DDF's share about $32M",
       "source": "https://www.philanthropy.com/article/15-grant-makers-pool-102-5-million-for-indigenous-led-conservation-efforts",
@@ -181,7 +335,61 @@
         "Wilburforce",
         "Hewlett",
         "Wyss"
-      ]
+      ],
+      "years_label": [
+        {
+          "year": 2022,
+          "text": "Launched November 7, 2022"
+        },
+        {
+          "year": 2023,
+          "text": "$102.5M in commitments announced March 21, 2023"
+        }
+      ],
+      "measures": [
+        {
+          "value_usd_millions": 1,
+          "qualifier": "",
+          "what": "launch grant from DDF to Native Americans in Philanthropy, over 2 years (DDF grant record, search result)",
+          "scope": "ddf",
+          "as_of": "awarded June 6, 2022",
+          "as_of_year": 2022,
+          "source": "https://www.dorisduke.org/grants/what-weve-funded/Grant-Recipients/native-americans-in-philanthropy"
+        },
+        {
+          "value_usd_millions": 102.5,
+          "qualifier": "",
+          "what": "in collective commitments over five years",
+          "scope": "program",
+          "as_of": "announced March 21, 2023",
+          "as_of_year": 2023,
+          "source": "https://20951050.fs1.hubspotusercontent-na1.net/hubfs/20951050/NAP_Conservation%20Pledge%20Press%20Release_03.21.23.pdf"
+        },
+        {
+          "value_usd_millions": 32,
+          "qualifier": "",
+          "what": "from DDF, about a third of the total commitment",
+          "scope": "ddf",
+          "as_of": "announced March 21, 2023",
+          "as_of_year": 2023,
+          "source": "https://www.dorisduke.org/news/doris-duke-foundation-and-partners-announce-over-100-million-for-tribal-led-conservation"
+        }
+      ],
+      "sources": [
+        "https://tribes.nativephilanthropy.org/hubfs/11%2007%202022%20Pledge%20and%20Fund%20Press%20Release%20.pdf?hsLang=en",
+        "https://20951050.fs1.hubspotusercontent-na1.net/hubfs/20951050/NAP_Conservation%20Pledge%20Press%20Release_03.21.23.pdf",
+        "https://www.dorisduke.org/news/doris-duke-foundation-and-partners-announce-over-100-million-for-tribal-led-conservation"
+      ],
+      "funder_from": {
+        "Alaska Conservation": 2023,
+        "Decolonizing Wealth": 2023,
+        "Moore": 2023,
+        "Grousemont": 2023,
+        "J.M. Kaplan Fund": 2023,
+        "Resources Legacy Fund": 2023,
+        "Wyss": 2023
+      },
+      "funders_note": "Funders appear from the year they were first named: the November 2022 announcement named DDF, the Christensen Fund (seed donor), Hewlett, Packard, Walton, Re:wild, the Water Foundation and Wilburforce, among others."
     },
     {
       "name": "Catalyst Fund",
@@ -206,6 +414,32 @@
         "Doris Duke Foundation",
         "Duke Endowment",
         "Aviv"
+      ],
+      "years_label": [
+        {
+          "year": 2024,
+          "text": "Launched March 11, 2024; three-year initiative"
+        }
+      ],
+      "measures": [
+        {
+          "value_usd_millions": 33,
+          "qualifier": "",
+          "what": "three-year initiative total",
+          "scope": "program",
+          "as_of": "announced March 11, 2024",
+          "as_of_year": 2024,
+          "source": "https://www.dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention"
+        }
+      ],
+      "sources": [
+        "https://www.dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention"
+      ],
+      "note": [
+        {
+          "year": 2024,
+          "text": "DDF's individual contribution isn't disclosed; the $33 million is the initiative's three-year total across the coalition."
+        }
       ]
     },
     {
@@ -997,5 +1231,9 @@
         "COVID-19 Fund to Retain Clinical Scientists"
       ]
     }
-  ]
+  ],
+  "audit": {
+    "date": "2026-11-25",
+    "note": "Records with a 'measures' list were audited against the sources stored with each measure; other records keep the reference data's single program figure."
+  }
 }
