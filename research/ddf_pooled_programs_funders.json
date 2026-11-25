@@ -1,0 +1,1001 @@
+{
+  "source": "https://ddf-constellation.vercel.app/",
+  "retrieved": "2026-11-25",
+  "notes": "Programs, funders, endowments and websites exactly as embedded in the DDF Funders Network visualization. Program amounts are in $ millions; endowments in $ billions (FY23 figures are assets under management, others are total assets from tax filings or annual reports). null = not found on the page. Funder names are the short labels the page uses.",
+  "counts": {
+    "programs": 13,
+    "funders_excluding_ddf": 80,
+    "funders_with_endowment": 23,
+    "funders_without_endowment": 57
+  },
+  "ddf": {
+    "name": "Doris Duke Foundation",
+    "id": "DDF",
+    "endowment_usd_billions": 2.19,
+    "endowment_basis": "FY23 AUM",
+    "website": "https://www.dorisduke.org"
+  },
+  "programs": [
+    {
+      "name": "Humanity AI",
+      "ddf_program": "Arts",
+      "year": 2025,
+      "amount_usd_millions": 500,
+      "amount_basis": "$500M coalition commitment over five years",
+      "source": "https://www.macfound.org/press/press-releases/humanity-ai-commits-500-million-to-build-a-people-centered-future-for-ai",
+      "funders": [
+        "Doris Duke Foundation",
+        "Ford",
+        "Lumina",
+        "Kapor",
+        "MacArthur",
+        "Mellon",
+        "Mozilla",
+        "Omidyar",
+        "Packard",
+        "Siegel Endowment"
+      ]
+    },
+    {
+      "name": "Artists Make Technology",
+      "ddf_program": "Arts",
+      "year": 2026,
+      "amount_usd_millions": 11,
+      "amount_basis": "$11M three-year initiative; $6.5M committed at launch",
+      "source": "https://www.dorisduke.org/news/doris-duke-foundation-and-mozilla-foundation-announce-usd6-5m-commitment-to-ensure-performing-artists-are-at-the-center-of-technology-innovation",
+      "funders": [
+        "Doris Duke Foundation",
+        "Mozilla",
+        "Hewlett",
+        "Ford",
+        "MacArthur",
+        "Omidyar"
+      ]
+    },
+    {
+      "name": "DDF and Ford technology grants",
+      "ddf_program": "Arts",
+      "year": 2026,
+      "amount_usd_millions": 4,
+      "amount_basis": "More than $4M over five years",
+      "source": "https://www.americantheatre.org/2026/07/06/duke-partners-with-ford-to-fund-performing-arts-tech-innovation/",
+      "funders": [
+        "Doris Duke Foundation",
+        "Ford"
+      ]
+    },
+    {
+      "name": "Mosaic Network and Fund",
+      "ddf_program": "Arts",
+      "year": 2020,
+      "amount_usd_millions": 4.5,
+      "amount_basis": "First-round grants (2020); funder list is the fund's full roster",
+      "source": "https://thenytrust.org/collaborative-fund/mosaic-network-and-fund",
+      "funders": [
+        "Doris Duke Foundation",
+        "Mellon",
+        "Ford",
+        "Bloomberg",
+        "Surdna",
+        "Howard Gilman",
+        "Booth Ferris",
+        "Lambent",
+        "Altman",
+        "Laurie M. Tisch Fund",
+        "Miranda Family Fund",
+        "NY Community Trust",
+        "Lily Auchincloss",
+        "Matisse Foundation",
+        "Nathan Cummings",
+        "Deutsche Bank Americas",
+        "Mertz Gilmore",
+        "Stavros Niarchos",
+        "Rockefeller Brothers",
+        "Cullman Foundation",
+        "Grantmakers in the Arts",
+        "David Rockefeller Fund",
+        "Harman Family",
+        "MacKenzie Scott",
+        "Jerome",
+        "Dreyfus Foundation"
+      ]
+    },
+    {
+      "name": "Artist Relief",
+      "ddf_program": "Arts",
+      "year": 2020,
+      "amount_usd_millions": 10,
+      "amount_basis": "Initial $10M: $5M Mellon seed plus $5M from 23 foundations",
+      "source": "https://www.joanmitchellfoundation.org/uploads/pdf/Artist-Relief_Press-Release-20200408.pdf",
+      "funders": [
+        "Doris Duke Foundation",
+        "Ford",
+        "Mellon",
+        "Warhol Foundation",
+        "Mike Kelley Foundation",
+        "de Kooning Foundation",
+        "7G",
+        "Gottlieb Foundation",
+        "Amazon Literary",
+        "Arison Arts",
+        "Emily Hall Tremaine",
+        "Frankenthaler",
+        "Jerome",
+        "Joan Mitchell",
+        "Kraus Family",
+        "Knight",
+        "Neiman Foundation",
+        "Metabolic Studio",
+        "Pritzker Pucker",
+        "Salomon Family",
+        "Rauschenberg Foundation",
+        "Hostetler-Wrigley",
+        "Teiger Foundation",
+        "Wallace Foundation"
+      ]
+    },
+    {
+      "name": "MAP Fund regranting (DDF + Mellon, since 2008)",
+      "ddf_program": "Arts",
+      "year": 2008,
+      "amount_usd_millions": 28.6,
+      "amount_basis": "Cumulative DDF and Mellon regranting since 2008",
+      "source": "https://mapfund.org/about/history",
+      "funders": [
+        "Doris Duke Foundation",
+        "Mellon"
+      ]
+    },
+    {
+      "name": "National Dance Project (reported 2025)",
+      "ddf_program": "Arts",
+      "year": 2025,
+      "amount_usd_millions": null,
+      "amount_basis": "Amount not found",
+      "source": null,
+      "funders": [
+        "Doris Duke Foundation",
+        "Mellon"
+      ]
+    },
+    {
+      "name": "Tribal Nations Conservation Pledge",
+      "ddf_program": "Environment",
+      "year": 2023,
+      "amount_usd_millions": 102.5,
+      "amount_basis": "$102.5M pledge over five years; DDF's share about $32M",
+      "source": "https://www.philanthropy.com/article/15-grant-makers-pool-102-5-million-for-indigenous-led-conservation-efforts",
+      "funders": [
+        "Doris Duke Foundation",
+        "Alaska Conservation",
+        "Christensen Fund",
+        "Decolonizing Wealth",
+        "Moore",
+        "Grousemont",
+        "J.M. Kaplan Fund",
+        "Packard",
+        "Resources Legacy Fund",
+        "Re:wild",
+        "Walton Family",
+        "Water Foundation",
+        "Wilburforce",
+        "Hewlett",
+        "Wyss"
+      ]
+    },
+    {
+      "name": "Catalyst Fund",
+      "ddf_program": "Environment",
+      "year": 2019,
+      "amount_usd_millions": 2.5,
+      "amount_basis": "Fund total as reported with the 2019 grants",
+      "source": "https://landscapeconservation.org/wp-content/uploads/2017/12/Catalyst-Fund_2019-Grants-Descriptions_Final.pdf",
+      "funders": [
+        "Doris Duke Foundation",
+        "Hewlett"
+      ]
+    },
+    {
+      "name": "OPT-In for Families",
+      "ddf_program": "Child Well-being",
+      "year": 2024,
+      "amount_usd_millions": 33,
+      "amount_basis": "$33M over three years",
+      "source": "https://dorisduke.org/news/doris-duke-foundation-launches-new-opt-in-for-families-initiative-to-refocus-the-child-welfare-system-on-prevention",
+      "funders": [
+        "Doris Duke Foundation",
+        "Duke Endowment",
+        "Aviv"
+      ]
+    },
+    {
+      "name": "Think of Us, Audacious Project",
+      "ddf_program": "Child Well-being",
+      "year": 2023,
+      "amount_usd_millions": 47.5,
+      "amount_basis": "Audacious Project award, 2023",
+      "source": "https://www.insidephilanthropy.com/home/2024/5/22/seven-funders-working-to-improve-child-welfare-and-foster-care",
+      "funders": [
+        "Doris Duke Foundation",
+        "Casey",
+        "Hilton",
+        "Aviv",
+        "Audacious Project"
+      ]
+    },
+    {
+      "name": "Collective to Strengthen Pathways for Health Research",
+      "ddf_program": "Medical Research",
+      "year": 2024,
+      "amount_usd_millions": null,
+      "amount_basis": "Amount not found",
+      "source": "https://www.dorisduke.org/news--insights/articles/revisiting-research-pathways",
+      "funders": [
+        "Doris Duke Foundation",
+        "American Cancer Society",
+        "American Heart Assoc.",
+        "Burroughs Wellcome",
+        "Dana Foundation",
+        "Donaghue",
+        "Robertson",
+        "Susan G. Komen"
+      ]
+    },
+    {
+      "name": "COVID-19 Fund to Retain Clinical Scientists",
+      "ddf_program": "Medical Research",
+      "year": 2021,
+      "amount_usd_millions": 12.1,
+      "amount_basis": "First round of grants to 22 medical schools",
+      "source": "https://www.dorisduke.org/siteassets/news--insights/2021-press-releases/11.16.21-covid19-frcs-press-release.pdf",
+      "funders": [
+        "Doris Duke Foundation",
+        "American Heart Assoc.",
+        "Burroughs Wellcome",
+        "Templeton",
+        "Rita Allen",
+        "Walder"
+      ]
+    }
+  ],
+  "funders": [
+    {
+      "name": "Ford",
+      "endowment_usd_billions": 15.8,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.fordfoundation.org",
+      "programs": [
+        "Humanity AI",
+        "Artists Make Technology",
+        "DDF and Ford technology grants",
+        "Mosaic Network and Fund",
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Lumina",
+      "endowment_usd_billions": 1.45,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.luminafoundation.org",
+      "programs": [
+        "Humanity AI"
+      ]
+    },
+    {
+      "name": "Kapor",
+      "endowment_usd_billions": 0.12,
+      "endowment_basis": "total assets, year not stated",
+      "website": "https://www.kaporcenter.org/kapor-foundation/",
+      "programs": [
+        "Humanity AI"
+      ]
+    },
+    {
+      "name": "MacArthur",
+      "endowment_usd_billions": 8.68,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.macfound.org",
+      "programs": [
+        "Humanity AI",
+        "Artists Make Technology"
+      ]
+    },
+    {
+      "name": "Mellon",
+      "endowment_usd_billions": 8.11,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.mellon.org",
+      "programs": [
+        "Humanity AI",
+        "Mosaic Network and Fund",
+        "Artist Relief",
+        "MAP Fund regranting (DDF + Mellon, since 2008)",
+        "National Dance Project (reported 2025)"
+      ]
+    },
+    {
+      "name": "Mozilla",
+      "endowment_usd_billions": 0.12,
+      "endowment_basis": "2024 total assets",
+      "website": "https://foundation.mozilla.org",
+      "programs": [
+        "Humanity AI",
+        "Artists Make Technology"
+      ]
+    },
+    {
+      "name": "Omidyar",
+      "endowment_usd_billions": 0.39,
+      "endowment_basis": "2023 total assets",
+      "website": "https://omidyar.com",
+      "programs": [
+        "Humanity AI",
+        "Artists Make Technology"
+      ]
+    },
+    {
+      "name": "Packard",
+      "endowment_usd_billions": 8.33,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.packard.org",
+      "programs": [
+        "Humanity AI",
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Siegel Endowment",
+      "endowment_usd_billions": 0.57,
+      "endowment_basis": "2024 total assets",
+      "website": "https://siegelendowment.org",
+      "programs": [
+        "Humanity AI"
+      ]
+    },
+    {
+      "name": "Hewlett",
+      "endowment_usd_billions": 13.34,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://hewlett.org",
+      "programs": [
+        "Artists Make Technology",
+        "Tribal Nations Conservation Pledge",
+        "Catalyst Fund"
+      ]
+    },
+    {
+      "name": "Bloomberg",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.bloomberg.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Surdna",
+      "endowment_usd_billions": 1.2,
+      "endowment_basis": "2023 total assets",
+      "website": "https://surdna.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Howard Gilman",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.howardgilman.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Booth Ferris",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.boothferris.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Lambent",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.lambentfoundation.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Altman",
+      "endowment_usd_billions": 0.29,
+      "endowment_basis": "2024 total assets",
+      "website": "https://www.altmanfoundation.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Laurie M. Tisch Fund",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://thelmtif.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Miranda Family Fund",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "NY Community Trust",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.nycommunitytrust.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Lily Auchincloss",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Matisse Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://matissefoundation.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Nathan Cummings",
+      "endowment_usd_billions": 0.48,
+      "endowment_basis": "2024 total assets",
+      "website": "https://nathancummings.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Deutsche Bank Americas",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://country.db.com/usa/responsibility/grant-guidelines",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Mertz Gilmore",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.mertzgilmore.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Stavros Niarchos",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.snf.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Rockefeller Brothers",
+      "endowment_usd_billions": 1.41,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.rbf.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Cullman Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Grantmakers in the Arts",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.giarts.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "David Rockefeller Fund",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.davidrockefellerfund.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Harman Family",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "MacKenzie Scott",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://yieldgiving.com",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Jerome",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.jeromefdn.org",
+      "programs": [
+        "Mosaic Network and Fund",
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Dreyfus Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.dreyfus.org",
+      "programs": [
+        "Mosaic Network and Fund"
+      ]
+    },
+    {
+      "name": "Warhol Foundation",
+      "endowment_usd_billions": 0.36,
+      "endowment_basis": "2023 total assets",
+      "website": "https://warholfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Mike Kelley Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.mikekelleyfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "de Kooning Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.dekooning.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "7G",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Gottlieb Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.gottliebfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Amazon Literary",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.aboutamazon.com/our-communities/community-engagement/amazon-literary-partnership",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Arison Arts",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Emily Hall Tremaine",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.tremainefoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Frankenthaler",
+      "endowment_usd_billions": 0.17,
+      "endowment_basis": "2024 total assets",
+      "website": "https://www.frankenthalerfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Joan Mitchell",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.joanmitchellfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Kraus Family",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Knight",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://knightfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Neiman Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://leroyneimanfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Metabolic Studio",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.metabolicstudio.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Pritzker Pucker",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://pritzkerpuckerfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Salomon Family",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Rauschenberg Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.rauschenbergfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Hostetler-Wrigley",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Teiger Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.teigerfoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Wallace Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.wallacefoundation.org",
+      "programs": [
+        "Artist Relief"
+      ]
+    },
+    {
+      "name": "Alaska Conservation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://alaskaconservation.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Christensen Fund",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.christensenfund.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Decolonizing Wealth",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://decolonizingwealth.com",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Moore",
+      "endowment_usd_billions": 8.77,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.moore.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Grousemont",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": null,
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "J.M. Kaplan Fund",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.jmkfund.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Resources Legacy Fund",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://resourceslegacyfund.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Re:wild",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.rewild.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Walton Family",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.waltonfamilyfoundation.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Water Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://waterfdn.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Wilburforce",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.wilburforce.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Wyss",
+      "endowment_usd_billions": 2.45,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://wyssfoundation.org",
+      "programs": [
+        "Tribal Nations Conservation Pledge"
+      ]
+    },
+    {
+      "name": "Duke Endowment",
+      "endowment_usd_billions": 5.02,
+      "endowment_basis": "2024 total assets, annual report",
+      "website": "https://www.dukeendowment.org",
+      "programs": [
+        "OPT-In for Families"
+      ]
+    },
+    {
+      "name": "Aviv",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://avivfoundation.org",
+      "programs": [
+        "OPT-In for Families",
+        "Think of Us, Audacious Project"
+      ]
+    },
+    {
+      "name": "Casey",
+      "endowment_usd_billions": 3.44,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.aecf.org",
+      "programs": [
+        "Think of Us, Audacious Project"
+      ]
+    },
+    {
+      "name": "Hilton",
+      "endowment_usd_billions": 7.1,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.hiltonfoundation.org",
+      "programs": [
+        "Think of Us, Audacious Project"
+      ]
+    },
+    {
+      "name": "Audacious Project",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.audaciousproject.org",
+      "programs": [
+        "Think of Us, Audacious Project"
+      ]
+    },
+    {
+      "name": "American Cancer Society",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.cancer.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research"
+      ]
+    },
+    {
+      "name": "American Heart Assoc.",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.heart.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research",
+        "COVID-19 Fund to Retain Clinical Scientists"
+      ]
+    },
+    {
+      "name": "Burroughs Wellcome",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.bwfund.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research",
+        "COVID-19 Fund to Retain Clinical Scientists"
+      ]
+    },
+    {
+      "name": "Dana Foundation",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://dana.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research"
+      ]
+    },
+    {
+      "name": "Donaghue",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://donaghue.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research"
+      ]
+    },
+    {
+      "name": "Robertson",
+      "endowment_usd_billions": 0.28,
+      "endowment_basis": "total assets, year not stated",
+      "website": "https://www.robertsonfoundation.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research"
+      ]
+    },
+    {
+      "name": "Susan G. Komen",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.komen.org",
+      "programs": [
+        "Collective to Strengthen Pathways for Health Research"
+      ]
+    },
+    {
+      "name": "Templeton",
+      "endowment_usd_billions": 3.4,
+      "endowment_basis": "FY23 AUM",
+      "website": "https://www.templeton.org",
+      "programs": [
+        "COVID-19 Fund to Retain Clinical Scientists"
+      ]
+    },
+    {
+      "name": "Rita Allen",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.ritaallenfoundation.org",
+      "programs": [
+        "COVID-19 Fund to Retain Clinical Scientists"
+      ]
+    },
+    {
+      "name": "Walder",
+      "endowment_usd_billions": null,
+      "endowment_basis": null,
+      "website": "https://www.walderfoundation.org",
+      "programs": [
+        "COVID-19 Fund to Retain Clinical Scientists"
+      ]
+    }
+  ]
+}

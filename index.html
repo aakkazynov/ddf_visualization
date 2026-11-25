@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DDF Funders Network</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<!-- Data comes from data.js (built by build_data.py), so the page works when opened by double-click. -->
+<script src="data.js"></script>
+<style>
+  :root {
+    --bg: #111317;
+    --surface: #181b20;
+    --surface-2: #20242b;
+    --line: #2c313a;
+    --ink: #e8eaed;
+    --ink-2: #b3b8c0;
+    --ink-3: #8a909a;
+    --co-link: #8a919c; /* gray: lighter than the background, darker than the DDF lines */
+    --focus: #ffffff;
+    /* Program-area colors: red, orange, green, blue, and a violet (red-blue variant) for Building Bridges.
+       Checked with the data-viz palette validator on this dark surface, all pairs: lightness band, chroma,
+       contrast >= 3:1, normal-vision ΔE >= 15, worst protan/deutan ΔE 9.4 (target 8). */
+    --c-arts: #be395e;
+    --c-child: #d37e07;
+    --c-env: #46ac71;
+    --c-med: #2579ab;
+    --c-bridges: #b770e6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 13px/1.45 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  body { overflow-x: hidden; }
+  button, select, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  a { color: #8fb8f0; }
+
+  /* ---------- top bars ---------- */
+  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 8px 16px; }
+  .bar + .bar { padding-top: 0; }
+  .titleblock { text-align: center; padding: 14px 16px 2px; }
+  .titleblock h1 { font-size: 26px; font-weight: 650; margin: 0; letter-spacing: .005em; }
+  .subtitle { margin: 3px 0 0; color: var(--ink-2); font-size: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--line); background: transparent; color: var(--ink-2); }
+  .chip:hover { border-color: #444b56; color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--surface-2); border-color: #5a616d; color: var(--ink); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  select { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; max-width: 240px; }
+  .years { display: flex; align-items: center; gap: 8px; color: var(--ink-2); }
+  .years input[type=range] { width: 130px; accent-color: #9aa3ae; }
+  #play { min-width: 82px; text-align: left; }
+  .years output { min-width: 34px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .btn { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; }
+  .btn:hover { border-color: #4a515c; }
+  .btn.active { border-color: #6b7380; background: var(--surface-2); }
+  .spacer { flex: 1; }
+  .lbl { color: var(--ink-3); }
+
+  /* toggle switch */
+  .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ink-2); user-select: none; }
+  .toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .toggle .track { width: 30px; height: 17px; border-radius: 999px; background: #353a44; position: relative; transition: background .15s; flex: none; }
+  .toggle .track::after { content: ""; position: absolute; left: 2px; top: 2px; width: 13px; height: 13px; border-radius: 50%;
+    background: #c9cdd3; transition: transform .15s; }
+  .toggle input:checked + .track { background: #5d7fa8; }
+  .toggle input:checked + .track::after { transform: translateX(13px); background: #fff; }
+  .toggle input:focus-visible + .track { outline: 2px solid #8fb8f0; outline-offset: 2px; }
+  .toggle input:checked ~ span:last-child { color: var(--ink); }
+
+  /* countries multi-select */
+  .ms { position: relative; }
+  #countryBtn { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #countryPop { position: absolute; top: calc(100% + 6px); left: 0; width: 300px; max-height: 420px; display: flex; flex-direction: column;
+    background: var(--surface); border: 1px solid #3a404a; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.5); z-index: 20; }
+  #countryPop[hidden] { display: none; }
+  #countryPop .search { margin: 10px 10px 6px; width: calc(100% - 20px); }
+  #countryList { overflow-y: auto; padding: 0 6px 6px; }
+  #countryList .rg { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; padding: 8px 6px 4px; }
+  #countryList label { display: flex; align-items: center; gap: 8px; padding: 4px 6px; border-radius: 5px; cursor: pointer; }
+  #countryList label:hover { background: var(--surface-2); }
+  #countryList .ct { margin-left: auto; color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: 12px; }
+  #countryList input { accent-color: #8fb8f0; }
+  .pop-foot { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border-top: 1px solid var(--line); }
+
+  /* ---------- stage ---------- */
+  #stage { position: relative; height: 640px; overflow: hidden; }
+  #graph { display: block; width: 100%; height: 100%; cursor: grab; }
+  #graph:active { cursor: grabbing; }
+  #bigYear { position: absolute; left: 20px; top: 8px; font-size: 104px; font-weight: 700; line-height: 1;
+    color: rgba(215, 219, 225, .28); pointer-events: none; opacity: 0; transition: opacity .4s;
+    font-variant-numeric: tabular-nums; }
+  #bigYear.on { opacity: 1; }
+  .lists { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 3; }
+  .zoom { position: absolute; right: 12px; bottom: 12px; display: flex; flex-direction: column; gap: 4px; z-index: 3; }
+  .zoom button { width: 32px; height: 32px; font-size: 18px; line-height: 1; padding: 0; }
+  body.panel-open .lists, body.panel-open .zoom { right: 372px; }
+
+  /* ---------- legend ---------- */
+  #legend { position: absolute; left: 12px; bottom: 12px; max-width: calc(100% - 80px); padding: 8px 12px;
+    background: rgba(17, 19, 23, .88); border: 1px solid var(--line); border-radius: 8px; color: var(--ink-2);
+    font-size: 12px; z-index: 2; }
+  #legend summary { cursor: pointer; color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+  #legend[open] summary { margin-bottom: 6px; }
+  #legend .groups { display: flex; flex-wrap: wrap; gap: 8px 26px; }
+  #legend .grp { display: flex; flex-direction: column; gap: 3px; }
+  #legend .ttl { color: var(--ink-3); font-size: 11px; }
+  #legend .row { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+  #legend .sizes { display: flex; align-items: flex-end; gap: 12px; }
+  #legend .size { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; text-align: center; }
+  body.panel-open #legend { max-width: calc(100% - 440px); }
+
+  /* ---------- graph marks ---------- */
+  .co { stroke: var(--co-link); fill: none; }
+  .hit { stroke: transparent; fill: none; stroke-width: 10px; cursor: pointer; }
+  .ddfl { fill: none; stroke-linecap: round; }
+  .node { cursor: pointer; }
+  .node .slice { stroke: var(--bg); stroke-width: 1; }
+  .node .ring { fill: none; stroke: var(--focus); }
+  .node .abroad { fill: none; stroke: #d5d9df; stroke-width: 1.2; stroke-dasharray: 2.5 2; }
+  .node:focus { outline: none; }
+  .node:focus-visible .ring { stroke-width: 2.5px; }
+  /* A thin dark halo keeps labels readable over lines without blurring them. */
+  .label { fill: var(--ink); font-size: 11px; font-weight: 400; pointer-events: none; paint-order: stroke; stroke: var(--bg);
+    stroke-width: 2px; stroke-opacity: .9; stroke-linejoin: round; text-rendering: geometricPrecision; }
+  .label.ddf { font-size: 13px; font-weight: 600; }
+  .label.hot { font-weight: 500; }
+  .label.hot.center { font-weight: 600; }
+  .label.dim { fill: var(--ink-3); }
+
+  /* ---------- tooltips ---------- */
+  .tip { position: absolute; pointer-events: none; z-index: 6; max-width: 300px; padding: 9px 11px; border-radius: 8px;
+    background: rgba(24, 27, 32, .98); border: 1px solid #3a404a; box-shadow: 0 6px 24px rgba(0,0,0,.4);
+    opacity: 0; transition: opacity .12s; }
+  .tip.on { opacity: 1; }
+  .tip .nm { font-weight: 600; margin-bottom: 2px; }
+  .tip .sub { color: var(--ink-3); font-size: 12px; margin-bottom: 6px; }
+  .tip ul { margin: 0; padding: 0; list-style: none; }
+  .tip li { display: flex; gap: 7px; align-items: baseline; color: var(--ink-2); margin: 2px 0; }
+  .tip li .dot { position: relative; top: 1px; }
+  .tag { display: inline-block; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2);
+    border: 1px dashed #6b7380; border-radius: 4px; padding: 0 4px; margin-left: 4px; white-space: nowrap; }
+
+  /* ---------- side panel ---------- */
+  #panel { position: absolute; top: 0; right: 0; bottom: 0; width: 360px; background: var(--surface);
+    border-left: 1px solid var(--line); transform: translateX(100%); transition: transform .22s ease;
+    display: flex; flex-direction: column; z-index: 4; }
+  #panel.open { transform: none; }
+  .ph { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 10px 14px 12px; border-bottom: 1px solid var(--line); }
+  #back { order: -1; flex-basis: 100%; text-align: left; padding-left: 0; color: #8fb8f0; }
+  .ph .t { flex: 1; font-weight: 600; font-size: 14px; }
+  .icon { background: none; border: 1px solid transparent; border-radius: 6px; padding: 2px 8px; color: var(--ink-2); }
+  .icon:hover { border-color: var(--line); color: var(--ink); }
+  .pb { flex: 1; overflow-y: auto; padding: 14px; }
+  .kv { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; margin-bottom: 14px; }
+  .kv .k { color: var(--ink-3); }
+  .na { color: var(--ink-3); font-style: italic; }
+  .card { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; background: var(--bg); }
+  .card h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+  .card .meta { display: grid; grid-template-columns: 90px 1fr; gap: 3px 8px; color: var(--ink-2); font-size: 12px; }
+  .card .meta .k { color: var(--ink-3); }
+  .area-tag { display: inline-flex; align-items: center; gap: 6px; }
+  .linkish { background: none; border: none; padding: 0; color: var(--ink); text-align: left; font-weight: 600;
+    text-decoration: underline; text-decoration-color: #555c67; text-underline-offset: 3px; }
+  .linkish:hover { text-decoration-color: var(--ink); }
+  .sec { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; margin: 16px 0 8px; }
+  .prose { color: var(--ink-2); margin: 0 0 10px; }
+  .search { width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); margin-bottom: 10px; }
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li button { width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid var(--line);
+    padding: 8px 4px; display: flex; gap: 10px; align-items: flex-start; }
+  .list li button:hover { background: var(--surface-2); }
+  .list .nm { color: var(--ink); }
+  .list .sub { color: var(--ink-3); font-size: 12px; }
+  .list .dot { margin-top: 5px; }
+  .empty { color: var(--ink-3); padding: 10px 4px; }
+  .cchips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .cchip { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); border-radius: 999px;
+    padding: 1px 9px; font-size: 12px; }
+  .cchip:hover { border-color: #6b7380; }
+  .cchip[aria-pressed="true"] { border-color: #e8eaed; }
+  .note { border: 1px dashed #4a515c; border-radius: 8px; padding: 8px 10px; color: var(--ink-2); font-size: 12px; margin: 10px 0; }
+  .note button { margin-top: 6px; }
+
+  /* ---------- empty state ---------- */
+  #empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 3; }
+  #empty[hidden] { display: none; }
+  #empty .box { pointer-events: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+    max-width: 340px; padding: 16px 20px; background: rgba(24, 27, 32, .96); border: 1px solid #3a404a; border-radius: 10px; }
+  #empty #emptyWhy { color: var(--ink-2); font-size: 12px; }
+
+  /* ---------- table + about ---------- */
+  #below { border-top: 1px solid var(--line); padding: 4px 16px; }
+  #below details { border-bottom: 1px solid var(--line); }
+  #below details:last-child { border-bottom: none; }
+  #below summary { cursor: pointer; padding: 12px 0; font-size: 14px; font-weight: 600; }
+  #below summary:hover { color: #fff; }
+  .sect-body { padding: 0 0 16px; }
+  .builtlink { margin: 0; padding: 12px 0 14px; border-top: 1px solid var(--line); }
+  .builtlink a { font-weight: 600; }
+  .builtlink span { color: var(--ink-3); font-size: 12px; margin-left: 6px; }
+  .tabs { display: flex; gap: 6px; margin: 4px 0 10px; }
+  .tblwrap { overflow: auto; max-height: 460px; border: 1px solid var(--line); border-radius: 8px; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tbl th, .tbl td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+  .tbl th { position: sticky; top: 0; background: var(--surface-2); color: var(--ink-2); font-weight: 600; white-space: nowrap; z-index: 1; }
+  .tbl td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tbl tbody tr:hover td { background: var(--surface); }
+  .tbl .linkish { font-weight: 500; }
+  .about { max-width: 880px; color: var(--ink-2); }
+  .about h3 { color: var(--ink); font-size: 13px; margin: 14px 0 4px; }
+  .about p, .about ul { margin: 0 0 6px; }
+  .about ul { padding-left: 18px; }
+  .about li { margin: 3px 0; }
+
+  /* ---------- map ---------- */
+  #mapSec { border-top: 1px solid var(--line); padding: 14px 16px 24px; }
+  .maphead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin-bottom: 8px; }
+  .maphead h2 { font-size: 15px; font-weight: 600; margin: 0; }
+  #mapNote { color: var(--ink-2); margin: 0; flex: 1; min-width: 260px; }
+  #mapNote button { margin-left: 6px; }
+  #mapLegend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--ink-2); font-size: 12px; }
+  #mapLegend .sw { display: inline-block; width: 18px; height: 11px; border-radius: 2px; vertical-align: -1px; margin-right: 5px; border: 1px solid #3a404a; }
+  #mapWrap { position: relative; }
+  #map { display: block; width: 100%; }
+  #map .land { stroke: #0c0e11; stroke-width: .5; }
+  #map .land.funded { cursor: pointer; }
+  #map .land.funded:hover { stroke: #e8eaed; stroke-width: 1; }
+  #map .hl { fill: none; pointer-events: none; stroke-linejoin: round; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (max-width: 720px) {
+    /* The filter bar is tall on a phone; let it scroll away instead of covering a third of the screen. */
+    header { position: static; }
+    .titleblock { padding: 10px 12px 0; }
+    .titleblock h1 { font-size: 21px; }
+    .subtitle { font-size: 12.5px; }
+    .bar { padding: 6px 10px; gap: 6px 8px; }
+    /* Area chips scroll sideways in one row instead of stacking up. */
+    #areaChips { flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding-bottom: 2px; scrollbar-width: none; }
+    #areaChips .chip { flex: none; }
+    /* A select is as wide as its longest option unless told otherwise; let it shrink to share a row with Reset. */
+    #programSelect { order: 2; flex: 1 1 0; min-width: 0; width: 100%; max-width: none; }
+    #reset { order: 3; }
+    .bar .spacer { display: none; }
+    #whereSel { flex: 1; }
+    .ms { flex: 1; }
+    #countryBtn { width: 100%; max-width: none; }
+    .toggle { flex: 1 1 100%; }
+    .years { flex: 1 1 100%; }
+    .years input[type=range] { flex: 1; width: auto; }
+    #countryPop { width: min(320px, calc(100vw - 20px)); }
+    .lists { top: 8px; right: 8px; gap: 4px; }
+    .lists .btn { padding: 4px 7px; font-size: 12px; }
+    #panel { width: 100%; }
+    body.panel-open .lists, body.panel-open .zoom { right: 8px; }
+    #legend { left: 8px; bottom: 8px; max-width: calc(100% - 64px); max-height: 55%; overflow: auto; }
+    body.panel-open #legend { max-width: calc(100% - 64px); }
+    #bigYear { font-size: 56px; left: 12px; }
+    .zoom { right: 8px; bottom: 8px; }
+    .zoom button { width: 38px; height: 38px; }
+    #below, #mapSec { padding-left: 10px; padding-right: 10px; }
+    .kv { grid-template-columns: 96px 1fr; }
+  }
+</style>
+</head>
+<body>
+<header id="header">
+  <div class="titleblock">
+    <h1>DDF Funders Network</h1>
+    <p class="subtitle">Each dot represents a funder. Click a funder or a line for details. Scroll to zoom.</p>
+  </div>
+  <div class="bar">
+    <div class="chips" id="areaChips" role="group" aria-label="Filter by DDF program area"></div>
+    <select id="programSelect" aria-label="Grant Programs"></select>
+    <div class="spacer"></div>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+  <div class="bar">
+    <label class="lbl" for="whereSel">Where funds go</label>
+    <select id="whereSel">
+      <option value="all">All</option>
+      <option value="us">US only</option>
+      <option value="intl">International</option>
+      <option value="both">Both</option>
+    </select>
+    <div class="ms">
+      <button class="btn" id="countryBtn" aria-haspopup="true" aria-expanded="false" aria-controls="countryPop">Countries: All ▾</button>
+      <div id="countryPop" hidden role="dialog" aria-label="Filter by country">
+        <input class="search" id="countrySearch" type="search" placeholder="Search countries…" aria-label="Search countries">
+        <div id="countryList"></div>
+        <div class="pop-foot"><button class="btn" id="countryClear">Clear</button><button class="btn" id="countryDone">Done</button></div>
+      </div>
+    </div>
+    <label class="toggle"><input type="checkbox" id="abroadToggle"><span class="track" aria-hidden="true"></span><span>Show programs abroad</span></label>
+    <div class="spacer"></div>
+    <div class="years">
+      <button class="btn" id="play" aria-label="Play timeline">▶ Play</button>
+      <label for="year">Year</label>
+      <input type="range" id="year" step="1">
+      <output id="yearOut" for="year"></output>
+    </div>
+  </div>
+</header>
+
+<main id="stage">
+  <svg id="graph" role="img" aria-label="Network of DDF and the funders it co-funded grant programs with"></svg>
+  <div id="bigYear" aria-hidden="true"></div>
+  <div class="lists">
+    <button class="btn" id="btnFunders"></button>
+    <button class="btn" id="btnPrograms"></button>
+    <button class="btn" id="btnMap" aria-label="Jump to world map">World map ↓</button>
+  </div>
+  <div class="zoom">
+    <button class="btn" id="zin" aria-label="Zoom in">+</button>
+    <button class="btn" id="zout" aria-label="Zoom out">−</button>
+  </div>
+  <details id="legend" open><summary>Legend</summary><div class="groups" id="legendBody"></div></details>
+  <div id="tip" class="tip" role="tooltip"></div>
+  <div id="empty" hidden><div class="box" role="status">
+    <strong>No programs match these filters.</strong>
+    <span id="emptyWhy"></span>
+    <button class="btn" id="emptyClear">Clear filters</button>
+  </div></div>
+  <aside id="panel" aria-live="polite">
+    <div class="ph">
+      <button class="icon" id="back" aria-label="Back to list" hidden>← Back</button>
+      <div class="t" id="ptitle"></div>
+      <button class="icon" id="close" aria-label="Close panel">✕</button>
+    </div>
+    <div class="pb" id="pbody"></div>
+  </aside>
+</main>
+
+<section id="below" aria-label="Data table and notes">
+  <details id="tableSec">
+    <summary>View the data as a table</summary>
+    <div class="sect-body">
+      <p class="prose" id="tableNote"></p>
+      <div class="tabs" role="tablist">
+        <button class="chip" role="tab" id="tabProgs" aria-selected="true" aria-pressed="true">Programs</button>
+        <button class="chip" role="tab" id="tabFunders" aria-selected="false" aria-pressed="false">Funders</button>
+      </div>
+      <div class="tblwrap" id="tableWrap" tabindex="0"></div>
+    </div>
+  </details>
+  <details id="aboutSec">
+    <summary>About this data</summary>
+    <div class="sect-body about" id="aboutBody"></div>
+  </details>
+  <p class="builtlink"><a href="how-claude-built-this.html">How Claude built this →</a> <span>Every prompt used to build this site, with Claude's replies.</span></p>
+</section>
+
+<section id="mapSec" aria-labelledby="mapTitle">
+  <div class="maphead">
+    <h2 id="mapTitle">Where funds go</h2>
+    <p id="mapNote"></p>
+    <div id="mapLegend"></div>
+  </div>
+  <div id="mapWrap">
+    <svg id="map" role="img" aria-label="World map shaded by number of programs per country"></svg>
+    <div id="mapTip" class="tip" role="tooltip"></div>
+  </div>
+</section>
+
+<script>
+(async function () {
+  // ------------------------------------------------------------------ data
+  let RAW = window.DDF_DATA;
+  if (!RAW) {
+    try { RAW = await (await fetch("data.json")).json(); }
+    catch (e) {
+      document.getElementById("stage").innerHTML =
+        '<p style="padding:24px;color:#b3b8c0">Could not load data. Run <code>python build_data.py</code> to create data.js.</p>';
+      return;
+    }
+  }
+  const NET = RAW.network, INTL = RAW.international;
+  const AREAS = ["Arts", "Child Well-being", "Environment", "Medical Research", "Building Bridges"];
+  const css = getComputedStyle(document.documentElement);
+  const COLOR = {
+    "Arts": css.getPropertyValue("--c-arts").trim(),
+    "Child Well-being": css.getPropertyValue("--c-child").trim(),
+    "Environment": css.getPropertyValue("--c-env").trim(),
+    "Medical Research": css.getPropertyValue("--c-med").trim(),
+    "Building Bridges": css.getPropertyValue("--c-bridges").trim()
+  };
+  const DDF_NAME = NET.ddf.name;
+  const COUNTRY = new Map(RAW.countries.map(c => [c.iso3, c]));
+  const COUNTRY_BY_NUM = new Map(RAW.countries.map(c => [c.iso_numeric, c]));
+  const WHERE_LABEL = { us: "US only", intl: "International", both: "Both (US and abroad)" };
+
+  // Programs: the 13 US programs from the network data, plus the programs abroad (optional layer).
+  const basePrograms = NET.programs.map((p, i) => ({
+    id: "n" + i, name: p.name, area: p.ddf_program, year: p.year, yearsLabel: String(p.year),
+    amount: p.amount_usd_millions, approx: false, basis: p.amount_basis, sources: p.source ? [p.source] : [],
+    funderNames: p.funders, countries: p.countries, abroad: false, usWork: true, roles: null
+  }));
+  const intlFunder = new Map(INTL.funders.map(f => [f.id, f]));
+  const abroadPrograms = INTL.programs.map(p => {
+    const roles = new Map();
+    INTL.links.filter(l => l.program_id === p.id).forEach(l => roles.set(intlFunder.get(l.funder_id).name, l));
+    return {
+      id: p.id, name: p.name, area: p.ddf_program, year: p.start_year, yearsLabel: p.years,
+      amount: p.amount_usd_millions, approx: p.amount_is_approximate, basis: p.total_pool,
+      ddfContribution: p.ddf_contribution, description: p.description, caveats: p.caveats,
+      confidence: p.confidence, meetsTest: p.meets_outside_us_test, administrator: p.administrator,
+      sources: p.sources, funderNames: p.funder_ids.map(id => intlFunder.get(id).name),
+      countries: p.countries, abroad: true, usWork: p.funds_us_work, roles
+    };
+  });
+  const programs = basePrograms.concat(abroadPrograms);
+  programs.forEach(p => {
+    p.countriesAll = p.abroad && p.usWork ? ["USA"].concat(p.countries) : p.countries.slice();
+    p.where = !p.abroad ? "us" : p.usWork ? "both" : "intl";
+  });
+
+  // Funders: network funders first, then any funder that only appears in the programs abroad.
+  const funders = [{
+    id: DDF_NAME, name: DDF_NAME, isDDF: true, endow: NET.ddf.endowment_usd_billions,
+    basis: NET.ddf.endowment_basis, website: NET.ddf.website
+  }].concat(NET.funders.map(f => ({
+    id: f.name, name: f.name, isDDF: false, endow: f.endowment_usd_billions,
+    basis: f.endowment_basis, website: f.website
+  })));
+  const byId = new Map(funders.map(f => [f.id, f]));
+  INTL.funders.forEach(f => {
+    let node = byId.get(f.name);
+    if (!node) {
+      node = { id: f.name, name: f.name, isDDF: false, endow: null, basis: null, website: f.website };
+      funders.push(node); byId.set(node.id, node);
+    } else if (!node.website) node.website = f.website;
+    node.fullName = f.full_name; node.type = f.type; node.hq = f.hq_country;
+  });
+  const DDF = byId.get(DDF_NAME);
+  programs.forEach(p => { p.funders = p.funderNames.map(n => byId.get(n)).filter(Boolean); });
+  funders.forEach(f => {
+    f.progs = programs.filter(p => p.funders.includes(f));
+    f.inBase = f.isDDF || f.progs.some(p => !p.abroad);
+    f.hasAbroad = f.progs.some(p => p.abroad);
+    f.tier = tierOf(f.endow);
+    f.r = f.tier.r;
+  });
+
+  function tierOf(b) {
+    if (b == null) return { key: "na", r: 5, label: "Endowment not found" };
+    if (b > 10) return { key: "L", r: 21, label: "Over $10 billion" };
+    if (b > 1) return { key: "M", r: 14, label: "Over $1 billion" };
+    if (b > 0.1) return { key: "S", r: 9, label: "Over $100 million" };
+    return { key: "XS", r: 6, label: "Below $100 million" };
+  }
+
+  // ------------------------------------------------------------ formatting
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  // Dollar amounts in $ millions -> "$102.5M", "$4M", "$2.2B", "$166.7K": one decimal place only when needed.
+  function fmtMoney(millions, approx) {
+    if (millions == null) return null;
+    const one = v => { const r = Math.round(v * 10) / 10; return Number.isInteger(r) ? String(r) : r.toFixed(1); };
+    const [v, unit] = millions >= 1000 ? [millions / 1000, "B"] : millions >= 1 ? [millions, "M"] : [millions * 1000, "K"];
+    return (approx ? "~" : "") + "$" + one(v) + unit;
+  }
+  const fmtEndow = b => b == null ? null : fmtMoney(b * 1000); // endowments are stored in $ billions
+  const fmtAmt = (a, approx) => fmtMoney(a, approx);
+  const na = t => `<span class="na">${t}</span>`;
+  const extLink = (url, text) => url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(text || url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""))}</a>` : null;
+  const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+  const cName = iso => (COUNTRY.get(iso) || { name: iso }).name;
+  const abroadTag = p => p.abroad ? `<span class="tag">abroad</span>` : "";
+
+  // ------------------------------------------------------------------ state
+  const state = { area: null, year: 0, program: null, funder: null, pair: null, hover: null, hoverLink: null, abroad: false, where: "all", countries: new Set() };
+  let T = d3.zoomIdentity;
+
+  const inLayer = p => !p.abroad || state.abroad;
+  const layerPrograms = () => programs.filter(inLayer);
+  const filterOk = (p, ignoreCountries) =>
+    inLayer(p) && (!state.area || p.area === state.area) && p.year <= state.year &&
+    (state.where === "all" || p.where === state.where) &&
+    (ignoreCountries || !state.countries.size || p.countriesAll.some(c => state.countries.has(c)));
+  const isActive = p => filterOk(p, false);
+  const progsInLayer = f => f.progs.filter(inLayer);
+  const activeProgs = f => f.progs.filter(isActive);
+  const nodeInLayer = f => f.isDDF || f.progs.some(inLayer);
+  const nodeVisible = f => f.isDDF || activeProgs(f).length > 0;
+  const alwaysLabel = f => f.isDDF || (f.endow != null && f.endow > 1) || progsInLayer(f).length > 1;
+  const yearBounds = () => d3.extent(layerPrograms(), p => p.year);
+
+  // ----------------------------------------------------------------- layout
+  // Invisible anchor nodes, one per program, pull each program's funders into a cluster.
+  // Stage 1 lays out the US network on its own; stage 2 adds the programs abroad around it with
+  // the US network held still, so turning the layer on doesn't rearrange what you've seen.
+  const anchors = programs.map(p => ({ id: "anchor:" + p.id, anchor: true, prog: p }));
+  const anchorOf = new Map(anchors.map(a => [a.prog, a]));
+  function linksFor(progList) {
+    const out = [];
+    progList.forEach(p => {
+      const a = anchorOf.get(p);
+      p.funders.forEach(f => {
+        if (f.isDDF) out.push({ source: f, target: a, dist: p.abroad ? 260 : 170, str: p.abroad ? 0.12 : 0.25 });
+        else if (p.abroad && f.inBase) out.push({ source: f, target: a, dist: 140, str: 0.04 });
+        else out.push({ source: f, target: a, dist: 26 + f.r + Math.sqrt(p.funders.length) * 9, str: 0.9 / f.progs.filter(q => q.abroad === p.abroad).length });
+      });
+    });
+    return out;
+  }
+  function simulate(nodes, links, ticks) {
+    const sim = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).distance(d => d.dist).strength(d => d.str))
+      .force("charge", d3.forceManyBody().strength(d => d.anchor ? -260 : -40 - d.r * 5))
+      // DDF gets a wide collision radius so its label stays clear; the y-pull is stronger than the x-pull
+      // so the network spreads sideways and fits a landscape screen.
+      .force("collide", d3.forceCollide(d => d.anchor ? 4 : d.isDDF ? d.r + 34 : d.r + 3).iterations(2))
+      .force("x", d3.forceX(0).strength(0.012))
+      .force("y", d3.forceY(0).strength(0.07))
+      .stop();
+    for (let i = 0; i < ticks; i++) sim.tick();
+  }
+  DDF.fx = 0; DDF.fy = 0;
+  const baseNodes = funders.filter(f => f.inBase).concat(anchors.filter(a => !a.prog.abroad));
+  simulate(baseNodes, linksFor(basePrograms), 500);
+  baseNodes.forEach(n => { n.fx = n.x; n.fy = n.y; });
+  const R0 = d3.max(baseNodes, n => Math.hypot(n.x, n.y));
+  const extraAnchors = anchors.filter(a => a.prog.abroad);
+  extraAnchors.forEach((a, i) => {
+    const ang = -Math.PI / 2 + (i + 0.5) * (2 * Math.PI / extraAnchors.length);
+    a.x = Math.cos(ang) * (R0 + 140) * 1.6; a.y = Math.sin(ang) * (R0 + 140) * 0.75;
+  });
+  const extraFunders = funders.filter(f => !f.inBase);
+  extraFunders.forEach(f => {
+    const a = anchorOf.get(f.progs[0]);
+    f.x = a.x + (Math.random() - 0.5) * 30; f.y = a.y + (Math.random() - 0.5) * 30;
+  });
+  simulate(baseNodes.concat(extraAnchors, extraFunders), linksFor(programs), 400);
+
+  // ------------------------------------------------------------------ links
+  // DDF -> funder, one per shared program; width = program amount, dotted when the amount is missing.
+  const ddfLinks = [];
+  funders.filter(f => !f.isDDF).forEach(f => {
+    f.progs.forEach((p, i) => ddfLinks.push({ f, p, i, n: f.progs.length }));
+  });
+  const wScale = d3.scaleSqrt().domain([0, 500]).range([1, 9]);
+
+  // Funder <-> funder, for each pair that co-funded at least one program (DDF excluded).
+  const pairMap = new Map();
+  programs.forEach(p => {
+    const fs = p.funders.filter(f => !f.isDDF);
+    for (let i = 0; i < fs.length; i++) for (let j = i + 1; j < fs.length; j++) {
+      const [a, b] = fs[i].id < fs[j].id ? [fs[i], fs[j]] : [fs[j], fs[i]];
+      const k = a.id + "|" + b.id;
+      if (!pairMap.has(k)) pairMap.set(k, { a, b, progs: [] });
+      pairMap.get(k).progs.push(p);
+    }
+  });
+  const coLinks = Array.from(pairMap.values());
+
+  // ------------------------------------------------------------------- svg
+  const header = document.getElementById("header");
+  const stage = document.getElementById("stage");
+  // The stage never scrolls; undo any scroll the browser makes to reveal a focused element.
+  stage.addEventListener("scroll", () => { stage.scrollLeft = 0; stage.scrollTop = 0; });
+  function sizeStage() {
+    const min = window.innerWidth < 720 ? 440 : 520;
+    stage.style.height = Math.max(min, window.innerHeight - header.offsetHeight) + "px";
+  }
+  sizeStage();
+  // The header can wrap to another line (e.g. when the Building Bridges chip appears); keep the graph filling the screen.
+  let lastHeaderH = header.offsetHeight;
+  new ResizeObserver(() => {
+    if (header.offsetHeight === lastHeaderH) return;
+    lastHeaderH = header.offsetHeight;
+    sizeStage();
+  }).observe(header);
+
+  const svg = d3.select("#graph");
+  const gCo = svg.append("g");
+  const gDDF = svg.append("g");
+  const gCoHit = svg.append("g");
+  const gDDFHit = svg.append("g");
+  const gNodes = svg.append("g");
+  const gLabels = svg.append("g");
+
+  const coSel = gCo.selectAll("line").data(coLinks).join("line").attr("class", "co");
+  const ddfSel = gDDF.selectAll("path").data(ddfLinks).join("path").attr("class", "ddfl")
+    .attr("stroke", d => COLOR[d.p.area])
+    .attr("stroke-width", d => d.p.amount == null ? 1.3 : wScale(d.p.amount))
+    .attr("stroke-dasharray", d => d.p.amount == null ? "2 4" : null);
+  // Wider invisible copies of each line take the pointer, so thin lines are easy to hover and click.
+  // Funder-to-funder lines are click-only (no hover), as there are hundreds of them in the big clusters.
+  const coHitSel = gCoHit.selectAll("line").data(coLinks).join("line").attr("class", "hit");
+  const ddfHitSel = gDDFHit.selectAll("path").data(ddfLinks).join("path").attr("class", "hit");
+
+  const pie = d3.pie().sort(null).value(d => d.n);
+  const touchUI = () => window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 720;
+  const nodeSel = gNodes.selectAll("g").data(funders).join("g").attr("class", "node")
+    .attr("tabindex", 0).attr("role", "button").attr("aria-label", d => d.name);
+
+  // Node fill shows the program areas of the funder's programs in the current layer (pie if several).
+  function drawShapes() {
+    nodeSel.each(function (d) {
+      const g = d3.select(this);
+      g.selectAll("*").remove();
+      const progs = d.isDDF ? layerPrograms() : progsInLayer(d);
+      const counts = d3.rollup(progs.length ? progs : d.progs, v => v.length, p => p.area);
+      const areas = AREAS.filter(a => counts.has(a)).map(a => ({ area: a, n: counts.get(a) }));
+      d.areas = areas;
+      if (areas.length === 1) {
+        g.append("circle").attr("class", "slice").attr("r", d.r).attr("fill", COLOR[areas[0].area]);
+      } else {
+        const arc = d3.arc().innerRadius(0).outerRadius(d.r);
+        g.selectAll("path").data(pie(areas)).join("path").attr("class", "slice")
+          .attr("d", arc).attr("fill", s => COLOR[s.data.area]);
+      }
+      if (d.endow == null) g.selectAll(".slice").attr("fill-opacity", 0.38);
+      if (d.isDDF) g.append("circle").attr("r", d.r + 3.5).attr("fill", "none").attr("stroke", "#e8eaed").attr("stroke-width", 1.5);
+      // Dashed ring: this funder has at least one program abroad.
+      if (d.hasAbroad) g.append("circle").attr("class", "abroad").attr("r", d.r + (d.isDDF ? 7.5 : 3.5));
+      g.append("circle").attr("class", "ring").attr("r", d.r + (d.isDDF ? 11 : d.hasAbroad ? 7 : 3.5)).attr("stroke-width", 0);
+      // Larger invisible hit target for small nodes (bigger still on touch screens, so dots are easy to tap).
+      g.append("circle").attr("class", "hitdot").attr("r", Math.max(d.r + 3, touchUI() ? 16 : 10)).attr("fill", "transparent");
+    });
+  }
+
+  const labelSel = gLabels.selectAll("text").data(funders).join("text")
+    .attr("class", d => "label" + (d.isDDF ? " ddf" : ""))
+    .attr("text-anchor", "middle")
+    .text(d => d.name);
+
+  // Which funders and programs are emphasised right now (hover beats selection).
+  function focus() {
+    const h = state.hover || state.funder;
+    if (h) {
+      const progs = new Set(h.isDDF ? programs.filter(isActive) : activeProgs(h));
+      const nodes = new Set([h]);
+      progs.forEach(p => p.funders.forEach(f => nodes.add(f)));
+      return { nodes, progs, center: h };
+    }
+    if (state.program) {
+      const p = state.program;
+      return { nodes: new Set(p.funders), progs: new Set([p]), center: null };
+    }
+    if (state.pair) {
+      const progs = new Set(state.pair.progs.filter(isActive));
+      return { nodes: new Set([state.pair.a, state.pair.b, DDF]), progs, center: null, pair: state.pair };
+    }
+    return null;
+  }
+
+  // ------------------------------------------------------------ rendering
+  function px(d) { return T.applyX(d.x); }
+  function py(d) { return T.applyY(d.y); }
+  // DDF's label sits above its node so it doesn't cover the funders clustered just below it.
+  // Other labels go below their node; restyle() moves one above or to the right (d.labelPos) when that spot is taken.
+  function labelY(d) {
+    if (d.isDDF) return py(d) - d.r - 14;
+    if (d.labelPos === "above") return py(d) - d.r - 6;
+    if (d.labelPos === "right") return py(d) + 4;
+    return py(d) + d.r + 12;
+  }
+  function labelX(d) { return d.labelPos === "right" ? px(d) + d.r + 5 : px(d); }
+
+  function curve(d) {
+    const x1 = px(DDF), y1 = py(DDF), x2 = px(d.f), y2 = py(d.f);
+    const off = (d.i - (d.n - 1) / 2) * 0.22;
+    const mx = (x1 + x2) / 2 - (y2 - y1) * off, my = (y1 + y2) / 2 + (x2 - x1) * off;
+    return `M${x1},${y1}Q${mx},${my} ${x2},${y2}`;
+  }
+
+  function place() {
+    coSel.attr("x1", d => px(d.a)).attr("y1", d => py(d.a)).attr("x2", d => px(d.b)).attr("y2", d => py(d.b));
+    coHitSel.attr("x1", d => px(d.a)).attr("y1", d => py(d.a)).attr("x2", d => px(d.b)).attr("y2", d => py(d.b));
+    ddfSel.attr("d", curve);
+    ddfHitSel.attr("d", curve);
+    nodeSel.attr("transform", d => `translate(${px(d)},${py(d)})`);
+    labelSel.attr("x", labelX).attr("y", labelY);
+  }
+
+  function restyle() {
+    const F = focus();
+    const zoomedIn = T.k >= 1.8;
+
+    nodeSel
+      .style("display", d => nodeInLayer(d) ? null : "none")
+      .style("opacity", d => !nodeVisible(d) ? 0.06 : F && !F.nodes.has(d) ? 0.14 : 1)
+      .style("pointer-events", d => nodeVisible(d) ? null : "none");
+    nodeSel.select(".ring")
+      .attr("stroke-width", d => (d === state.funder || (state.program && !state.funder && F && F.nodes.has(d) && !d.isDDF)) ? 1.5 : 0);
+
+    const ddfOpacity = d => {
+      if (!isActive(d.p)) return 0;
+      if (state.hoverLink === d) return 1;
+      if (!F) return 0.55;
+      if (F.pair) return (d.f === F.pair.a || d.f === F.pair.b) && F.progs.has(d.p) ? 0.95 : 0.05;
+      if (F.center && !F.center.isDDF) return d.f === F.center && F.progs.has(d.p) ? 0.95 : 0.05;
+      return F.progs.has(d.p) ? 0.95 : 0.05;
+    };
+    ddfSel.style("display", d => inLayer(d.p) ? null : "none").style("opacity", ddfOpacity);
+    ddfHitSel.style("display", d => inLayer(d.p) && isActive(d.p) ? null : "none")
+      .style("pointer-events", d => ddfOpacity(d) >= 0.5 ? "stroke" : "none");
+
+    // Funder-to-funder lines are gray (not white), and stay gray when a program is highlighted.
+    const coOpacity = d => {
+      const act = d.progs.filter(isActive);
+      if (!act.length) return 0;
+      if (!F) return 0.16;
+      const shared = act.some(p => F.progs.has(p));
+      if (F.pair) return d === F.pair ? 0.95 : 0.03;
+      if (F.center && !F.center.isDDF) return shared && (d.a === F.center || d.b === F.center) ? 0.6 : 0.03;
+      return shared ? 0.45 : 0.03;
+    };
+    coSel
+      .attr("stroke-width", d => Math.min(0.6 + 0.5 * d.progs.filter(isActive).length, 2))
+      .style("opacity", coOpacity);
+    coHitSel.style("display", d => d.progs.some(isActive) ? null : "none")
+      .style("pointer-events", d => coOpacity(d) >= 0.15 ? "stroke" : "none");
+
+    // Decide which labels want to show, then drop lower-priority ones that would overlap.
+    const wants = d => {
+      if (!nodeVisible(d)) return false;
+      if (F) return F.nodes.has(d) ? (F.center === d || F.nodes.size <= 30 || alwaysLabel(d) || zoomedIn) : zoomedIn;
+      return alwaysLabel(d) || zoomedIn;
+    };
+    const prio = d => (d.isDDF ? 1e6 : 0) + (F && F.center === d ? 1e5 : 0) + (F && F.nodes.has(d) ? 1e4 : 0)
+      + progsInLayer(d).length * 100 + (d.endow ?? 0);
+    const placed = [];
+    const shown = new Set();
+    // The fallback spots (above, right) also avoid neighbouring dots, so a moved label doesn't land on one.
+    const nodeBoxes = funders.filter(nodeVisible).map(d => ({ x0: px(d) - d.r, x1: px(d) + d.r, y0: py(d) - d.r, y1: py(d) + d.r, d }));
+    const hits = (box, list) => list.some(b => box.x0 < b.x1 && box.x1 > b.x0 && box.y0 < b.y1 && box.y1 > b.y0);
+    funders.forEach(d => { d.labelPos = "below"; });
+    funders.filter(wants).sort((a, b) => prio(b) - prio(a)).forEach(d => {
+      const w = d.name.length * (d.isDDF ? 7.4 : 6.2), h = d.isDDF ? 15 : 13;
+      const boxAt = pos => {
+        d.labelPos = pos;
+        const y = labelY(d) - h + 3, x = pos === "right" ? labelX(d) : px(d) - w / 2;
+        return { x0: x, x1: x + w, y0: y, y1: y + h };
+      };
+      const forced = d.isDDF || (F && F.center === d);
+      let box = boxAt("below");
+      if (!forced && hits(box, placed)) {
+        const others = nodeBoxes.filter(b => b.d !== d);
+        let chosen = null;
+        for (const pos of ["above", "right"]) {
+          const b = boxAt(pos);
+          if (!hits(b, placed) && !hits(b, others)) { chosen = b; break; }
+        }
+        if (!chosen) { d.labelPos = "below"; return; }
+        box = chosen;
+      }
+      placed.push(box); shown.add(d);
+    });
+    labelSel.attr("x", labelX).attr("y", labelY).attr("text-anchor", d => d.labelPos === "right" ? "start" : "middle")
+      .style("display", d => shown.has(d) ? null : "none").classed("dim", d => F && !F.nodes.has(d))
+      .classed("hot", d => !!F && F.nodes.has(d) && !d.isDDF).classed("center", d => !!F && F.center === d);
+  }
+
+  // Everything that depends on filters or selection.
+  function update() {
+    restyle();
+    updateMap();
+    updateCountryUI();
+    updateListButtons();
+    updateEmpty();
+    if (document.getElementById("tableSec").open) renderTable();
+  }
+
+  // Message when the filters leave no program (the graph would show DDF alone).
+  function updateEmpty() {
+    const none = !programs.some(isActive);
+    const el = document.getElementById("empty");
+    el.hidden = !none;
+    if (!none) return;
+    const parts = [];
+    if (state.area) parts.push(state.area);
+    if (state.year < Y1) parts.push("up to " + state.year);
+    if (state.where !== "all") parts.push(WHERE_LABEL[state.where]);
+    if (state.countries.size) parts.push(Array.from(state.countries).map(cName).join(", "));
+    document.getElementById("emptyWhy").textContent = parts.length ? "Current filters: " + parts.join(" · ") : "";
+  }
+
+  // ------------------------------------------------------------------ zoom
+  const zoom = d3.zoom().scaleExtent([0.2, 8])
+    .on("zoom", e => { T = e.transform; place(); restyle(); hideTip(); });
+  svg.call(zoom).on("dblclick.zoom", null);
+
+  const panelW = () => document.body.classList.contains("panel-open") && stage.clientWidth > 720 ? 360 : 0;
+  const legendH = () => { const el = document.getElementById("legend"); return el.offsetParent ? el.offsetHeight : 0; };
+
+  function fit(animate) {
+    const W = stage.clientWidth - panelW();
+    const H = stage.clientHeight;
+    // Side padding leaves room for labels that hang past the outermost dots.
+    const pad = { t: 56, r: 60, b: legendH() + 24, l: 60 };
+    const vis = funders.filter(f => nodeInLayer(f) && nodeVisible(f));
+    const x0 = d3.min(vis, d => d.x - d.r), x1 = d3.max(vis, d => d.x + d.r);
+    const y0 = d3.min(vis, d => d.y - d.r - 24), y1 = d3.max(vis, d => d.y + d.r + 24);
+    const k = Math.min((W - pad.l - pad.r) / (x1 - x0 || 1), (H - pad.t - pad.b) / (y1 - y0 || 1), 2.2);
+    const t = d3.zoomIdentity
+      .translate(pad.l + (W - pad.l - pad.r) / 2, pad.t + (H - pad.t - pad.b) / 2)
+      .scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+    (animate ? svg.transition().duration(600) : svg).call(zoom.transform, t);
+  }
+  // After a selection opens the panel, pan (without changing zoom) so the highlighted funders aren't hidden behind it.
+  function ensureVisible(nodes) {
+    const W = stage.clientWidth - (stage.clientWidth > 720 ? 360 : 0), H = stage.clientHeight, LH = legendH();
+    const x0 = d3.min(nodes, d => px(d) - d.r - 40), x1 = d3.max(nodes, d => px(d) + d.r + 40);
+    const y0 = d3.min(nodes, d => py(d) - d.r - 20), y1 = d3.max(nodes, d => py(d) + d.r + 24);
+    let dx = 0, dy = 0;
+    if (x1 - x0 <= W) { if (x1 > W) dx = W - x1; else if (x0 < 0) dx = -x0; }
+    if (y1 - y0 <= H - LH - 56) { if (y1 > H - LH - 12) dy = H - LH - 12 - y1; else if (y0 < 56) dy = 56 - y0; }
+    if (dx || dy) svg.transition().duration(450).call(zoom.translateBy, dx / T.k, dy / T.k);
+  }
+  document.getElementById("zin").onclick = () => svg.transition().duration(250).call(zoom.scaleBy, 1.4);
+  document.getElementById("zout").onclick = () => svg.transition().duration(250).call(zoom.scaleBy, 1 / 1.4);
+
+  // ---------------------------------------------------------------- tooltip
+  const tip = document.getElementById("tip");
+  function showTip(e, f) {
+    const progs = f.isDDF ? layerPrograms() : progsInLayer(f);
+    const endow = fmtEndow(f.endow);
+    const hidden = f.isDDF ? 0 : f.progs.length - progs.length;
+    tip.innerHTML = `<div class="nm">${esc(f.name)}</div>
+      <div class="sub">Endowment: ${endow ? esc(endow) : "not found"} · ${plural(progs.length, "DDF program")}${hidden ? ` · ${hidden} more abroad (layer off)` : ""}</div>
+      <ul>${progs.map(p => `<li><span class="dot" style="background:${COLOR[p.area]}"></span><span>${esc(p.name)} (${p.year})${abroadTag(p)}</span></li>`).join("")}</ul>`;
+    tip.classList.add("on");
+    moveTip(tip, stage, e);
+  }
+  function moveTip(el, box, e) {
+    const r = box.getBoundingClientRect();
+    let x = e.clientX - r.left + 14, y = e.clientY - r.top + 14;
+    const w = el.offsetWidth, h = el.offsetHeight;
+    if (x + w > r.width - 8) x = e.clientX - r.left - w - 14;
+    if (y + h > r.height - 8) y = Math.max(8, e.clientY - r.top - h - 14);
+    el.style.left = x + "px"; el.style.top = y + "px";
+  }
+  function hideTip() { tip.classList.remove("on"); }
+
+  nodeSel
+    .on("mouseenter", (e, d) => { state.hover = d; restyle(); showTip(e, d); })
+    .on("mousemove", (e) => moveTip(tip, stage, e))
+    .on("mouseleave", () => { state.hover = null; restyle(); hideTip(); })
+    .on("click", (e, d) => { e.stopPropagation(); hideTip(); selectFunder(d); })
+    .on("keydown", (e, d) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectFunder(d); } });
+  svg.on("click", () => { if (state.funder || state.program || state.pair) clearSelection(); });
+
+  // Lines from DDF: hover names the program and its amount; click opens the program.
+  ddfHitSel
+    .on("mouseenter", (e, d) => {
+      state.hoverLink = d; restyle();
+      tip.innerHTML = `<div class="nm">${esc(d.p.name)}${abroadTag(d.p)}</div>
+        <div class="sub">DDF ↔ ${esc(d.f.name)} · ${esc(d.p.area)} · ${esc(d.p.yearsLabel)}</div>
+        <div>${d.p.amount != null ? `<strong>${esc(fmtAmt(d.p.amount, d.p.approx))}</strong> <span class="na">${esc(d.p.basis || "")}</span>` : na("Amount not found")}</div>`;
+      tip.classList.add("on"); moveTip(tip, stage, e);
+    })
+    .on("mousemove", e => moveTip(tip, stage, e))
+    .on("mouseleave", () => { state.hoverLink = null; restyle(); hideTip(); })
+    .on("click", (e, d) => { e.stopPropagation(); hideTip(); state.hoverLink = null; selectProgram(d.p); });
+  // Lines between two non-DDF funders: no hover, click opens the pair and the programs they share.
+  coHitSel.on("click", (e, d) => { e.stopPropagation(); selectPair(d); });
+
+  // ----------------------------------------------------------------- panel
+  const panel = document.getElementById("panel");
+  const pbody = document.getElementById("pbody");
+  const ptitle = document.getElementById("ptitle");
+  const backBtn = document.getElementById("back");
+  // Panel navigation. curView is what the panel shows; navStack holds the views it was opened from,
+  // so the Back button can return to a list, a funder ("Back to Hewlett"), a program or a pair of funders.
+  // Each open uses a mode: "reset" (a fresh start, e.g. clicking the graph), "push" (a link inside the
+  // panel: remember the current view) or "back" (the Back button).
+  let curView = null;
+  let navStack = [];
+  const viewLabel = v => v.kind === "list" ? "list" : v.kind === "funder" ? v.f.name
+    : v.kind === "program" ? v.p.name : v.pair.a.name + " & " + v.pair.b.name;
+  function navigate(mode) {
+    if (mode === "push" && curView) navStack.push(curView);
+    else if (mode === "reset") navStack = [];
+  }
+  function updateBack() {
+    const prev = navStack[navStack.length - 1];
+    backBtn.hidden = !prev;
+    if (!prev) return;
+    const label = viewLabel(prev);
+    backBtn.textContent = "← Back to " + (label.length > 34 ? label.slice(0, 33) + "…" : label);
+    backBtn.setAttribute("aria-label", "Back to " + label);
+  }
+  function openView(v, mode) {
+    if (v.kind === "list") showList(v.type, v.query, false, mode);
+    else if (v.kind === "funder") selectFunder(v.f, mode);
+    else if (v.kind === "program") selectProgram(v.p, mode);
+    else selectPair(v.pair, mode);
+  }
+
+  function openPanel() {
+    if (!panel.classList.contains("open")) {
+      panel.classList.add("open");
+      document.body.classList.add("panel-open");
+    }
+  }
+  function closePanel() {
+    panel.classList.remove("open");
+    document.body.classList.remove("panel-open");
+    curView = null; navStack = [];
+  }
+  document.getElementById("close").onclick = () => clearSelection();
+  backBtn.onclick = () => { const v = navStack.pop(); if (v) openView(v, "back"); };
+
+  const areaTag = a => `<span class="area-tag"><span class="dot" style="background:${COLOR[a]}"></span>${esc(a)}</span>`;
+  const countryChips = p => `<span class="cchips">${p.countriesAll.map(c =>
+    `<button class="cchip" data-country="${c}" aria-pressed="${state.countries.size === 1 && state.countries.has(c)}" title="Filter by ${esc(cName(c))}">${esc(cName(c))}</button>`).join("")}</span>`;
+  const amountHtml = p => p.amount != null ? esc(fmtAmt(p.amount, p.approx)) : na("Amount not found");
+  const basisHtml = p => p.amount != null && p.basis ? esc(p.basis) : na("Not available");
+  const sourcesHtml = p => p.sources.length
+    ? p.sources.map((u, i) => extLink(u, p.sources.length > 1 ? "Source " + (i + 1) : "Source")).join(" · ")
+    : na("Not available");
+
+  function programCard(p, viewer) {
+    const otherCount = p.funders.filter(f => !f.isDDF && f !== viewer).length;
+    const otherLabel = viewer && !viewer.isDDF ? "Other funders" : "Co-funders";
+    return `<div class="card">
+      <h3><button class="linkish" data-prog="${p.id}">${esc(p.name)}</button>${abroadTag(p)}</h3>
+      <div class="meta">
+        <span class="k">Area</span><span>${areaTag(p.area)}</span>
+        <span class="k">Year</span><span>${esc(p.yearsLabel)}</span>
+        <span class="k">Amount</span><span>${amountHtml(p)}</span>
+        <span class="k">What it is</span><span>${basisHtml(p)}</span>
+        <span class="k">${otherLabel}</span><span>${otherCount} besides DDF</span>
+        <span class="k">Countries</span>${countryChips(p)}
+        <span class="k">Source</span><span>${sourcesHtml(p)}</span>
+      </div></div>`;
+  }
+
+  function showFunderPanel(f) {
+    const progs = f.isDDF ? layerPrograms() : progsInLayer(f);
+    const hidden = (f.isDDF ? programs : f.progs).filter(p => !inLayer(p)).length;
+    ptitle.textContent = f.name;
+    const endow = fmtEndow(f.endow);
+    pbody.innerHTML = `<div class="kv">
+        ${f.fullName && f.fullName !== f.name ? `<span class="k">Full name</span><span>${esc(f.fullName)}</span>` : ""}
+        <span class="k">Endowment</span><span>${endow ? esc(endow) + (f.basis ? ` <span class="na">(${esc(f.basis)})</span>` : "") : na("Not found")}</span>
+        <span class="k">Website</span><span>${extLink(f.website) || na("Not found")}</span>
+        ${f.type ? `<span class="k">Type</span><span>${esc(f.type)}</span>` : ""}
+        ${f.hq ? `<span class="k">Headquarters</span><span>${esc(f.hq)}</span>` : ""}
+        <span class="k">DDF programs</span><span>${progs.length}${hidden ? ` <span class="na">(+${hidden} abroad, hidden)</span>` : ""}</span>
+      </div>
+      ${hidden ? `<div class="note">${plural(hidden, "program")} abroad ${hidden === 1 ? "is" : "are"} hidden.<br><button class="btn" data-abroad-on>Show programs abroad</button></div>` : ""}
+      <div class="sec">${f.isDDF ? "Grant programs" : "Programs shared with DDF"}</div>
+      ${progs.map(p => programCard(p, f)).join("")}`;
+    wirePanelLinks();
+  }
+
+  function showProgramPanel(p) {
+    ptitle.textContent = p.name;
+    const fs = p.funders.slice().sort((a, b) => (b.isDDF - a.isDDF) || ((b.endow ?? -1) - (a.endow ?? -1)) || a.name.localeCompare(b.name));
+    pbody.innerHTML = `<div class="kv">
+        <span class="k">Area</span><span>${areaTag(p.area)}</span>
+        <span class="k">Year</span><span>${esc(p.yearsLabel)}</span>
+        <span class="k">Amount</span><span>${amountHtml(p)}</span>
+        <span class="k">What it is</span><span>${basisHtml(p)}</span>
+        ${p.abroad ? `<span class="k">DDF contribution</span><span>${esc(p.ddfContribution || "Not disclosed")}</span>` : ""}
+        <span class="k">Where funds go</span><span>${esc(WHERE_LABEL[p.where])}</span>
+        <span class="k">Countries</span>${countryChips(p)}
+        ${p.abroad ? `<span class="k">Run by</span><span>${esc(p.administrator)}</span>` : ""}
+        ${p.abroad ? `<span class="k">Confidence</span><span>${esc(p.confidence)}${p.meetsTest === "Borderline" ? ` <span class="na">(borderline: may not send money abroad)</span>` : ""}</span>` : ""}
+        <span class="k">Source</span><span>${sourcesHtml(p)}</span>
+        <span class="k">Funders</span><span>${p.funders.length} (DDF + ${p.funders.length - 1})</span>
+      </div>
+      ${p.description ? `<p class="prose">${esc(p.description)}</p>` : ""}
+      ${p.caveats ? `<div class="note"><strong>Caveats.</strong> ${esc(p.caveats)}</div>` : ""}
+      <div class="sec">Funders</div>
+      <ul class="list">${fs.map(f => listFunderItem(f, p)).join("")}</ul>`;
+    wirePanelLinks();
+  }
+
+  function listFunderItem(f, prog) {
+    const endow = fmtEndow(f.endow);
+    const progs = f.isDDF ? layerPrograms().length : progsInLayer(f).length;
+    const col = f.areas && f.areas.length === 1 ? COLOR[f.areas[0].area] : "#9aa1ab";
+    const role = prog && prog.roles && prog.roles.get(f.name);
+    const roleTxt = role ? esc(role.role) + (role.contribution && role.contribution !== "Not disclosed" ? " (" + esc(role.contribution) + ")" : "") + " · " : "";
+    return `<li><button data-funder="${esc(f.id)}" aria-label="${esc(f.name)}"><span class="dot" style="background:${col};${f.endow == null ? "opacity:.45" : ""}"></span>
+      <span><div class="nm">${esc(f.name)}${f.hasAbroad ? `<span class="tag">abroad</span>` : ""}</div><div class="sub">${roleTxt}${endow ? "Endowment " + esc(endow) : "Endowment not found"} · ${plural(progs, "program")}</div></span></button></li>`;
+  }
+  function listProgramItem(p) {
+    const where = p.abroad ? " · " + esc(p.countries.map(cName).join(", ")) : "";
+    return `<li><button data-prog="${p.id}" aria-label="${esc(p.name)}"><span class="dot" style="background:${COLOR[p.area]}"></span>
+      <span><div class="nm">${esc(p.name)}${abroadTag(p)}</div><div class="sub">${esc(p.area)} · ${p.year} · ${p.amount != null ? esc(fmtAmt(p.amount, p.approx)) : "amount not found"} · ${plural(p.funders.length - 1, "co-funder")}${where}</div></span></button></li>`;
+  }
+
+  function wirePanelLinks() {
+    pbody.querySelectorAll("[data-prog]").forEach(b => b.onclick = () => selectProgram(programs.find(p => p.id === b.dataset.prog), "push"));
+    pbody.querySelectorAll("[data-funder]").forEach(b => b.onclick = () => selectFunder(byId.get(b.dataset.funder), "push"));
+    pbody.querySelectorAll("[data-country]").forEach(b => b.onclick = () => {
+      const c = b.dataset.country;
+      setCountries(state.countries.size === 1 && state.countries.has(c) ? [] : [c]);
+    });
+    pbody.querySelectorAll("[data-abroad-on]").forEach(b => b.onclick = () => setAbroad(true));
+  }
+
+  // Re-render whatever the panel is showing (after filters or the layer change).
+  function refreshPanel() {
+    if (!panel.classList.contains("open") || !curView) return;
+    if (curView.kind === "program") showProgramPanel(curView.p);
+    else if (curView.kind === "funder") showFunderPanel(curView.f);
+    else if (curView.kind === "pair") showPairPanel(curView.pair);
+    else showList(curView.type, curView.query, true, "back");
+  }
+
+  // Two non-DDF funders joined by a line: the programs they co-funded.
+  function showPairPanel(pair) {
+    const shared = pair.progs.filter(inLayer);
+    ptitle.textContent = pair.a.name + " & " + pair.b.name;
+    pbody.innerHTML = `<p class="prose">These two funders co-funded ${plural(shared.length, "DDF program")}.</p>
+      <ul class="list">${[pair.a, pair.b].map(f => listFunderItem(f)).join("")}</ul>
+      <div class="sec">Programs they share</div>
+      ${shared.map(p => programCard(p, null)).join("")}`;
+    wirePanelLinks();
+  }
+
+  const funderOrder = () => funders.filter(f => !f.isDDF && nodeInLayer(f))
+    .sort((a, b) => progsInLayer(b).length - progsInLayer(a).length || a.name.localeCompare(b.name));
+  const programOrder = () => layerPrograms().sort((a, b) => (a.abroad - b.abroad) || a.year - b.year || a.name.localeCompare(b.name));
+
+  function showList(type, query = "", keepFocus = false, mode = "reset") {
+    navigate(mode);
+    curView = { kind: "list", type, query };
+    state.funder = null; state.program = null; state.pair = null;
+    sel.value = "";
+    restyle(); updateMap();
+    updateBack();
+    const hiddenProgs = programs.length - layerPrograms().length;
+    const hiddenFunders = funders.filter(f => !nodeInLayer(f)).length;
+    ptitle.textContent = type === "funders" ? plural(funderOrder().length, "funder") : plural(layerPrograms().length, "grant program");
+    const hiddenN = type === "funders" ? hiddenFunders : hiddenProgs;
+    pbody.innerHTML = `<input class="search" type="search" placeholder="Search ${type === "funders" ? "funders" : "programs"}…" aria-label="Search">
+      ${hiddenN ? `<div class="note">${plural(hiddenN, type === "funders" ? "funder" : "program")} abroad hidden. <button class="btn" data-abroad-on>Show programs abroad</button></div>` : ""}
+      <ul class="list"></ul>`;
+    const input = pbody.querySelector("input");
+    const ul = pbody.querySelector("ul");
+    const draw = () => {
+      const q = input.value.trim().toLowerCase();
+      curView.query = input.value;
+      const items = type === "funders"
+        ? funderOrder().filter(f => f.name.toLowerCase().includes(q))
+        : programOrder().filter(p => (p.name + " " + p.area + " " + p.countriesAll.map(cName).join(" ")).toLowerCase().includes(q));
+      ul.innerHTML = items.length ? items.map(x => type === "funders" ? listFunderItem(x) : listProgramItem(x)).join("")
+        : `<li class="empty">No matches.</li>`;
+      wirePanelLinks();
+    };
+    input.value = query;
+    input.oninput = draw;
+    draw();
+    openPanel();
+    // preventScroll: focusing the search box while the panel is still sliding in would otherwise scroll the stage sideways.
+    if (!keepFocus) input.focus({ preventScroll: true });
+  }
+
+  // ------------------------------------------------------------- selection
+  function selectFunder(f, mode = "reset") {
+    navigate(mode);
+    curView = { kind: "funder", f };
+    state.funder = f; state.program = null; state.pair = null;
+    sel.value = "";
+    if (!nodeVisible(f)) clearFilters(true);
+    updateBack();
+    showFunderPanel(f);
+    openPanel();
+    update();
+    ensureVisible(Array.from(focus().nodes));
+  }
+  function selectProgram(p, mode = "reset") {
+    if (!p) return clearSelection();
+    // Turning the layer on adds nodes around the edge, so refit at once; ensureVisible then pans for the panel.
+    if (p.abroad && !state.abroad) { setAbroad(true, { refit: false }); fit(false); }
+    navigate(mode);
+    curView = { kind: "program", p };
+    state.program = p; state.funder = null; state.pair = null;
+    sel.value = p.id;
+    if (!isActive(p)) clearFilters(true);
+    updateBack();
+    showProgramPanel(p);
+    openPanel();
+    update();
+    ensureVisible(p.funders);
+  }
+  function selectPair(pair, mode = "reset") {
+    navigate(mode);
+    curView = { kind: "pair", pair };
+    state.pair = pair; state.program = null; state.funder = null;
+    sel.value = "";
+    updateBack();
+    showPairPanel(pair);
+    openPanel();
+    update();
+    ensureVisible([pair.a, pair.b]);
+  }
+  function clearSelection() {
+    state.funder = null; state.program = null; state.pair = null; state.hover = null;
+    sel.value = "";
+    closePanel();
+    update();
+  }
+  // Drop a selection that the filters no longer show.
+  function checkSelection() {
+    if (state.program && !isActive(state.program)) clearSelection();
+    else if (state.pair && !state.pair.progs.some(isActive)) clearSelection();
+    else if (state.funder && !nodeVisible(state.funder)) clearSelection();
+    else refreshPanel();
+  }
+
+  // --------------------------------------------------------------- filters
+  const chipsEl = document.getElementById("areaChips");
+  function renderChips() {
+    const areas = AREAS.filter(a => layerPrograms().some(p => p.area === a));
+    chipsEl.innerHTML = [`<button class="chip" data-area="">All areas</button>`]
+      .concat(areas.map(a => `<button class="chip" data-area="${esc(a)}"><span class="dot" style="background:${COLOR[a]}"></span>${esc(a)}</button>`)).join("");
+    chipsEl.querySelectorAll(".chip").forEach(b => {
+      b.setAttribute("aria-pressed", String((b.dataset.area || null) === state.area));
+      b.onclick = () => setArea(b.dataset.area || null);
+    });
+  }
+  function setArea(a) {
+    state.area = a;
+    chipsEl.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.area || null) === a)));
+    checkSelection();
+    update();
+  }
+
+  const sel = document.getElementById("programSelect");
+  sel.innerHTML = `<option value="">Grant Programs: all</option>` + AREAS.map(a => {
+    const ps = basePrograms.filter(p => p.area === a).sort((x, y) => x.year - y.year || x.name.localeCompare(y.name));
+    return ps.length ? `<optgroup label="${esc(a)}">${ps.map(p => `<option value="${p.id}">${esc(p.name)} (${p.year})</option>`).join("")}</optgroup>` : "";
+  }).join("") + `<optgroup label="Programs abroad (optional layer)">${abroadPrograms.map(p =>
+    `<option value="${p.id}">${esc(p.name)} (${p.year})</option>`).join("")}</optgroup>`;
+  sel.onchange = () => sel.value ? selectProgram(programs.find(p => p.id === sel.value)) : clearSelection();
+
+  // Where funds go
+  const whereSel = document.getElementById("whereSel");
+  whereSel.onchange = () => setWhere(whereSel.value);
+  function setWhere(v) {
+    state.where = v; whereSel.value = v;
+    if ((v === "intl" || v === "both") && !state.abroad) setAbroad(true);
+    checkSelection();
+    update();
+  }
+
+  // Countries multi-select, grouped by region, with each country's program count.
+  const countryBtn = document.getElementById("countryBtn");
+  const countryPop = document.getElementById("countryPop");
+  const countryList = document.getElementById("countryList");
+  const countrySearch = document.getElementById("countrySearch");
+  const progCount = iso => programs.filter(p => p.countriesAll.includes(iso)).length;
+  const REGIONS = Array.from(new Set(RAW.countries.map(c => c.region)))
+    .sort((a, b) => (b === "North America") - (a === "North America") || a.localeCompare(b));
+  function renderCountryList() {
+    const q = countrySearch.value.trim().toLowerCase();
+    countryList.innerHTML = REGIONS.map(r => {
+      const cs = RAW.countries.filter(c => c.region === r && (c.name + " " + r).toLowerCase().includes(q))
+        .sort((a, b) => a.name.localeCompare(b.name));
+      if (!cs.length) return "";
+      return `<div class="rg">${esc(r)}</div>` + cs.map(c => `<label><input type="checkbox" value="${c.iso3}" ${state.countries.has(c.iso3) ? "checked" : ""}>
+        <span>${esc(c.name)}</span><span class="ct" title="Programs funding work here">${progCount(c.iso3)}</span></label>`).join("");
+    }).join("") || `<div class="empty">No matches.</div>`;
+    countryList.querySelectorAll("input").forEach(i => i.onchange = () => {
+      const next = new Set(state.countries);
+      i.checked ? next.add(i.value) : next.delete(i.value);
+      setCountries(Array.from(next));
+    });
+  }
+  function updateCountryUI() {
+    const list = Array.from(state.countries).map(cName);
+    countryBtn.textContent = "Countries: " + (list.length === 0 ? "All" : list.length === 1 ? list[0] : list[0] + " +" + (list.length - 1)) + " ▾";
+    countryBtn.classList.toggle("active", list.length > 0);
+    countryList.querySelectorAll("input").forEach(i => { i.checked = state.countries.has(i.value); });
+  }
+  function setCountries(list) {
+    state.countries = new Set(list);
+    if (list.some(c => c !== "USA") && !state.abroad) setAbroad(true);
+    checkSelection();
+    update();
+  }
+  function openCountries(open) {
+    countryPop.hidden = !open;
+    countryBtn.setAttribute("aria-expanded", String(open));
+    if (open) { countrySearch.value = ""; renderCountryList(); countrySearch.focus({ preventScroll: true }); }
+  }
+  countryBtn.onclick = () => openCountries(countryPop.hidden);
+  countrySearch.oninput = renderCountryList;
+  document.getElementById("countryClear").onclick = () => setCountries([]);
+  document.getElementById("countryDone").onclick = () => openCountries(false);
+  document.addEventListener("click", e => { if (!countryPop.hidden && !e.target.closest(".ms")) openCountries(false); });
+
+  // Programs-abroad layer
+  const abroadToggle = document.getElementById("abroadToggle");
+  abroadToggle.onchange = () => setAbroad(abroadToggle.checked);
+  function setAbroad(on, { refit = true } = {}) {
+    if (state.abroad === on) return;
+    state.abroad = on;
+    abroadToggle.checked = on;
+    if (!on) {
+      // Filters that only make sense with the layer on go back to their defaults.
+      if (state.where === "intl" || state.where === "both") { state.where = "all"; whereSel.value = "all"; }
+      state.countries.forEach(c => { if (c !== "USA") state.countries.delete(c); });
+      if (state.program && state.program.abroad) { state.program = null; sel.value = ""; }
+      if (state.funder && !nodeInLayer(state.funder)) state.funder = null;
+    }
+    if (state.area && !layerPrograms().some(p => p.area === state.area)) state.area = null;
+    const [y0, y1] = yearBounds();
+    yr.min = y0; yr.max = y1;
+    const atMax = state.year >= Y1;
+    Y0 = y0; Y1 = y1;
+    setYear(atMax ? y1 : Math.min(Math.max(state.year, y0), y1), true);
+    drawShapes();
+    place();
+    renderChips();
+    renderLegend();
+    if (!curView) closePanel();
+    if (refit) fit(true);
+    checkSelection();
+    update();
+  }
+
+  // Year
+  const yr = document.getElementById("year"), yrOut = document.getElementById("yearOut");
+  const bigYear = document.getElementById("bigYear");
+  let [Y0, Y1] = yearBounds();
+  yr.min = Y0; yr.max = Y1; yr.value = Y1;
+  function setYear(y, silent) {
+    state.year = +y; yr.value = y; yrOut.textContent = y; bigYear.textContent = y;
+    if (!silent) { checkSelection(); update(); }
+  }
+  yr.oninput = () => { stopPlay(); setYear(yr.value); };
+
+  const playBtn = document.getElementById("play");
+  let timer = null, hideTimer = null;
+  function startPlay() {
+    clearTimeout(hideTimer);
+    if (state.year >= Y1) setYear(Y0);
+    bigYear.textContent = state.year;
+    bigYear.classList.add("on");
+    playBtn.textContent = "❚❚ Pause"; playBtn.setAttribute("aria-label", "Pause timeline");
+    timer = setInterval(() => {
+      if (state.year >= Y1) { stopPlay(); return; }
+      setYear(state.year + 1);
+    }, 750);
+  }
+  function stopPlay() {
+    if (timer) { clearInterval(timer); timer = null; }
+    playBtn.textContent = "▶ Play"; playBtn.setAttribute("aria-label", "Play timeline");
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => bigYear.classList.remove("on"), 1200);
+  }
+  playBtn.onclick = () => timer ? stopPlay() : startPlay();
+
+  // Clears area, year, where and country filters (not the abroad layer).
+  function clearFilters(silent) {
+    stopPlay();
+    state.area = null; renderChips();
+    state.where = "all"; whereSel.value = "all";
+    state.countries = new Set();
+    setYear(Y1, true);
+    if (!silent) { checkSelection(); update(); }
+  }
+  document.getElementById("emptyClear").onclick = () => clearFilters(false);
+  document.getElementById("reset").onclick = () => {
+    clearFilters(true);
+    bigYear.classList.remove("on");
+    setAbroad(false, { refit: false });
+    clearSelection();
+    openCountries(false);
+    fit(true);
+  };
+
+  const btnFunders = document.getElementById("btnFunders"), btnPrograms = document.getElementById("btnPrograms");
+  function updateListButtons() {
+    btnFunders.textContent = plural(funders.filter(f => !f.isDDF && nodeInLayer(f)).length, "funder");
+    btnPrograms.textContent = plural(layerPrograms().length, "grant program");
+  }
+  btnFunders.onclick = () => showList("funders");
+  btnPrograms.onclick = () => showList("programs");
+  document.getElementById("btnMap").onclick = () => document.getElementById("mapSec").scrollIntoView({ behavior: "smooth" });
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (!countryPop.hidden) { openCountries(false); countryBtn.focus(); }
+    else clearSelection();
+  });
+
+  // ----------------------------------------------------------------- legend
+  const tiers = [tierOf(15), tierOf(5), tierOf(0.5), tierOf(0.05)];
+  const sw = (svgInner, w = 26, h = 20) => `<svg width="${w}" height="${h}" aria-hidden="true">${svgInner}</svg>`;
+  const sizeSw = (r, extra = "") => sw(`<circle cx="${r + 1}" cy="${r + 1}" r="${r}" fill="#9aa1ab" ${extra}/>`, 2 * r + 2, 2 * r + 2);
+  const sizeLabels = ["> $10B", "> $1B", "> $100M", "< $100M"];
+  function renderLegend() {
+    const areas = AREAS.filter(a => layerPrograms().some(p => p.area === a));
+    document.getElementById("legendBody").innerHTML = `
+      <div class="grp"><span class="ttl">Program area</span>
+        ${areas.map(a => `<span class="row"><span class="dot" style="background:${COLOR[a]}"></span>${esc(a)}</span>`).join("")}
+        <span class="row">${sw(`<circle cx="9" cy="10" r="7" fill="${COLOR.Arts}"/><path d="M9,10 L9,3 A7,7 0 0 1 9,17 Z" fill="${COLOR.Environment}"/>`, 20)}Several areas</span>
+      </div>
+      <div class="grp"><span class="ttl">Endowment (node size)</span>
+        <div class="sizes">
+          ${tiers.map((t, i) => `<span class="size">${sizeSw(t.r)}${sizeLabels[i]}</span>`).join("")}
+          <span class="size">${sizeSw(5, 'fill-opacity=".38"')}Not found<br>(pale)</span>
+        </div>
+        <span class="row">${sw(`<circle cx="10" cy="10" r="5" fill="#9aa1ab"/><circle cx="10" cy="10" r="8.5" fill="none" stroke="#d5d9df" stroke-width="1.2" stroke-dasharray="2.5 2"/>`, 20)}Dashed ring: has a program abroad</span>
+      </div>
+      <div class="grp"><span class="ttl">Links</span>
+        <span class="row">${sw(`<line x1="2" y1="10" x2="40" y2="10" stroke="#c3c8d0" stroke-width="5" stroke-linecap="round"/>`, 44)}DDF link, width = program amount</span>
+        <span class="row">${sw(`<line x1="2" y1="10" x2="40" y2="10" stroke="#c3c8d0" stroke-width="1.5" stroke-dasharray="2 4" stroke-linecap="round"/>`, 44)}Amount not found (dotted)</span>
+        <span class="row">${sw(`<line x1="2" y1="10" x2="40" y2="10" stroke="#8a919c" stroke-opacity=".8" stroke-width="1"/>`, 44)}Co-funded the same program (gray)</span>
+      </div>`;
+  }
+
+  // -------------------------------------------------------------------- map
+  // Shaded by the number of programs funding work in each country, under every filter except the
+  // country filter itself (so the other countries stay visible for comparison).
+  const BINS = [{ min: 1, max: 1, label: "1" }, { min: 2, max: 2, label: "2" }, { min: 3, max: 5, label: "3–5" },
+    { min: 6, max: 10, label: "6–10" }, { min: 11, max: Infinity, label: "11+" }];
+  const RAMP = ["#3a404b", "#59616e", "#7d8592", "#a8afba", "#d9dde3"]; // one neutral hue, dark -> light on the dark surface
+  const NO_DATA = "#1d2127";
+  const binColor = n => { if (!n) return NO_DATA; const i = BINS.findIndex(b => n >= b.min && n <= b.max); return RAMP[i]; };
+  const mapSvg = d3.select("#map"), mapWrap = document.getElementById("mapWrap"), mapTip = document.getElementById("mapTip");
+  const gLand = mapSvg.append("g"), gHl = mapSvg.append("g");
+  let world = null, mapPath = null;
+
+  document.getElementById("mapLegend").innerHTML =
+    `<span>Programs:</span>` + BINS.map((b, i) => `<span><span class="sw" style="background:${RAMP[i]}"></span>${b.label}</span>`).join("") +
+    `<span><span class="sw" style="background:${NO_DATA}"></span>None</span>` +
+    `<span><span class="sw" style="background:transparent;border:2px solid #e8eaed"></span>Country filter</span>` +
+    `<span><span class="sw" style="background:transparent;border:2px dashed #e8eaed"></span>Selected program's countries</span>`;
+
+  function mapCounts() {
+    const counts = new Map();
+    programs.filter(p => filterOk(p, true)).forEach(p => p.countriesAll.forEach(c => {
+      if (!counts.has(c)) counts.set(c, []);
+      counts.get(c).push(p);
+    }));
+    return counts;
+  }
+  function drawMap() {
+    if (!world) return;
+    const w = mapWrap.clientWidth, h = Math.max(260, Math.min(560, Math.round(w * 0.48)));
+    mapSvg.attr("viewBox", `0 0 ${w} ${h}`).attr("height", h);
+    const proj = d3.geoNaturalEarth1().fitExtent([[6, 6], [w - 6, h - 6]], { type: "FeatureCollection", features: world });
+    mapPath = d3.geoPath(proj);
+    gLand.selectAll("path").data(world, d => d.id).join("path")
+      .attr("class", d => "land" + (COUNTRY_BY_NUM.has(d.id) ? " funded" : ""))
+      .attr("d", mapPath)
+      .on("mouseenter mousemove", (e, d) => showMapTip(e, d))
+      .on("mouseleave", () => mapTip.classList.remove("on"))
+      .on("click", (e, d) => {
+        const c = COUNTRY_BY_NUM.get(d.id);
+        if (!c) return;
+        setCountries(state.countries.size === 1 && state.countries.has(c.iso3) ? [] : [c.iso3]);
+        showMapTip(e, d);
+      });
+    updateMap();
+  }
+  function updateMap() {
+    if (!world || !mapPath) return;
+    const counts = mapCounts();
+    gLand.selectAll("path").attr("fill", d => {
+      const c = COUNTRY_BY_NUM.get(d.id);
+      return binColor(c && counts.has(c.iso3) ? counts.get(c.iso3).length : 0);
+    }).attr("aria-label", d => {
+      const c = COUNTRY_BY_NUM.get(d.id);
+      return c ? `${c.name}: ${plural(counts.has(c.iso3) ? counts.get(c.iso3).length : 0, "program")}` : null;
+    });
+    // Outlines: solid for the country filter, dashed for the selected program's countries.
+    const progCountries = new Set(state.program ? state.program.countriesAll : []);
+    const hl = world.filter(d => { const c = COUNTRY_BY_NUM.get(d.id); return c && (state.countries.has(c.iso3) || progCountries.has(c.iso3)); });
+    gHl.selectAll("path").data(hl, d => d.id).join("path").attr("class", "hl").attr("d", mapPath)
+      .attr("stroke", "#e8eaed")
+      .attr("stroke-width", d => state.countries.has(COUNTRY_BY_NUM.get(d.id).iso3) ? 2.2 : 1.6)
+      .attr("stroke-dasharray", d => state.countries.has(COUNTRY_BY_NUM.get(d.id).iso3) ? null : "4 3");
+    const nAbroad = new Set(abroadPrograms.flatMap(p => p.countries)).size;
+    const note = document.getElementById("mapNote");
+    if (!state.abroad) {
+      note.innerHTML = `All 13 programs in the network fund work in the United States. ${abroadPrograms.length} co-funded programs abroad reach ${nAbroad} more countries.<button class="btn" id="mapAbroad">Show programs abroad</button>`;
+      document.getElementById("mapAbroad").onclick = () => setAbroad(true);
+    } else {
+      note.textContent = "Shaded by the number of programs matching the filters above. Click a country to filter by it.";
+    }
+  }
+  function showMapTip(e, d) {
+    const c = COUNTRY_BY_NUM.get(d.id);
+    const name = c ? c.name : (d.properties && d.properties.name) || "";
+    const ps = c ? (mapCounts().get(c.iso3) || []) : [];
+    mapTip.innerHTML = `<div class="nm">${esc(name)}</div>` + (c
+      ? `<div class="sub">${plural(ps.length, "program")} with current filters${c.iso3 !== "USA" && !state.abroad ? " (turn on Show programs abroad)" : ""}</div>
+         <ul>${ps.slice(0, 10).map(p => `<li><span class="dot" style="background:${COLOR[p.area]}"></span><span>${esc(p.name)}</span></li>`).join("")}${ps.length > 10 ? `<li>…and ${ps.length - 10} more</li>` : ""}</ul>`
+      : `<div class="sub">No DDF co-funded programs found</div>`);
+    mapTip.classList.add("on");
+    moveTip(mapTip, mapWrap, e);
+  }
+  async function loadMap() {
+    try {
+      const topo = await (await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json")).json();
+      world = topojson.feature(topo, topo.objects.countries).features.filter(f => f.id !== "010"); // drop Antarctica
+      const missing = RAW.countries.filter(c => !world.some(f => f.id === c.iso_numeric)).map(c => c.name);
+      if (missing.length) console.warn("Countries not on the map:", missing);
+      drawMap();
+    } catch (e) {
+      mapWrap.innerHTML = `<p class="na">The world map couldn't load. It needs an internet connection for the map outlines.</p>`;
+    }
+  }
+
+  // ------------------------------------------------------------ data table
+  // The same records as the graph, filtered the same way, for readers who prefer rows to dots.
+  let tableKind = "programs";
+  const tabProgs = document.getElementById("tabProgs"), tabFunders = document.getElementById("tabFunders");
+  function setTab(kind) {
+    tableKind = kind;
+    [[tabProgs, "programs"], [tabFunders, "funders"]].forEach(([b, k]) => {
+      b.setAttribute("aria-selected", String(k === kind)); b.setAttribute("aria-pressed", String(k === kind));
+    });
+    renderTable();
+  }
+  tabProgs.onclick = () => setTab("programs");
+  tabFunders.onclick = () => setTab("funders");
+  document.getElementById("tableSec").addEventListener("toggle", e => { if (e.target.open) renderTable(); });
+
+  function renderTable() {
+    const active = programs.filter(isActive).sort((a, b) => (a.abroad - b.abroad) || a.year - b.year || a.name.localeCompare(b.name));
+    const fs = funders.filter(f => nodeInLayer(f) && nodeVisible(f))
+      .sort((a, b) => (b.isDDF - a.isDDF) || activeProgs(b).length - activeProgs(a).length || a.name.localeCompare(b.name));
+    document.getElementById("tableNote").textContent =
+      `Showing ${plural(active.length, "program")} and ${plural(fs.length, "funder")} that match the filters above` +
+      (state.abroad ? " (programs abroad included)." : ". Turn on “Show programs abroad” to include the programs abroad.");
+    const wrap = document.getElementById("tableWrap");
+    if (!active.length) {
+      wrap.innerHTML = `<p class="empty">No programs match these filters.</p>`;
+      return;
+    }
+    if (tableKind === "programs") {
+      wrap.innerHTML = `<table class="tbl"><caption class="sr-only">Grant programs</caption><thead><tr>
+        <th scope="col">Program</th><th scope="col">Area</th><th scope="col">Year</th><th scope="col">Amount</th>
+        <th scope="col">What the amount is</th><th scope="col">Where funds go</th><th scope="col">Countries</th>
+        <th scope="col">Funders</th><th scope="col">Source</th></tr></thead><tbody>${active.map(p => `<tr>
+          <td><button class="linkish" data-prog="${p.id}">${esc(p.name)}</button>${abroadTag(p)}</td>
+          <td>${areaTag(p.area)}</td><td>${esc(p.yearsLabel)}</td>
+          <td class="num">${p.amount != null ? esc(fmtAmt(p.amount, p.approx)) : na("Not found")}</td>
+          <td>${p.amount != null && p.basis ? esc(p.basis) : na("Not available")}</td>
+          <td>${esc(WHERE_LABEL[p.where])}</td><td>${esc(p.countriesAll.map(cName).join(", "))}</td>
+          <td class="num">${p.funders.length}</td><td>${sourcesHtml(p)}</td></tr>`).join("")}</tbody></table>`;
+    } else {
+      wrap.innerHTML = `<table class="tbl"><caption class="sr-only">Funders</caption><thead><tr>
+        <th scope="col">Funder</th><th scope="col">Endowment</th><th scope="col">Endowment basis</th><th scope="col">Website</th>
+        <th scope="col">Programs</th><th scope="col">Program names</th></tr></thead><tbody>${fs.map(f => {
+          const ps = f.isDDF ? active : activeProgs(f);
+          return `<tr><td><button class="linkish" data-funder="${esc(f.id)}">${esc(f.name)}</button>${f.hasAbroad ? `<span class="tag">abroad</span>` : ""}</td>
+            <td class="num">${f.endow != null ? esc(fmtEndow(f.endow)) : na("Not found")}</td><td>${f.basis ? esc(f.basis) : ""}</td>
+            <td>${extLink(f.website) || na("Not found")}</td><td class="num">${ps.length}</td>
+            <td>${esc(ps.map(p => p.name).join("; "))}</td></tr>`; }).join("")}</tbody></table>`;
+    }
+    const toGraph = () => stage.scrollIntoView({ behavior: "smooth" });
+    wrap.querySelectorAll("[data-prog]").forEach(b => b.onclick = () => { selectProgram(programs.find(p => p.id === b.dataset.prog)); toGraph(); });
+    wrap.querySelectorAll("[data-funder]").forEach(b => b.onclick = () => { selectFunder(byId.get(b.dataset.funder)); toGraph(); });
+  }
+
+  // ------------------------------------------------------------ about text
+  (function renderAbout() {
+    const nBase = basePrograms.length, nAbroad = abroadPrograms.length;
+    const nBaseF = funders.filter(f => f.inBase && !f.isDDF).length;
+    const nExtraF = funders.filter(f => !f.inBase).length;
+    const noEndow = funders.filter(f => f.inBase && !f.isDDF && f.endow == null).length;
+    const nCountries = new Set(abroadPrograms.flatMap(p => p.countries)).size;
+    document.getElementById("aboutBody").innerHTML = `
+      <h3>What the graph shows</h3>
+      <p>Each dot is a funder that co-funded at least one grant program with the Doris Duke Foundation (DDF). The ${nBase} programs and ${nBaseF} funders
+      come from the DDF Funders Network research (${extLink(NET.source, "source page")}). The ${nAbroad} programs abroad come from separate research and are an optional layer.</p>
+      <h3>Dot size and color</h3>
+      <ul>
+        <li><strong>Size</strong> is the funder's endowment tier: over $10 billion, over $1 billion, over $100 million, or below $100 million.
+          Figures are FY23 assets under management where available, otherwise total assets from tax filings or annual reports; each funder's panel says which.</li>
+        <li><strong>Small pale dots</strong> are funders whose endowment wasn't found (${noEndow} of ${nBaseF} in the US network, and all ${nExtraF} funders that appear only abroad). No figure is estimated.</li>
+        <li><strong>Color</strong> is the DDF program area of the funder's programs; a funder in several areas is drawn as a small pie. The colors were checked to stay distinct for common color-vision deficiencies.</li>
+        <li>DDF has a white ring. A <strong>dashed ring</strong> marks a funder with at least one program abroad.</li>
+      </ul>
+      <h3>Lines</h3>
+      <ul>
+        <li>A <strong>colored line from DDF</strong> is one shared program. Its width shows the program's total size (square-root scale); hover it for the program and amount.</li>
+        <li>A <strong>dotted line</strong> means the program's amount wasn't found.</li>
+        <li>A <strong>gray line</strong> joins two funders who co-funded the same program. Click it to see which programs they share.</li>
+      </ul>
+      <h3>Programs abroad</h3>
+      <p>Turning on “Show programs abroad” adds ${nAbroad} programs where DDF and at least one other named funder put money into work outside the US, reaching ${nCountries} countries,
+      plus ${nExtraF} funders not in the US network. It turns on by itself when you choose International or Both, a country outside the US, or a program abroad; Reset turns it off.</p>
+      <ul>
+        <li><strong>Where funds go:</strong> US only = the ${nBase} US programs; International = programs that fund work only abroad; Both = programs that also funded US work (for example two-way artist exchanges).</li>
+        <li>The <strong>map</strong> is shaded by how many programs match the filters (the country filter itself is ignored so you can compare countries).</li>
+      </ul>
+      <h3>Caveats</h3>
+      <ul>
+        <li>Amounts measure different things (a multi-year commitment, a first round of grants, a cumulative total). “What the amount is” explains each one, so compare line widths with care.</li>
+        <li>Endowment figures mix years and measures (assets under management vs. total assets).</li>
+        <li>For programs abroad, the amount is the headline figure in the research notes (“~” marks an estimate), the year is the first year of the program's date range, and “funds US work” was judged from the research descriptions.
+          Each has a confidence rating; Center Stage is borderline, as its money mainly paid for US tours. Some details rest on search summaries because older DDF pages are offline.</li>
+        <li>Funder names are the short labels used in the research. The Mosaic Network and Fund lists its full funder roster, which may include funders who joined after DDF.</li>
+        <li>The list is not exhaustive: it covers programs where a public source names DDF and at least one other funder.</li>
+      </ul>`;
+  })();
+
+  // -------------------------------------------------------------------- go
+  if (window.innerWidth < 720) document.getElementById("legend").open = false; // keep the small graph clear on phones
+  drawShapes();
+  renderChips();
+  renderLegend();
+  setYear(Y1, true);
+  place();
+  update();
+  fit(false);
+  loadMap();
+  let rz;
+  window.addEventListener("resize", () => {
+    clearTimeout(rz);
+    rz = setTimeout(() => { sizeStage(); drawShapes(); place(); restyle(); fit(false); drawMap(); }, 150);
+  });
+})();
+</script>
+</body>
+</html>

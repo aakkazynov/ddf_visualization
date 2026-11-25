@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Claude Built This</title>
+<style>
+  :root {
+    --bg: #111317; --surface: #181b20; --surface-2: #20242b; --line: #2c313a;
+    --ink: #e8eaed; --ink-2: #b3b8c0; --ink-3: #8a909a; --link: #8fb8f0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.55 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  a { color: var(--link); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+  header { text-align: center; margin-bottom: 28px; }
+  h1 { font-size: 28px; margin: 0 0 6px; }
+  .lede { color: var(--ink-2); margin: 0 auto; max-width: 640px; }
+  .back { display: inline-block; margin-bottom: 18px; }
+  ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  .step { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 18px 20px; margin-bottom: 16px; }
+  .step h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 8px; }
+  .prompt { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 0 0 12px;
+    white-space: pre-wrap; color: var(--ink); font-size: 14px; }
+  .label { color: var(--ink-3); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin: 0 0 4px; }
+  .summary { margin: 0 0 10px; color: var(--ink-2); }
+  .toggle { background: var(--surface-2); border: 1px solid var(--line); color: var(--ink); border-radius: 6px; padding: 5px 12px;
+    font: inherit; font-size: 13px; cursor: pointer; }
+  .toggle:hover { border-color: #4a515c; }
+  .toggle:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .full { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 14px; }
+  .full[hidden] { display: none; }
+  .full h3 { color: var(--ink); font-size: 14px; margin: 14px 0 4px; }
+  .full p, .full ul, .full table { margin: 0 0 8px; }
+  .full ul { padding-left: 20px; }
+  .full li { margin: 2px 0; }
+  .full table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  .full th, .full td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 5px 8px; }
+  .full th { color: var(--ink); background: var(--surface-2); }
+  .full .tw { overflow-x: auto; }
+  code { background: var(--surface-2); border-radius: 4px; padding: 0 4px; font-size: 13px; }
+  .note { color: var(--ink-3); font-size: 13px; text-align: center; margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Back to the DDF Funders Network</a>
+  <header>
+    <h1>How Claude Built This</h1>
+    <p class="lede">Every prompt from the session that produced this site, in order. Each is paired with a short summary of Claude's reply; use “See more” to read the full reply. Personal details are replaced with ******.</p>
+  </header>
+
+  <ol class="steps">
+
+    <li class="step">
+      <h2>Prompt 1</h2>
+      <div class="prompt">Search the Doris Duke Website and also the internet to find all the instances of grant programs in which multiple funders pooled funds together. Create a spreadsheet of all these programs organized by the DDF program such as Arts or Nature or Health.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Researched DDF's site and the wider web with four parallel research agents and built <code>DDF_Pooled_Grant_Programs.xlsx</code>: 40 programs where DDF shared funding with other funders, organized by DDF program area, with sources and confidence ratings.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <p>I built the spreadsheet: <code>DDF_Pooled_Grant_Programs.xlsx</code>. It lists 40 Doris Duke Foundation (DDF) grant programs where DDF put money in alongside other funders. The research covered dorisduke.org plus partner sites, Candid/PND and press coverage.</p>
+        <div class="tw"><table>
+          <tr><th>DDF program</th><th>Programs found</th><th>Examples</th></tr>
+          <tr><td>Arts</td><td>18</td><td>Artist Relief, Jazz Road, National Dance Project, National Theater Project, MAP Fund, Mosaic Network and Fund, Artists Make Technology (with Mozilla, Hewlett and Ford)</td></tr>
+          <tr><td>Environment</td><td>10</td><td>Tribal Nations Conservation Pledge ($102.5M total, about $32M from DDF), Appalachian Landscapes Protection Fund, Landscape Conservation Catalyst Fund, Energy Foundation</td></tr>
+          <tr><td>Medical Research</td><td>6</td><td>COVID-19 Fund to Retain Clinical Scientists, Damon Runyon–Doris Duke awards, Pathways for Health Research Collective</td></tr>
+          <tr><td>Child Well-being</td><td>3</td><td>OPT-In for Families ($33M), Rx Kids (Flint), Pew home visiting research</td></tr>
+          <tr><td>Cross-program / emergency</td><td>3</td><td>NYC COVID-19 Response &amp; Impact Fund, NJ Pandemic Relief Fund, Humanity AI ($500M)</td></tr>
+          <tr><td>Building Bridges</td><td>0</td><td>No pooled program found; its grants appear to be DDF-only</td></tr>
+        </table></div>
+        <h3>How the workbook is laid out</h3>
+        <ul>
+          <li>A Summary tab with counts per program, and an All Programs tab with every row.</li>
+          <li>One tab for each DDF program.</li>
+          <li>A Not Pooled (Excluded) tab for 8 partnerships checked and left out, such as the 2020 five-foundation payout pledge, where each foundation spent its own money.</li>
+          <li>Each row gives the co-funders, the organization that ran the program, years, status, DDF's contribution, total pool size, a description and source links, rated High or Medium confidence.</li>
+        </ul>
+        <h3>Things to know before relying on it</h3>
+        <ul>
+          <li>15 of 40 rows are Medium confidence: some details come from search-result summaries because several sites blocked automated reading.</li>
+          <li>A few rows count as shared funding only loosely (for example the Cumberland Forest Project is a co-investment); the "Pool Type" column says which is which.</li>
+          <li>Older programs may be under-counted: DDF rebuilt its website and many older press releases now return "page not found".</li>
+          <li>Not fully searched: Arts collaborations with the Wallace Foundation and a few other Arts leads.</li>
+          <li>The Summary counts are formulas that fill in when the file is opened in Excel.</li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 2</h2>
+      <div class="prompt">Compare your list with the programs in this visualization: https://ddf-constellation.vercel.app/ . I want to use exactly the 13 programs and the funders it shows (it should be 80 funders plus DDF). Save that list as a JSON file in a research folder. Also take the endowment figures and the websites for each funder from that page. Tell me which funders don't have an endowment number.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Extracted the 13 programs and 80 funders (plus DDF) with endowments and websites from the visualization's embedded data into <code>research/ddf_pooled_programs_funders.json</code>, compared them with the spreadsheet, and listed the 57 funders without an endowment figure.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <p>I saved the list as <code>research/ddf_pooled_programs_funders.json</code>. It has exactly the 13 programs and 80 funders plus DDF shown on the visualization, copied straight from the data built into the page.</p>
+        <h3>Comparison with the earlier list</h3>
+        <p>12 of the 13 programs were already in the spreadsheet, with these differences:</p>
+        <ul>
+          <li><strong>Humanity AI:</strong> the page files it under Arts; the spreadsheet had it under Cross-Program.</li>
+          <li><strong>Artists Make Technology:</strong> the page also lists MacArthur and Omidyar as funders.</li>
+          <li><strong>Artist Relief:</strong> the page uses the $10M first round and 23 co-funders; the spreadsheet used the $25M final total.</li>
+          <li><strong>Mosaic Network and Fund:</strong> the page dates it 2020 with $4.5M (first-round grants).</li>
+          <li><strong>Tribal Nations Conservation Pledge:</strong> the page names all 14 co-funders; the spreadsheet's list was partial.</li>
+          <li><strong>Catalyst Fund:</strong> same program as the "Landscape Conservation Catalyst Fund", with a $2.5M total.</li>
+        </ul>
+        <p>One program on the page wasn't in the spreadsheet: Think of Us, Audacious Project (Child Well-being, 2023, $47.5M). 28 spreadsheet programs aren't on the page.</p>
+        <h3>Funders without an endowment figure (57 of 80)</h3>
+        <ul>
+          <li><strong>Mosaic Network and Fund (19):</strong> Bloomberg, Howard Gilman, Booth Ferris, Lambent, Laurie M. Tisch Fund, Miranda Family Fund, NY Community Trust, Lily Auchincloss, Matisse Foundation, Deutsche Bank Americas, Mertz Gilmore, Stavros Niarchos, Cullman Foundation, Grantmakers in the Arts, David Rockefeller Fund, Harman Family, MacKenzie Scott, Jerome, Dreyfus Foundation.</li>
+          <li><strong>Artist Relief (18):</strong> Mike Kelley Foundation, de Kooning Foundation, 7G, Gottlieb Foundation, Amazon Literary, Arison Arts, Emily Hall Tremaine, Joan Mitchell, Kraus Family, Knight, Neiman Foundation, Metabolic Studio, Pritzker Pucker, Salomon Family, Rauschenberg Foundation, Hostetler-Wrigley, Teiger Foundation, Wallace Foundation.</li>
+          <li><strong>Tribal Nations Conservation Pledge (10):</strong> Alaska Conservation, Christensen Fund, Decolonizing Wealth, Grousemont, J.M. Kaplan Fund, Resources Legacy Fund, Re:wild, Walton Family, Water Foundation, Wilburforce.</li>
+          <li><strong>Child Well-being (2):</strong> Aviv, Audacious Project.</li>
+          <li><strong>Medical Research (8):</strong> American Cancer Society, American Heart Assoc., Burroughs Wellcome, Dana Foundation, Donaghue, Susan G. Komen, Rita Allen, Walder.</li>
+        </ul>
+        <p>Some large foundations are among the missing (Walton Family, Knight, Wallace, Bloomberg, Stavros Niarchos), which understates their circles on the visualization. Ten funders also have no website on the page.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 3</h2>
+      <div class="prompt">Now search for programs DDF co-funded with other funders that send money outside the US. I need the countries where the money goes. Only include ones where another funder is actually named. Put everything in an Excel workbook with tabs for Programs, Funders, Program–Funder links and Countries.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Found 9 co-funded programs with money abroad (8 clear, 1 borderline), with 22 named co-funders and 22 countries, and saved them to <code>research/ddf_international_cofunded_programs.xlsx</code> with the four requested tabs.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <p>The workbook is <code>research/ddf_international_cofunded_programs.xlsx</code>, with Programs, Funders, Program–Funder Links and Countries tabs.</p>
+        <div class="tw"><table>
+          <tr><th>Program</th><th>DDF area</th><th>Other named funders</th><th>Countries</th></tr>
+          <tr><td>Ethiopia Data Use Partnership</td><td>Medical Research</td><td>Gates Foundation (lead), Global Fund</td><td>Ethiopia</td></tr>
+          <tr><td>Mozambique IDEA</td><td>Medical Research</td><td>NIH / NICHD</td><td>Mozambique</td></tr>
+          <tr><td>Ghana CHPS+</td><td>Medical Research</td><td>KOICA, JICA (weak evidence)</td><td>Ghana</td></tr>
+          <tr><td>NOHARM MTD sickle cell trial</td><td>Medical Research</td><td>Cincinnati Children's Research Foundation</td><td>Uganda</td></tr>
+          <tr><td>Energy Foundation clean energy grant</td><td>Environment</td><td>Kresge, Packard, Hewlett</td><td>China</td></tr>
+          <tr><td>French-American Jazz Exchange</td><td>Arts</td><td>French Embassy Cultural Services, Florence Gould, SACEM, Institut français, French Ministry of Culture, Mellon, Auvergne-Rhône-Alpes Region</td><td>France</td></tr>
+          <tr><td>FUSED</td><td>Arts</td><td>Mellon, Florence Gould</td><td>France</td></tr>
+          <tr><td>Performing Americas Program</td><td>Arts</td><td>Robert Sterling Clark Foundation, LA Dept. of Cultural Affairs</td><td>10 countries in Latin America and the Caribbean</td></tr>
+          <tr><td>Center Stage (borderline)</td><td>Building Bridges</td><td>US State Dept, Asian Cultural Council, Henry Luce, Trust for Mutual Understanding, Robert Sterling Clark</td><td>Algeria, Tanzania, Egypt, Indonesia, Pakistan, Ukraine</td></tr>
+        </table></div>
+        <h3>Gaps in the evidence</h3>
+        <ul>
+          <li>Center Stage mainly paid for foreign ensembles to tour inside the US; it's marked Borderline.</li>
+          <li>In Mozambique and Ghana the other funders ran parallel grants rather than one shared pot; Cincinnati Children's money may have stayed in the US.</li>
+          <li>The Energy Foundation's China share isn't disclosed, and no source describes a formal pooled fund.</li>
+          <li>For the arts exchanges, money reaching France or Latin America is inferred from named foreign grantees and venues.</li>
+        </ul>
+        <p>Left out: African Health Initiative Phase 1, African AIDS operations research and international clinical fellowships (DDF money only), and the Tribal Nations Pledge and Humanity AI (US only).</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 4</h2>
+      <div class="prompt">Write a small Python script that builds data.json (and a data.js so the page works when I double-click it) from the research files.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Added <code>build_data.py</code>, which reads both research files and writes identical <code>data.json</code> and <code>data.js</code> (the latter sets <code>window.DDF_DATA</code> so a double-clicked page can load it).</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <p>I added <code>build_data.py</code>. Run <code>python build_data.py</code> from the project folder to create both files.</p>
+        <ul>
+          <li><strong>data.json</strong> is for a page served from a web server (<code>fetch("data.json")</code>).</li>
+          <li><strong>data.js</strong> sets the same data as <code>window.DDF_DATA</code>, so a page opened by double-clicking can load it with a plain script tag. It uses only ASCII, so accented names show correctly even if a page doesn't declare its character set.</li>
+          <li><strong>network</strong>: the 13 pooled programs and 80 funders plus DDF, with endowments and websites. <strong>international</strong>: the 9 programs abroad, 23 funders including DDF, 34 program–funder links and 22 countries; each program carries its funder IDs and country codes.</li>
+        </ul>
+        <p>The script reads the spreadsheet by column name, stops with an error if a link or country points to a program or funder that doesn't exist, and works out the count columns itself because Excel formulas in the workbook have no saved results.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 5</h2>
+      <div class="prompt">Build a minimalist, interactive network visualization of the Doris Duke Foundation’s (DDF) grant programs and co-funders.
+
+Technology and layout
+- Use D3.js in a single, self-contained `index.html`.
+- Use a dark background and a minimalist visual style.
+- Represent funders, including DDF, as nodes. Use a spring/force-directed layout, clustering funders around the programs they share.
+- Use links from DDF to other funders to show funding amounts. Use a distinct visual treatment for links between funders who co-funded the same program; make these links lighter than the DDF links.
+- Fit the full network on screen when the page loads.
+
+Visual encoding
+- Size funder nodes by endowment tier:
+  - Large: over $10 billion
+  - Medium: over $1 billion
+  - Small: over $100 million
+  - Smaller: below $100 million
+- If a funder’s endowment was not found, use a small fixed-size, pale node.
+- Color nodes by DDF program area using red, blue, green, orange, and variants of those colors. Choose shades that remain distinguishable for people with color-vision deficiencies.
+- Add a legend for program-area colors, node-size tiers, pale nodes for missing endowment data, and dotted lines for missing funding amounts.
+
+Filters and controls
+- Add a program-area filter and a Grant Programs dropdown.
+- Selecting a program should highlight its funders and open an information panel on the right.
+- Add a year filter with a Play button. While the timeline plays, show the current year in large, light-gray text in the top-left corner.
+- Add `+` and `−` zoom buttons and support scroll-to-zoom. Keep label text the same size as the graph zooms.
+- Add a Reset button that clears all filters, selections, highlights, and the information panel.
+
+Interactions
+- When a user hovers over a funder, dim unrelated nodes and links and highlight that funder and its connected nodes. Show a tooltip listing its programs.
+- Reduce label clutter: always show labels for DDF, larger funders, and funders with more than one program. Show other names on hover or when the user zooms in.
+- When a user clicks a funder, show an information panel on the right with:
+  - Endowment
+  - Website link
+  - Number of DDF programs
+  - For each program: program area, year, amount, what the amount represents, number of other funders, and a source link
+
+Searchable lists
+- Show buttons labeled “80 funders” and “13 grant programs” in the graph’s top-right corner.
+- Clicking either button should open a searchable list in the right-side panel.
+- Order the funder list by number of programs, then alphabetically. Show each funder’s endowment and program count beneath its name.
+- Clicking a list item should open that funder’s or program’s information panel, with a back button to return to the list.
+
+Use the supplied research data for all names, figures, years, links, and relationships. Do not invent missing values; display them as unavailable and use the specified visual treatment.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Built <code>index.html</code>: a D3 force-directed network of the 13 programs and 81 funders with every requested filter, panel, list and legend, using colors checked with a palette validator for color-vision deficiencies, and tested in the browser.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <p>I built the network page, <code>index.html</code>, and tested every feature in the browser at 1440×900 with no console errors. It uses only the research data; missing endowments, amounts and sources show as "not found" or "Not available".</p>
+        <h3>How it looks</h3>
+        <ul>
+          <li><strong>Layout:</strong> funders sit around invisible anchor points, one per program, so each program forms its own cluster.</li>
+          <li><strong>Links:</strong> DDF links are colored by program area, with width showing the program amount, and dotted where the amount is missing. Links between co-funders are thin and faint.</li>
+          <li><strong>Nodes:</strong> size follows the four endowment tiers; funders with no endowment figure are small and pale; funders in several areas are drawn as a pie.</li>
+          <li><strong>Colors:</strong> red <code>#be395e</code>, orange <code>#d37e07</code>, green <code>#46ac71</code>, blue <code>#2579ab</code>. The first red and green were too similar for red-green colorblind viewers, so combinations were tested with a palette validator until every check passed (worst colorblind pair ΔE 9.4, target 8).</li>
+          <li><strong>Labels:</strong> DDF, funders over $1B and funders in more than one program are labeled unless labels would overlap; others appear on hover or zoom, and stay the same size as you zoom.</li>
+        </ul>
+        <p>Everything else works: the area filter, Grant Programs dropdown, year slider with Play and the large year, zoom buttons and scroll-to-zoom, Reset, hover dimming with tooltips, info panels, and the searchable "80 funders" and "13 grant programs" lists with a back button. Two additions: the graph pans so highlighted funders aren't hidden behind the panel, and the legend is collapsible.</p>
+        <p>The page loads D3 from a CDN, so it needs an internet connection even when opened by double-click; <code>data.js</code> loads locally.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 6</h2>
+      <div class="prompt">Add international program data, geographic filters, and an interactive world map: include a "Where funds go" filter (All / US only / International / Both), a searchable multi-select "Countries" filter grouped by region showing each country's program count, and clickable country chips in the program info box that filter by that country. Below the graph, add a world map shaded by program count where clicking a country filters by it and selecting a program outlines its countries. Since all 13 existing programs fund US work, add the international programs you found as an optional layer controlled by a "Show programs abroad" toggle (off by default), mark funders with a program abroad using a dashed ring around their dot (and add it to the legend), and automatically turn the layer on if I select International, Both, a non-US country, or an international program—turning it back off on Reset.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Added the programs-abroad layer (off by default), the Where funds go and Countries filters, clickable country chips, dashed rings for funders with programs abroad, and a world map below the graph; the layer turns on automatically and Reset turns it off.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <h3>What's new</h3>
+        <ul>
+          <li><strong>Programs-abroad layer:</strong> a toggle, off by default, adds the 9 programs and 19 new funders (99 funders and 22 programs in total). Funders with a program abroad get a dashed ring, explained in the legend. The US network stays where it was; new clusters appear around its edge.</li>
+          <li><strong>Where funds go:</strong> US only = the 13 original programs; International = funded work only abroad (the four health programs in Africa); Both = the five that also funded US work.</li>
+          <li><strong>Countries filter:</strong> searchable multi-select grouped by region, with each country's program count.</li>
+          <li><strong>Country chips</strong> in each program's panel filter by that country.</li>
+          <li><strong>World map</strong> below the graph, shaded by how many programs match the filters; clicking a country filters by it; the filter and the selected program's countries are outlined.</li>
+          <li>The layer turns on automatically for International, Both, a non-US country or a program abroad; Reset turns it off.</li>
+        </ul>
+        <h3>Decisions</h3>
+        <ul>
+          <li>Building Bridges uses a fifth color, a violet <code>#b770e6</code>, which passes the colorblind check with the other four.</li>
+          <li>The timeline uses the first year in each program's date range; amounts abroad use the headline figure in the research text ("~" marks an estimate).</li>
+          <li>The research workbook gained <em>Also Funds US Work</em> and <em>US Work Evidence</em> columns, which the Both category needs; <code>build_data.py</code> reads them and adds map codes for each country.</li>
+          <li>The toolbar was rearranged so it doesn't wrap, and crowded labels now try above or to the right of their node before being hidden.</li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 7</h2>
+      <div class="prompt">Update the page layout, interactions, and mobile responsiveness, and run full QA: make the title "DDF Funders Network" larger and centered with the subtitle "Each dot represents a funder. Click a funder or a line for details. Scroll to zoom.", and add both a "View the data as a table" section and a collapsible "About this data" section under the legend (closed by default on load) explaining dot sizes, colors, lines, the international layer, and caveats. Format dollar amounts with one decimal place when needed (like $102.5M instead of $103M), and make program names in a funder's info box clickable to open that program with a "Back to [funder]" button. On the graph, make hover labels only slightly bolder rather than fuzzy, change lines between non-DDF funders from overly white to gray when a program is highlighted, show the program and amount when hovering over a line from DDF, and turn off hover (while keeping click) on lines between two non-DDF funders. Check the page on a phone-sized screen to fix anything that breaks and make the dots easy to tap. Finally, check for and fix any browser console errors, go through every program in the dropdown to verify it highlights all of its funders (telling me if any don't), test all filter combinations together (area, year, where funds go, and countries) to ensure they never produce a broken or empty graph without the "No programs match these filters" message, and show me screenshots of the finished page on both desktop and mobile.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary">Made all the layout, formatting, navigation, line and phone changes, then ran QA: no console errors, all 22 programs highlight exactly their funders, and all 5,003 filter combinations passed; desktop and mobile screenshots were shared.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <h3>QA results</h3>
+        <ul>
+          <li><strong>Console errors:</strong> none, on desktop or on the phone.</li>
+          <li><strong>Every program in the dropdown (22):</strong> each highlights all of its funders and no others, checked against the raw data file. All passed.</li>
+          <li><strong>Filter combinations:</strong> 5,003 combinations of area, year, where funds go and countries, with the layer on and off, all passed. In the 3,823 where nothing matched, the "No programs match these filters" message appeared every time.</li>
+        </ul>
+        <h3>Changes</h3>
+        <ul>
+          <li>Larger centered title with the subtitle.</li>
+          <li>Money shows one decimal place only when needed: $102.5M, $4M, $2.2B.</li>
+          <li>Opening a program from a funder's panel shows "← Back to Hewlett" (and likewise from programs, lists and the new pair view).</li>
+          <li>Hovering a DDF line shows the program, area, year and amount; lines between other funders are gray, have no hover, and open a pair panel when clicked.</li>
+          <li>Highlighted labels are slightly heavier, with a thinner halo.</li>
+          <li>"View the data as a table" and "About this data" sections below the graph, both closed on load.</li>
+          <li>Phone fixes: the program dropdown no longer widens the page, the header scrolls away, the legend starts collapsed, dots have larger tap areas, and edge labels are no longer cut off.</li>
+        </ul>
+        <p>One map quirk: selecting a French program also outlines French Guiana, because the map file counts it as part of France.</p>
+      </div>
+    </li>
+
+    <li class="step">
+      <h2>Prompt 8</h2>
+      <div class="prompt">Write a README explaining the project files, how to run the site locally, and how to publish it on GitHub Pages, and create a `how-claude-built-this.html` page—linked under the "About this data" section (not inside it)—that lists all of my prompts from this session in order, each paired with a one- or two-line summary of your reply and a "See more" toggle to expand the full response, replacing any personal information on that page (my name, email, local computer folder paths, and GitHub username) with `******`. Commit everything to git on this branch using `******` as the author name and my GitHub no-reply email, then do a full final check of the whole site in the browser covering the filters, Play, map, lists, search, info boxes, the international layer, and the `how-claude-built-this.html` page. Afterward, update `how-claude-built-this.html` so it includes all prompts up to now and commit again, then publish this version to `https://github.com/******/ddf_visualization` so it replaces the old one on `main`, and verify that the GitHub Pages site works properly.</div>
+      <p class="label">Summary of reply</p>
+      <p class="summary" id="p8summary">In progress: README and this page written and committed; the final site check, publishing and the GitHub Pages check follow, and this entry is updated afterward.</p>
+      <button class="toggle" aria-expanded="false">See more</button>
+      <div class="full" hidden>
+        <p>This entry is completed after the final check and publication.</p>
+      </div>
+    </li>
+
+  </ol>
+  <p class="note">Built with Claude Code. Personal details are replaced with ******.</p>
+</main>
+<script>
+  document.querySelectorAll(".toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const full = btn.nextElementSibling;
+      const open = full.hidden;
+      full.hidden = !open;
+      btn.setAttribute("aria-expanded", String(open));
+      btn.textContent = open ? "See less" : "See more";
+    });
+  });
+</script>
+</body>
+</html>

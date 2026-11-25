@@ -1,0 +1,9 @@
+# Local Claude Code settings (contain local folder paths)
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+
+# Office lock files
+~$*
