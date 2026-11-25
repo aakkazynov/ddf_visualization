@@ -115,13 +115,14 @@
   .chip:focus-visible, .btn:focus-visible, select:focus-visible, .tb:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
   /* year: Play + a two-handle range slider */
-  .years { display: flex; align-items: center; gap: 10px; flex: 1 1 360px; min-width: 0; }
+  /* The year row wraps when space runs out, so the "Completed programs" note moves to its own line instead of being cut off. */
+  .years { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; flex: 1 1 360px; min-width: 0; }
   #play { min-width: 76px; text-align: left; }
   .yrcap { color: var(--ink); white-space: nowrap; }
   .yrnote { white-space: nowrap; cursor: help; }
   #bigYear::before { content: "Programs through"; display: block; font: 600 13px var(--font); letter-spacing: .02em; margin-bottom: 4px; }
   .years output { min-width: 2.8em; color: var(--ink); font-variant-numeric: tabular-nums; text-align: center; }
-  .rng { position: relative; flex: 1 1 auto; min-width: 120px; height: 28px; }
+  .rng { position: relative; flex: 1 1 160px; min-width: 120px; height: 28px; }
   .rtrack, .rfill { position: absolute; top: 13px; height: 2px; border-radius: 1px; }
   .rtrack { left: 8px; right: 8px; background: var(--track); }
   .rfill { background: var(--ink-2); }
